@@ -10,29 +10,28 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.DriverManager;
 
-public class Database {
+public class SPMSDB {
 	
 	/**
 	 * Open a new connection to the Azure SQL server. 
 	 * Note: Closing the returned object is left up to the caller.
+	 * @param dbName name of the database to connect to
 	 * @return Open connection to the database
 	 * @throws SQLException 
 	 */
 	public static Connection getConnection() throws SQLException {
 		 // Connect to database
         String hostName = ConfigLoader.getProp("spms.db.hostName");
-        String dbName = ConfigLoader.getProp("spms.db.tickerPriceDbName");
         String user = ConfigLoader.getProp("spms.db.user");
+        String dbName = ConfigLoader.getProp("spms.db.masterDB");
         String password = ConfigLoader.getProp("spms.db.password");
         String url = String.format("jdbc:sqlserver://%s:1433;database=%s;user=%s;password=%s;encrypt=true;"
             + "hostNameInCertificate=*.database.windows.net;loginTimeout=30;", hostName, dbName, user, password);
         Connection connection = null;
         
-        System.out.println(url);
-        
         connection = DriverManager.getConnection(url);
         String schema = connection.getSchema();
-        System.out.println("Successful connection - Schema: " + schema);
+        System.err.println("Successful connection: " + dbName);
         
         return connection;
 	}
