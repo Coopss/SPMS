@@ -35,4 +35,24 @@ public class SPMSDB {
         
         return connection;
 	}
+	
+	public static boolean tableExists(Connection conn, String tableName) throws SQLException {
+		PreparedStatement stmt = conn.prepareStatement("select * from sys.tables where name = '" + tableName + "';");
+	    ResultSet rs = stmt.executeQuery();
+		
+	    while(!rs.next()) {
+	    	return false;
+	    }
+	        
+	    return true;
+	}	
+	
+	
+	public static boolean dropTable(Connection conn, String tableName) throws SQLException {
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("DROP TABLE [dbo].[" + tableName + "]");
+			
+		return true;	
+		
+	}
 }

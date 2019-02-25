@@ -1,12 +1,9 @@
-package com.spms;
+package com.spms.api.auth;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.spms.api.auth.AuthDAO;
-import com.spms.api.auth.AuthUtil;
-import com.spms.api.auth.Credentials;
 import com.spms.database.SPMSDB;
 
 public class AuthTest {

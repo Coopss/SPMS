@@ -96,4 +96,13 @@ public class AuthDAO {
 		
 		return false;
 	}
+
+// todo: rcooper
+//	public String issueNewToken(Credentials cred) {
+//		
+//	}
+//	
+//	public String getUserForToken(String token) {
+//		
+//	}
 }
