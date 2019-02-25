@@ -1,0 +1,235 @@
+/*General layout, plus headers and footers*/
+@font-face {
+    font-family: deadhead;
+    src: url(../assets/deadhead_rough.ttf);
+}
+
+html, body {
+	height: 100%;
+	/*necessary to make grey BG display corrently*/
+	margin: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+	font-size: large;
+    position: relative;
+    min-height: 100%;
+    max-width: 100%;
+    color: #333333;
+}
+
+
+
+/* Site-wide navigation header */
+ul.nav_header {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: lightgrey;
+}
+
+div.nav_header_right {
+    float: right;
+}
+
+ul.nav_header li {
+    float: left;
+}
+
+ul.nav_header li a, .b_dropnav { /* Style top-level nav buttons */
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding: 14px 16px;
+    color: darkgreen;
+}
+
+ul.nav_header li a:hover, li.dropdown:hover .b_dropnav { /* Visible hover selection for nav buttons */
+    background-color: darkgreen;
+    color: whitesmoke;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown_content {
+    display: none;
+    position: absolute;
+    white-space: nowrap;
+    z-index: 1;
+    background-color: lightgrey;
+
+
+}
+
+.dropdown_content a {
+    display: block;
+    text-align: left;
+}
+
+li.dropdown:hover .dropdown_content {
+    display: block;
+}
+
+
+
+/* Original site-wide header stuff */
+.header_div {
+	width: 100%;
+}
+
+.header_table {
+	background-color: whitesmoke; /*#666666*/
+    color: darkgreen;
+	width: 100%;
+	border: none;
+}
+
+.header_home, .header_title, .header_right {
+		border: none;
+		border-bottom: solid #434343 10px;
+		font-family: sans-serif;
+}
+
+.header_home img {
+    max-width: 300px;
+    max-height: 75px;
+}
+
+.header_text {
+	text-align: center;
+    font-family: sans-serif;
+}
+
+.header_home {
+	width: 8%;
+	/*border-right: solid #434343 5px;*/
+	text-align: center;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: xx-large;
+}
+
+.header_right {
+	width: 22%; /* 100 - body_content - header_home */
+}
+
+
+.footer_div {
+	font-size: medium;
+	background-color: #60825d; /*lightgrey;*/
+	padding-left: 8%;
+	padding-right: 22%;
+	height: 75px;
+    
+    /* Specifiy a tesselate-able background overlay png @ 25% opacity
+    background-image: url("./global_assets/footer.png");
+    background-size: 500px;
+    background-position: center;
+    */
+}
+
+.body_content {
+	padding-left: 8%;
+	padding-right: 3%;
+    width: 72%;
+	min-height: 78%;
+    position: relative; /* Allow other elements to be absolutely possitioned relative to this */
+}
+
+
+@media screen and (max-width: 1000px) {
+	.body_content {
+		padding-left: 2%;
+		width: 95%;
+	}
+}
+
+.page_title hr { /*this might be dumb*/
+    margin-top: -1em;
+}
+
+
+/* Login form boilerplate */
+.login_feedback {
+  color: red;
+  font-weight: bold;
+}
+
+.login_form {
+    font-weight: bold;
+    padding: 10px;
+    border: 1px solid lightgrey;
+    max-width: 400px;
+    border-radius: 4px;
+}
+
+.login_form input {
+    border-radius: 4px;
+    border: none;
+    margin: 5px;
+    padding: 10px;
+    display: inline-block;
+    background-color: #f0f0f0;
+    width: 95%;
+}
+
+
+
+
+
+
+/* Buttons*/
+button {
+	color: darkgreen;
+	cursor: pointer;
+	padding: 5px;
+	font-size: larger;
+	border-radius: 5px;
+    background-color: lightgrey;
+    box-shadow: 1px 1px 2px #000000;
+}
+
+button:hover {
+	color: whitesmoke;
+    background-color: darkgreen;
+}
+
+button:disabled {
+	background-color: darkgrey;
+	color: black;
+	cursor: default;
+}
+
+option:disabled {
+	background-color: darkgrey;
+	color: white;
+}
+
+.hide_me {
+	color: darkred;
+	text-decoration: underline;
+	background-color: whitesmoke;
+	padding: 5px;
+}
+
+.hide_me_div, .hide_me_project {
+	background-color: whitesmoke;
+	border: 2px solid black;
+	padding: 5px;
+}
+
+.smaller_text {
+	font-size: large;
+	padding-left: 2.2em;
+    font-style: italic;
+}
+
+
+/* Table stuff */
+table {
+    border-collapse: collapse;
+}
