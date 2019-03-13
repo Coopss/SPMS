@@ -40,7 +40,6 @@ public class AuthDAO {
 	}
 	
 	public boolean createUser(Credentials cred) throws SQLException {
-		
 		// Dont create and issue credentials if user already exists
 		if (userExists(cred)) {
 			return false;

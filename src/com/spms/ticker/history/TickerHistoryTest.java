@@ -14,7 +14,7 @@ public class TickerHistoryTest {
 	public static void main(String[] args) throws SQLException {
 		TickerHistoryDAO dao = new TickerHistoryDAO();
 		System.out.println(dao.createTickerHistoryTable("TESTTABLE"));
-		System.out.println(SPMSDB.dropTable(SPMSDB.getConnection(), "ticker.TESTTABLE.history"));
+		//System.out.println(SPMSDB.dropTable(SPMSDB.getConnection(), "ticker.TESTTABLE.history"));
 		
 	}
 
