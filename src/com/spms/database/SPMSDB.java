@@ -2,6 +2,8 @@ package com.spms.database;
 
 import java.sql.Connection;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.spms.config.ConfigLoader;
 
@@ -49,10 +51,21 @@ public class SPMSDB {
 	
 	
 	public static boolean dropTable(Connection conn, String tableName) throws SQLException {
+		if (!tableExists(conn, tableName)) {
+			return false;
+		}
+		
 		Statement stmt = conn.createStatement();
 		stmt.executeUpdate("DROP TABLE [dbo].[" + tableName + "]");
 			
 		return true;	
 		
+	}
+
+	public static String getMSSQLDatetime() {
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		Date javaDate = new Date();
+		String msSqlDate = sdf.format(javaDate).trim();
+		return msSqlDate.replace(" ","T").toString();
 	}
 }
