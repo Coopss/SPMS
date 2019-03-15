@@ -1,0 +1,24 @@
+.image {
+        position: fixed;
+        z-index: 1;
+        display: block;
+        background-image: url(img/under_glass.png);
+        background-attachment: fixed;
+        background-size: cover;
+        width: 1920px;
+        height: 90px;
+        filter: blur(4px);
+        -webkit-filter: blur(4px);
+        transform: scale(1.1); 
+
+}
+.header_overlay {
+        position: fixed;
+        z-index: 2;
+        width: 100%;
+        border-spacing: 0px;
+}
+
+.header_align {
+        height: 144px;
+}

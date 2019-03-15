@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css" href="global_assets/header.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-	<title>SPMS: Welcome!</title>
-	<link rel="icon" href="./global_assets/favicon.png" type="image/png">
+	<title>Stock Overflow</title>
+	<link rel="icon" href="./global_assets/img/favicon.png" type="image/png">
 
 
 </head>
@@ -19,14 +19,22 @@
 <div class="body_content">
     <div class="page_title">
         <br>
-        <h1>Welcome page</h1>
+        <h1>Summary</h1>
         <hr><br>
     </div>
-    
+
     <p>
-        This is the welcome page
+        Your summary will be here
     </p>
-    
+    <div class="page_title">
+        <br>
+        <h1>News</h1>
+        <hr><br>
+    </div>
+    <p>
+        Relevant news articles will be here
+    </p>
+
 
 
 <br><br>
