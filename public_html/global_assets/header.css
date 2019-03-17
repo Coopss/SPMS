@@ -9,7 +9,7 @@
         height: 90px;
         filter: blur(4px);
         -webkit-filter: blur(4px);
-        transform: scale(1.1); 
+        transform: scale(1.1);
 
 }
 .header_overlay {
@@ -21,4 +21,12 @@
 
 .header_align {
         height: 144px;
+}
+
+.header_logo {
+        padding-right: 10px;
+}
+
+.bg-mute {
+        background-color: #003d5a!important;
 }

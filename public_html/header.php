@@ -2,38 +2,36 @@
     <link rel="stylesheet" type="text/css" href="global_assets/header.css">
 </head>
 
-<div class="image">
+<nav class="navbar navbar-expand-md navbar-dark nav-background bg-dark bg-mute">
+        <div class="header_logo" width="100px">
+                <a class="navbar-brand header-logo" href="#"><img src="global_assets/img/logo.png" alt="Logo" height=40px></a>
+        </div>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-</div>
+      <div class="collapse navbar-collapse" id="navbarsExample04">
 
-<div class="header_overlay">
-        <table class="header_table">
-          <tr>
-            <a id="header_home_a" href="#">
-              <td class="header_home" onclick="location.href='./index.php'">
-                <img src="./global_assets/img/logo.png" alt="Logo">
-              </td>
-            </a>
-            <td class="header_title">
-              <h2 class="header_text">
-              Stock Overflow
-              </h2>
-            </td>
-            <td class="header_right">
-                    <h2>Welcome, Guest</h2>
-            </td>
-          </tr>
-        </table>
+        <!-- Text box for search -->
+        <form class="form-inline mx-auto">
+          <input class="form-control" type="text" placeholder="Search">
+        </form>
 
-        <ul class="nav_header">
-            <li><a href="index.php">Dashboard</a> </li>
-            <li><a href="p1.php">Portfolio</a> </li>
+        <!-- Page links -->
+        <ul class="navbar-nav mx-right">
+          <li class="nav-item active">
+            <a class="nav-link" href="index.php">Dashboard <span class="sr-only"></span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Porfolio</a>
+          </li>
 
-            <div class="nav_header_right">
-                <li><a href="login.php">Login</a> </li>
-                <li><a href="signup.php">Signup</a> </li>
-            </div>
+          <!-- Login link or username -->
+          <li class="nav-item nav-link">
+            <p> Welcome, USER </p>
+          </li>
+
         </ul>
-</div>
-<div class="header_align">
-</div>
+
+      </div>
+    </nav>
