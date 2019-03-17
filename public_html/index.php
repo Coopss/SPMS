@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="global_assets/dashboard.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="global_assets/dashboard.css">
+        <link rel="stylesheet" type="text/css" href="global_assets/header.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-	<title>Stock Overflow</title>
-	<link rel="icon" href="./global_assets/img/logo.png" type="image/png">
+        <title>Stock Overflow</title>
+        <link rel="icon" href="./global_assets/img/logo.png" type="image/png">
 
         <!-- CDN stuff for Bootstrap -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -17,7 +18,7 @@
 </head>
 <body>
 
-    <div class="header_div">
+    <div class="header_div navbar-spacers">
         <?php include "header.php"; ?>
         <!-- Use jquery to insert header content here if PHP fails    -->
     </div>
@@ -107,12 +108,3 @@
 
 </body>
 </html>
-
-<!---
-<div class="col-md-8">
-          <div class="row">
-            <div class="col-md-6">.col-md-6</div>
-            <div class="col-md-6">.col-md-6</div>
-          </div>
-        </div>
--->

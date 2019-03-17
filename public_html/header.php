@@ -10,15 +10,20 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
+
       <div class="collapse navbar-collapse" id="navbarsExample04">
 
         <!-- Text box for search -->
-        <form class="form-inline mx-auto">
-          <input class="form-control" type="text" placeholder="Search">
-        </form>
+        <div class="search-pos">
+                <div class="float-left">
+                <form class="form-inline float-left">
+                  <input class="form-control" type="text" placeholder="Search">
+                </form>
+        </div>
+        </div>
 
         <!-- Page links -->
-        <ul class="navbar-nav mx-right">
+        <ul class="z-back navbar-nav float-right">
           <li class="nav-item active">
             <a class="nav-link" href="index.php">Dashboard <span class="sr-only"></span></a>
           </li>
@@ -32,6 +37,6 @@
           </li>
 
         </ul>
-
+        <!-- Holder -->
       </div>
     </nav>

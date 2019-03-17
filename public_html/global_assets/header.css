@@ -1,17 +1,3 @@
-.image {
-        position: fixed;
-        z-index: 1;
-        display: block;
-        background-image: url(img/under_glass.png);
-        background-attachment: fixed;
-        background-size: cover;
-        width: 1920px;
-        height: 90px;
-        filter: blur(4px);
-        -webkit-filter: blur(4px);
-        transform: scale(1.1);
-
-}
 .header_overlay {
         position: fixed;
         z-index: 2;
@@ -24,9 +10,29 @@
 }
 
 .header_logo {
-        padding-right: 10px;
+        padding-right: 87px!important;
 }
 
 .bg-mute {
         background-color: #003d5a!important;
+}
+.navbar-spacers {
+        margin-bottom: 70px!important;
+}
+.header-text {
+        float: none!important;
+}
+
+.overflow-allowance {
+        margin-right: -100px;
+        padding-right: 0px;
+}
+
+.z_back {
+        z-index: 2;
+}
+
+.search-pos {
+            margin-right: auto!important;
+            margin-left: 225px!important;
 }
