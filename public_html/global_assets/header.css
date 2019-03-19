@@ -1,0 +1,24 @@
+
+.header_align {
+        height: 144px;
+}
+
+.bg-mute {
+        /*background-color: #003d5a!important;*/
+        background: rgba(0, 61, 90, 0.8);
+}
+.navbar-spacers {
+        margin-bottom: 70px!important;
+}
+
+.z_back {
+        z-index: 2;
+}
+
+.align_left {
+        padding-left: 0px!important;
+}
+
+html {
+        overflow: hidden;
+}

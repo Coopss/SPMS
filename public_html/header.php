@@ -1,42 +1,42 @@
-  <table class=header_table>
-    <tr>
-      <a id="header_home_a" href="#">
-        <td class="header_home" onclick="location.href='./index.php'">
-          <img src="./global_assets/logo.png" alt="Logo">
-        </td>
-      </a>
-      <td class="header_title">
-        <h2 class="header_text">
-        Stock Portfolio Management System
-        </h2>
-      </td>
-      <td class="header_right">
-          <!--h2 class="header_text">
-          Right Text
-      </h2-->
-      </td>
-    </tr>
-  </table>
+<head>
+    <link rel="stylesheet" type="text/css" href="global_assets/header.css">
+</head>
 
-<ul class="nav_header">
-    <li><a href="index.php">Home</a> </li>
-    <li><a href="p1.php">Page 1</a> </li>
-    <li><a href="p2.php">Page 2</a> </li>
-    <li><a href="p3.php">Page 3</a> </li>
-    
-    <div class="nav_header_right">
-        <li><a href="login.php">Login</a> </li>
-        <li><a href="signup.php">Signup</a> </li>
-    </div>
-    
-    <!--
-    <li class="dropdown">
-        <a href="javascript:void()" class="b_dropnav">Topics</a>
-        <div class="dropdown_content">
-            <a href="d1.php">Dropdown 1</a>
-            <a href="d2.php">Dropdown 2</a>
-            <a href="d3.php">Dropdown 3</a>
-        </div>
-    </li>
-    -->
-</ul>
+<nav class="navbar navbar-expand-md navbar-dark nav-background bg-mute">
+
+
+      <div class="collapse navbar-collapse row" id="navbarsExample04">
+
+              <!-- Logo -->
+              <div class="header_logo col-lg-2">
+                      <a class="navbar-brand header-logo" href="#"><img src="global_assets/img/logo.png" alt="Logo" height=40px></a>
+              </div>
+
+                <!-- Text box for search -->
+                <div class="search-pos col-lg-3 align_left">
+                        <div class="float-left">
+                                <form class="form-inline">
+                                  <input class="form-control" type="text" placeholder="Search">
+                                </form>
+                        </div>
+                </div>
+
+                <!-- Page links -->
+                <div class="col-lg-7">
+                        <ul class="z-back navbar-nav float-right">
+                          <li class="nav-item active">
+                            <a class="nav-link" href="index.php">Dashboard <span class="sr-only"></span></a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">Porfolio</a>
+                          </li>
+
+                          <!-- Login link or username -->
+                          <li class="nav-item nav-link">
+                            <p> Welcome, USER </p>
+                          </li>
+
+                        </ul>
+                </div>
+      </div>
+   </nav>

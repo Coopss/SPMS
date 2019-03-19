@@ -82,10 +82,10 @@ li.dropdown:hover .dropdown_content {
 }
 
 .header_table {
-	background-color: whitesmoke; /*#666666*/
-    color: darkgreen;
+        color: darkgreen;
 	width: 100%;
 	border: none;
+        border-spacing: 0px;
 }
 
 .header_home, .header_title, .header_right {
@@ -124,7 +124,7 @@ li.dropdown:hover .dropdown_content {
 	padding-left: 8%;
 	padding-right: 22%;
 	height: 75px;
-    
+
     /* Specifiy a tesselate-able background overlay png @ 25% opacity
     background-image: url("./global_assets/footer.png");
     background-size: 500px;
