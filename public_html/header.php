@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="global_assets/header.css">
+    <link rel="stylesheet" type="text/css" href="global_assets/header.css"></link>
 </head>
 
 <nav class="navbar navbar-expand-md navbar-dark nav-background bg-mute">

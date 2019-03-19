@@ -1,12 +1,12 @@
 //Encourage AJAX to always fetch newest data and not rely on cache (doesn't always work)
 $.ajaxSetup({ cache: false });
 
-if ($('.header_div').eq(0).children().length < 1) { //Load header+footer manually if PHP didn't do it.
-	$(".header_div").load("./header.php");
-	$(".footer_div").load("./footer.php");
-}
-
 $( document ).ready(function() {
+	if ($('.header_div').eq(0).children().length < 1) { //Load header+footer manually if PHP didn't do it.
+		$(".header_div").load("./header.php");
+		$(".footer_div").load("./footer.php");
+	}
+	
 	//Initialize hidden elements
 	$(".hide_me_code").hide();
 	$(".hide_me_project").hide();
