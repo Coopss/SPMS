@@ -18,8 +18,32 @@ public class JSONObject {
 		}
 	}
 	
+	private String makeDatetime(String date, String time) {
+		String newDate = date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6, 8);
+		String newTime = time + ":00";
+		
+		return newDate + " " + newTime;
+	}
+	
 	public String getValue(String key) {
 		return vars.get(key);
+	}
+	
+	public String getValues(String[] values) {
+		String out = "(";
+		for (String s : values) {
+			String tmp = this.getValue(s);
+			
+			if (s.equals("date")) {
+				tmp = this.makeDatetime(this.getValue("date"), this.getValue("minute"));
+			}
+			
+			out += tmp + ",";
+		}
+		out = out.substring(0, out.length() - 1);
+		out += ")";
+		
+		return out;
 	}
 	
 }
