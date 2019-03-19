@@ -2,16 +2,6 @@
   border-right: 1px solid #333;
 }
 
-.previous {
-  background-color: #003d5a;
-  color: black;
-}
-
-.next {
-  background-color: #003d5a;
-  color: black;
-}
-
 .round {
   border-radius: 200%;
 }

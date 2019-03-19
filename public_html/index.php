@@ -24,13 +24,11 @@
     </div>
 
 <!-- Body of index -->
-<div class="container mt-1">
-        <div class="col-lg-11">
+<div class="">
                 <div class="row">
-
-                        <div class="col-lg-8 bar-right">
+                        <div class="offset-lg-2 col-lg-5 bar-right">
                                 <h3>Summary</h3>
-                                <img src="global_assets/img/graph.png" class="img-responsive" width=620px margin-left=10px>
+                                <img src="global_assets/img/graph.png" class="img-fluid">
                         </div>
                         <div class="col-lg-3">
                                 <!-- List of Stocks -->
@@ -76,27 +74,28 @@
 
                                 </table>
                         </div>
+                        <div class="col-lg-2">
+                        </div>
                 </div>
-                <div>
+                <div class="offset-lg-2">
                         <h3>Top Movers</h3>
                         <p> Articles go here </p>
                 </div>
-                <div>
+                <div class="offset-lg-2">
                         <h3>Relevant articles</h3>
                         <div class="row">
                                 <div class="col-lg-2">
-                                        <a href="#" class="previous round arrow">Previous &laquo</a>
+                                        <a href="#" class="bg-mute round arrow">Previous &laquo</a>
                                 </div>
-                                <div class="col-lg-7">
+                                <div class="col-lg-6">
                                         <h3> Articles </h3>
                                 </div>
                                 <div class="col-lg-2">
-                                        <a href="#" class="next round mx-righ arrowt"> Next &raquo</a>
+                                        <a href="#" class="bg-mute round float-right arrow"> Next &raquo</a>
                                 </div>
                         </div>
 
                 </div>
-        </div>
 
 </div>
 <div class="footer_div">

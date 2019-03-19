@@ -1,38 +1,24 @@
-.header_overlay {
-        position: fixed;
-        z-index: 2;
-        width: 100%;
-        border-spacing: 0px;
-}
 
 .header_align {
         height: 144px;
 }
 
-.header_logo {
-        padding-right: 87px!important;
-}
-
 .bg-mute {
-        background-color: #003d5a!important;
+        /*background-color: #003d5a!important;*/
+        background: rgba(0, 61, 90, 0.8);
 }
 .navbar-spacers {
         margin-bottom: 70px!important;
-}
-.header-text {
-        float: none!important;
-}
-
-.overflow-allowance {
-        margin-right: -100px;
-        padding-right: 0px;
 }
 
 .z_back {
         z-index: 2;
 }
 
-.search-pos {
-            margin-right: auto!important;
-            margin-left: 225px!important;
+.align_left {
+        padding-left: 0px!important;
+}
+
+html {
+        overflow: hidden;
 }
