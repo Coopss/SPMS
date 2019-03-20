@@ -1,0 +1,33 @@
+Documentation for the JS AJAX functions (using pseudo-doxygen-style)
+
+----------
+Notation:
+----------
+@param my_param
+    is used for parameters that must be passed to the function; eg my_funct(my_param)
+    
+@id [tag_type->subtype] my_id
+    is used to define parameters that are needed, but should just be specified with an 'id' tag; eg <input type='subtype' id='my_id'></input>
+
+
+----------
+Comments:
+----------
+Generally functions should be called by using onClick='myFunction()' within a button that needs to trigger the functions
+
+----------
+Functions:
+----------
+authenticate_user(): log in as a pre-existing user
+@id [input->text] username: the username of the user
+@id [input->password] password: the password for the user
+@return: logs in and redirects to index.php if successful; displays error code inside an element with id='error_msg' on failure
+
+
+register(): register a new user
+@id [input->text] username: the username of the new user
+@id [input->password] password: the password for the new user
+@return logs in and redirects to index.php if successful; displays error code inside an element with id='error_msg' on failure
+
+is_authenticated(): used internally to check if the current user is logged in
+@return: true if user is logged in (from server's perspective), false otherwise. 

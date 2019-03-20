@@ -1,16 +1,121 @@
-//Encourage AJAX to always fetch newest data and not rely on cache (doesn't always work)
-$.ajaxSetup({ cache: false });
+var user = null;
 
-$( document ).ready(function() {
+$(document).ready(function() {
 	if ($('.header_div').eq(0).children().length < 1) { //Load header+footer manually if PHP didn't do it.
 		$(".header_div").load("./header.php");
 		$(".footer_div").load("./footer.php");
+	}
+	
+	if (!is_authenticated()) { //check for logged in status on every page load
+		user = null;
 	}
 	
 	//Initialize hidden elements
 	$(".hide_me_code").hide();
 	$(".hide_me_project").hide();
 });
+
+function authenticate_user () {
+	var username = $('#username').val();
+	var password = $('#password').val();
+	//alert('user: ' + username + '; pass: ' + password);
+	
+	/* make sure server is ready before sending actual authentication */
+	$.ajax({
+		method: 'GET',
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/authenticate/ping"
+	})
+	.fail(function (xhr, textStatus, errorThrown) { //stop if an error occurs with ping
+		var statusNum = xhr.status;
+		var text = xhr.statusText; //same as textStatus param?
+		$('#ping_result').html("Authentication ping failed! Status: " + statusNum + "<br>Explanation: " + text);
+		return;
+	});
+	
+	
+	$.ajax({
+		method: "POST",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/authenticate",
+		contentType: 'application/json',
+		crossDomain: true,
+		data: JSON.stringify({
+			"username": username,
+			"password": password
+		}),
+	})
+	.done(function(data, textStatus, xhr) {
+		$('#validate_result').html("data: " + data + "\n<br>Status: " + status + '<br>StatusCode: ' + xhr.status);
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var text = xhr.statusText; //same as textStatus param?
+		$('#validate_result').html("statusNum: " + statusNum + '; text: ' + textStatus + '; Error: ' + errorThrown);
+		return;
+	});
+}
+
+function is_authenticated () {
+	var is_auth = -1;
+	
+	$.ajax({
+		method: 'GET',
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/authenticate/checkAuth"
+	})
+	.done(function() {
+		is_auth = 1;
+	})
+	.fail(function () {
+		is_auth = 0;
+	})
+	.always(function () {
+		console.log("Auth status: " + is_auth);
+		$("#auth_result").html("Auth status: " + is_auth);
+		if (is_auth == 1) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+}
+
+function ping() {
+	$.ajax({
+		method: "GET",
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/ping",
+		statusCode: {
+			//successful request functions (just 2xx?) take DONE callback params; failures take FAIL callback params
+			200: function (data, status) {
+				$('#ping_result').html("data: " + data + "\n<br>Status: " + status);
+			}
+		}
+	})
+	.done(function(data, textStatus, xhr) {
+		//handled with statusCode
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var text = xhr.statusText; //same as textStatus param?
+		$('#ping_result').html("Failed! Status: " + statusNum + "<br>Explanation: " + text);
+	});
+	
+	/* GET function;
+	$.get("http://spms.westus.cloudapp.azure.com:8080/SPMS/api/ping", function(data, status) {
+		//alert("data: " + data + "\n\nStatus: " + status);
+		if (status == 'success') {
+			$('#ping_result').html("data: " + data + "\n<br>Status: " + status);
+			//alert("data: " + data + "\n\nStatus: " + status);
+		} else {
+			alert('idk');
+		}
+	});
+	*/
+}
 
 //Function to hide/unhide sections on click
 $(".hide_me").click(function() {
