@@ -13,6 +13,11 @@
 				com.spms.api
 			</param-value>
 		</init-param>
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>com.spms.SPMSResourceConfig</param-value>
+		</init-param>
+        
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
@@ -20,5 +25,12 @@
 		<servlet-name>jersey-serlvet</servlet-name>
 		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
+
+    <servlet>
+		<servlet-name>batch-runner</servlet-name>
+		<servlet-class>com.spms.BatchJobRunner</servlet-class>
+		<load-on-startup>3</load-on-startup>
+	</servlet>
+
 
 </web-app>

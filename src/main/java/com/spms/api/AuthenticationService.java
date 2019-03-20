@@ -21,7 +21,11 @@ import com.spms.api.annotations.Secured;
 import com.spms.auth.AuthDAO;
 import com.spms.auth.Credentials;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -43,6 +47,7 @@ public class AuthenticationService extends Application {
 	
 	@GET
 	@Path("/ping")
+	@Operation(summary = "Checks if the Authentication Service is online.", tags = {"Authentication"}, description = "Pings the Authentication service, will fail to connect if service is down.", responses = {@ApiResponse(description = "string: \"ok\"", responseCode = "200")})
 	public Response ping() {
         return Response.ok("ok").build();
     }
@@ -50,6 +55,7 @@ public class AuthenticationService extends Application {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+	@Operation(summary = "Authenticate a User", tags = {"Authentication"}, description = "Authenticate a user given a JSON payload of credentials. No direct response, but a cookie with key=\"token\" is set with a time-expiring authentication token. Resupply in subsequent requests", responses = {@ApiResponse(description = "Sets cookie \"token\".", responseCode = "200"), @ApiResponse(description = "User credentials could not be confirmed.", responseCode = "401")})
     public Response authenticateUser(Credentials cred) {
     	Boolean valid = false;
            
@@ -76,6 +82,7 @@ public class AuthenticationService extends Application {
     @Secured
     @GET
     @Path("/checkAuth")
+	@Operation(summary = "Checks if the User is Authenticated", tags = {"Authentication"}, description = "Used to test the @Secured decorator to protect endpoints, primarily used for debugging.", responses = {@ApiResponse(description = "User is authorized.", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
     public Response isAuthenticated() {
     	return Response.ok().build();
     }
@@ -84,6 +91,7 @@ public class AuthenticationService extends Application {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/register")
+	@Operation(summary = "Register a new User", tags = {"Authentication"}, description = "Registers a new user with a JSON payload of username and password. Will always succeed if username is not taken.", responses = {@ApiResponse(description = "User successfully created", responseCode = "201"), @ApiResponse(description = "User not created, likely username taken", responseCode = "400"), @ApiResponse(description = "Internal server error, indicative of more problematic issue.", responseCode = "500")})
     public Response registerUser(Credentials credentials) {
     	Boolean status;
 		try {

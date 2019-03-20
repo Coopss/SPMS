@@ -5,19 +5,25 @@ import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.spms.BatchJobRunner;
+import com.spms.Util;
 import com.spms.ticker.tools.StockDataRetriever;
 
-public class LiveFetch implements Runnable {
+public class LiveFetchJob implements Runnable {
 
 	private TickerDAO dao;
 	private Boolean running;
-	private Integer msTimeout = 5000;
+	private Integer msTimeout = 30000;
+	private static final Logger log = LogManager.getLogger(LiveFetchJob.class);
 	
 	private String endpoint(String symbol) {
 		return "/stock/" + symbol + "/price";
 	}
 	
-	public LiveFetch() throws SQLException {
+	public LiveFetchJob() throws SQLException {
 		dao = new TickerDAO();
 		running = true;
 	}
@@ -32,10 +38,10 @@ public class LiveFetch implements Runnable {
 			try {
 				p = getSymbolCurrentPrice(sym);
 				dao.insertPrice(sym, p);
-				System.out.println("Fetched: " + sym);
+				log.info("Fetched: " + sym);
 			// case where symbol that is subscribed to does not exist in iex
 			} catch (NullPointerException | NumberFormatException E) {
-				System.err.println("Warning: failed to fetch live price update for symbol: " + sym);
+				log.warn("Warning: failed to fetch live price update for symbol: " + sym);
 				continue;
 			}
 		}
@@ -50,20 +56,16 @@ public class LiveFetch implements Runnable {
 			} catch (InterruptedException e) {
 				continue;
 			}
-			
+			log.info("Running live fetch batch job...");
 			try {
 				fetch();
 			} catch (MalformedURLException e) {
-				// TODO add logger
-				e.printStackTrace();
+				log.error(Util.stackTraceToString(e));
 			} catch (SQLException e) {
-				// TODO add logger
-				e.printStackTrace();
-			}
-			
+				log.error(Util.stackTraceToString(e));
+			}	
 		}
-		
 	}
-	
+
 	
 }

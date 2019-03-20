@@ -25,7 +25,7 @@ public class TickerTest {
 //
 //		System.out.println(dao.getAllSubscribedSymbols());
 		
-		Thread liveFetch = new Thread(new LiveFetch());
+		Thread liveFetch = new Thread(new LiveFetchJob());
 		liveFetch.start();
 		
 		
