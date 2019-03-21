@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" type="text/css" href="global_assets/header.css">
+    <link rel="stylesheet" type="text/css" href="global_assets/login.css">
 
 	<title>SPMS: Login</title>
 	<link rel="icon" href="./global_assets/img/favicon.png" type="image/png">
@@ -15,39 +16,58 @@
 </head>
 <body>
 
-    <div class="header_div">
-        <?php include "header.php"; ?>
-        <!-- Use jquery to insert header content here if PHP fails    -->
-    </div>
-
 <div class="body_content">
+
+        <div class="row">
+                <div class="login-box offset-xl-10 col-lg-8">
+                        <div class="container align-middle">
+                                <div class="row justify-content-xl-center">
+                                        <img class="logo-margins" src="global_assets/img/logo.png" alt="Logo" height=40px>
+                                        <img class="logo-margins" src="global_assets/img/footer_logo.png" alt="Logo" height=40px>
+                                </div>
+                                <div class="row justify-content-xl-center">
+                                        <form class="login_form login_background" action="javascript:authenticate_user()" method="post">
+                                            <label for="user">Username</label>
+                                            <input type="text" name="user" id='username'></input><br/><br>
+                                            <label for="password">Password</label>
+                                            <input type="password" name="password" id='password'></input><br><br>
+
+                                            <button type="submit" name="submit">Login</button>
+                                            <br>
+                                            <a class="create_link" href="signup.php">Create Account</a>
+                                        </form>
+                                </div>
+                        </div>
+
+
+
+
+                        <div id="feedback"></div>
+                </div>
+        </div>
     <div class="page_title">
         <br>
         <h1>Login Page</h1>
         <hr><br>
     </div>
-    
+
     <form class="login_form" action="javascript:authenticate_user()" method="post">
         <label for="user">Username</label>
         <input type="text" name="user" id='username'></input><br/><br>
         <label for="password">Password</label>
         <input type="password" name="password" id='password'></input><br><br>
-        
+
         <button type="submit" name="submit">Login</button>
         <br>
         <a href="signup.php">Create Account</a>
     </form>
-    
+
     <div id="feedback"></div>
 
 <br><br>
 
 
 
-</div>
-<div class="footer_div">
-    <?php include "footer.html"; ?>
-        <!-- Use jquery to insert header content here if PHP fails    -->
 </div>
 
 <script src='script.js'></script>

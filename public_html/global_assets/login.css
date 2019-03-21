@@ -1,0 +1,26 @@
+body {
+        background-image: url(./img/login_texture.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+}
+
+.login-box {
+        background-color: white;
+        height: 100vh;
+        width: 100vw;
+}
+
+.logo-margins {
+        margin-right: 0px;
+        margin-left: 0px;
+        margin-bottom: 40px;
+        margin-top: 80px;
+}
+
+.login_background {
+        background-color: #76797c;
+}
+
+.create_link {
+        color: #0eb1ed;
+}
