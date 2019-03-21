@@ -1,39 +1,74 @@
-var user = null;
-
 $(document).ready(function() {
 	if ($('.header_div').eq(0).children().length < 1) { //Load header+footer manually if PHP didn't do it.
 		$(".header_div").load("./header.php");
 		$(".footer_div").load("./footer.php");
 	}
 	
-	if (!is_authenticated()) { //check for logged in status on every page load
-		user = null;
-	}
+	get_user();
 	
 	//Initialize hidden elements
 	$(".hide_me_code").hide();
 	$(".hide_me_project").hide();
 });
 
+function set_user(username) {
+	$("#display_name").html(username + "<br><a href='javascript:logout()''>Log Out</a>");
+}
+
+function logout () {
+	document.cookie = 'token=; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/; domain=.spms.westus.cloudapp.azure.com';
+	window.location.href = "./index.php";
+}
+
+function register() {
+	var username = $('#username').val();
+	var password = $('#password').val();
+	var password_confirm = $('#password_confirm').val();
+	//alert('user: ' + username + '; pass: ' + password);
+	
+	$('#feedback').empty(); //clear previous errors
+	
+	if (password != password_confirm) { //ensure passwords match
+		$('#feedback').html('Passwords do not match');
+		return;
+	}
+	
+	$.ajax({
+		method: "POST",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/authenticate/register",
+		contentType: 'application/json',
+		data: JSON.stringify({
+			"username": username,
+			"password": password
+		}),
+	})
+	.done(function(data, textStatus, xhr) {
+		window.location.href = "./index.php";
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		
+		switch (statusNum) {
+			case 400:
+				$('#feedback').html("Username already in use");
+				break;
+			case 500:
+				$('#feedback').html("Internal server error, try registering again later.");
+				break;
+			default:
+				$('#feedback').html("The server returned an undefined response: Status code " + statusNum);
+		}
+	});
+}
+
 function authenticate_user () {
 	var username = $('#username').val();
 	var password = $('#password').val();
 	//alert('user: ' + username + '; pass: ' + password);
 	
-	/* make sure server is ready before sending actual authentication */
-	$.ajax({
-		method: 'GET',
-		crossDomain: true,
-		xhrFields: { withCredentials: true },
-		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/authenticate/ping"
-	})
-	.fail(function (xhr, textStatus, errorThrown) { //stop if an error occurs with ping
-		var statusNum = xhr.status;
-		var text = xhr.statusText; //same as textStatus param?
-		$('#ping_result').html("Authentication ping failed! Status: " + statusNum + "<br>Explanation: " + text);
-		return;
-	});
-	
+	$('#feedback').empty();
 	
 	$.ajax({
 		method: "POST",
@@ -41,23 +76,66 @@ function authenticate_user () {
 		xhrFields: { withCredentials: true },
 		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/authenticate",
 		contentType: 'application/json',
-		crossDomain: true,
 		data: JSON.stringify({
 			"username": username,
 			"password": password
 		}),
 	})
 	.done(function(data, textStatus, xhr) {
-		$('#validate_result').html("data: " + data + "\n<br>Status: " + status + '<br>StatusCode: ' + xhr.status);
+		window.location.href = "./index.php";
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
 		var statusNum = xhr.status;
-		var text = xhr.statusText; //same as textStatus param?
-		$('#validate_result').html("statusNum: " + statusNum + '; text: ' + textStatus + '; Error: ' + errorThrown);
-		return;
+		var feedback = "";
+		
+		switch (statusNum) {
+			case 401:
+				feedback = "Invalid username and/or password";
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
+		console.log(feedback);
+		$('#feedback').html(feedback);
 	});
 }
 
+function get_user() {
+	
+	$.ajax({
+		method: "GET",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/authenticate/getUsername",
+	})
+	.done(function(data, textStatus, xhr) {
+		console.log('Logged-in user according to server: ' + data.username);
+		set_user(data.username);
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var feedback = "";
+		
+		switch (statusNum) {
+			case 401:
+				feedback = "get_user: 401 (token not found, or invalid)";
+				//TODO: redirect to sign on page?
+				break;
+			case 500:
+				feedback = "Auth'ed without a valid token. Guess we got hacked.";
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
+		console.log(feedback);
+		//$('#feedback').html(feedback);
+		
+	});
+}
+
+//TODO: return statements don't actually cause this function to return since they're inside inline functions- delete this
 function is_authenticated () {
 	var is_auth = -1;
 	
@@ -103,18 +181,6 @@ function ping() {
 		var text = xhr.statusText; //same as textStatus param?
 		$('#ping_result').html("Failed! Status: " + statusNum + "<br>Explanation: " + text);
 	});
-	
-	/* GET function;
-	$.get("http://spms.westus.cloudapp.azure.com:8080/SPMS/api/ping", function(data, status) {
-		//alert("data: " + data + "\n\nStatus: " + status);
-		if (status == 'success') {
-			$('#ping_result').html("data: " + data + "\n<br>Status: " + status);
-			//alert("data: " + data + "\n\nStatus: " + status);
-		} else {
-			alert('idk');
-		}
-	});
-	*/
 }
 
 //Function to hide/unhide sections on click

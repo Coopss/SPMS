@@ -33,7 +33,7 @@
 
                           <!-- Login link or username -->
                           <li class="nav-item nav-link">
-                            <p> Welcome, USER </p>
+                            <p> <span id='display_name'><a href="login.php">Log In</a></span> </p>
                           </li>
 
                         </ul>

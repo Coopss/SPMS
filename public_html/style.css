@@ -152,6 +152,11 @@ li.dropdown:hover .dropdown_content {
     margin-top: -1em;
 }
 
+#feedback {
+    color: red;
+    font-weight: bold;
+}
+
 
 /* Login form boilerplate */
 .login_feedback {

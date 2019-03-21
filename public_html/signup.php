@@ -2,10 +2,16 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="style.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="global_assets/header.css">
 
-	<title>SPMS: Login</title>
-	<link rel="icon" href="./global_assets/favicon.png" type="image/png">
+	<title>SPMS: Signup</title>
+	<link rel="icon" href="./global_assets/img/favicon.png" type="image/png">
+    
+    <!-- CDN stuff for Bootstrap -->
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 
 </head>
@@ -23,20 +29,20 @@
         <hr><br>
     </div>
     
-    <form class="login_form" action="signup.php" method="post">
-        <label for="email">Email</label>
-        <input type="email" name="email"></input><br/><br>
-        
+    <form class="login_form" action="javascript:register()" method="post">
         <label for="user">Username</label>
-        <input type="text" name="user"></input><br/><br>
+        <input type="text" name="username" id='username'></input><br/><br>
         
         <label for="password">Password</label>
-        <input type="password" name="password"></input>
-        <label for="password_confirm">Confirm Password</label>
-        <input type="password" name="password_confirm"></input><br><br>
+        <input type="password" name="password" id='password'></input>
         
-        <button type="submit" name="submit">Login</button>
+        <label for="password_confirm">Confirm Password</label>
+        <input type="password" name="password_confirm" id='password_confirm'></input><br><br>
+        
+        <button type="submit" name="submit">Create Account</button>
     </form>
+    
+    <div id="feedback"></div>
     
 
 

@@ -13,7 +13,7 @@ Notation:
 ----------
 Comments:
 ----------
-Generally functions should be called by using onClick='myFunction()' within a button that needs to trigger the functions
+Generally functions should be called by using onClick='myFunction()' with a button
 
 ----------
 Functions:
@@ -21,13 +21,16 @@ Functions:
 authenticate_user(): log in as a pre-existing user
 @id [input->text] username: the username of the user
 @id [input->password] password: the password for the user
-@return: logs in and redirects to index.php if successful; displays error code inside an element with id='error_msg' on failure
+@return: logs in and redirects to index.php if successful; displays error code inside an element with id='feedback' on failure
 
 
 register(): register a new user
 @id [input->text] username: the username of the new user
 @id [input->password] password: the password for the new user
-@return logs in and redirects to index.php if successful; displays error code inside an element with id='error_msg' on failure
+@id [input->password] password_confirm: the retyped password for the new user (makes sure they match)
+@return: logs in and redirects to index.php if successful; displays error code inside an element with id='feedback' on failure
+
+logout(): No parameters; just deletes the user's auth token which effectively logs them out.
 
 is_authenticated(): used internally to check if the current user is logged in
-@return: true if user is logged in (from server's perspective), false otherwise. 
+@return: true if user is logged in (from server's perspective), false otherwise.
