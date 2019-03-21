@@ -8,3 +8,7 @@ th {
 table, td {
         border: 1px solid black;
 }
+
+.stock_tables {
+        font-size: 13px;
+}

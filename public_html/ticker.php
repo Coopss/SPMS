@@ -33,9 +33,8 @@
                             </div>
                             <div class="col-lg-3">
                                     <a href="#">Add to Watchlist</a><p></p>
-                                    <table class = "table">
-
-
+                                    <table class = "table stock_tables">
+                                            <!-- Portfolio stock details -->
                                        <tbody>
                                           <th colspan="2">
                                              <b>Add to porfolio</b>
@@ -59,8 +58,8 @@
                                        </tbody>
                                     </table>
 
-                                    <!-- Watchlist -->
-                                    <table class = "table">
+                                    <!-- Statistics -->
+                                    <table class = "table stock_tables">
 
                                        <tbody>
                                           <tr>
