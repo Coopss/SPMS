@@ -35,9 +35,6 @@
                           <li class="nav-item nav-link">
                             <p> <span id='display_name'><a href="login.php">Log In</a></span> </p>
                           </li>
-                          <li class="nav-item nav-link">
-                            <p> <span id='display_name'><a href="ticker.php">Ticker</a></span> </p>
-                          </li>
 
                         </ul>
                 </div>
