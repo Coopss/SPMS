@@ -45,24 +45,6 @@
                         <div id="feedback"></div>
                 </div>
         </div>
-    <div class="page_title">
-        <br>
-        <h1>Login Page</h1>
-        <hr><br>
-    </div>
-
-    <form class="login_form" action="javascript:authenticate_user()" method="post">
-        <label for="user">Username</label>
-        <input type="text" name="user" id='username'></input><br/><br>
-        <label for="password">Password</label>
-        <input type="password" name="password" id='password'></input><br><br>
-
-        <button type="submit" name="submit">Login</button>
-        <br>
-        <a href="signup.php">Create Account</a>
-    </form>
-
-    <div id="feedback"></div>
 
 <br><br>
 
