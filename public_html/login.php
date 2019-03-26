@@ -22,7 +22,7 @@
                 <div class="login-box offset-xl-10 col-lg-8">
                         <div class="container align-middle">
                                 <div class="row justify-content-xl-center">
-                                        <img class="logo-margins" src="global_assets/img/logo.png" alt="Logo" height=40px>
+                                        <a class="logo-margins" href="index.php"><img src="global_assets/img/logo.png" alt="Logo" height=40px></a>
                                         <img class="logo-margins" src="global_assets/img/footer_logo.png" alt="Logo" height=40px>
                                 </div>
                                 <div class="row justify-content-xl-center">

@@ -24,7 +24,7 @@
                     <div class="login-box offset-xl-10 col-lg-8">
                             <div class="container align-middle">
                                     <div class="row justify-content-xl-center">
-                                            <img class="logo-margins" src="global_assets/img/logo.png" alt="Logo" height=40px>
+                                            <a class="logo-margins" href="index.php"><img src="global_assets/img/logo.png" alt="Logo" height=40px></a>
                                             <img class="logo-margins" src="global_assets/img/footer_logo.png" alt="Logo" height=40px>
                                     </div>
                                     <div class="row justify-content-xl-center">
@@ -39,6 +39,8 @@
                                                 <input type="password" name="password_confirm" id='password_confirm'></input><br><br>
 
                                                 <button type="submit" name="submit">Create Account</button>
+                                                <br>
+                                                <a class="create_link" href="login.php">Back to login</a>
                                             </form>
                                     </div>
                             </div>
