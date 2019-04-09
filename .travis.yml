@@ -1,0 +1,6 @@
+language: java
+branches:
+  only:
+    - production
+script:
+    - echo hello world
