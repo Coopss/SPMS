@@ -1,7 +1,3 @@
-<head>
-    <link rel="stylesheet" type="text/css" href="global_assets/header.css"></link>
-</head>
-
 <nav class="navbar navbar-expand-md navbar-dark nav-background bg-mute">
 
 
@@ -9,14 +5,14 @@
 
               <!-- Logo -->
               <div class="header_logo col-lg-2">
-                      <a class="navbar-brand header-logo" href="#"><img src="global_assets/img/logo.png" alt="Logo" height=40px></a>
+                      <a class="navbar-brand header-logo" href="#"><img src="global_assets/img/logo.png" alt="Logo" height="40px"></img></a>
               </div>
 
                 <!-- Text box for search -->
                 <div class="search-pos col-lg-3 align_left">
                         <div class="float-left">
                                 <form class="form-inline">
-                                  <input class="form-control" type="text" placeholder="Search">
+                                  <input class="form-control" type="text" placeholder="Search"></input>
                                 </form>
                         </div>
                 </div>
@@ -32,8 +28,8 @@
                           </li>
 
                           <!-- Login link or username -->
-                          <li class="nav-item nav-link">
-                            <p> <span id='display_name'><a href="login.php">Log In</a></span> </p>
+                          <li class="nav-item">
+                            <p> <span id='display_name'><a class="nav-link" href="login.php">Log In</a></span> </p>
                           </li>
 
                         </ul>

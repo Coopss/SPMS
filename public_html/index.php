@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+        <meta charset="utf-8"/>
         <link rel="stylesheet" type="text/css" href="global_assets/dashboard.css">
         <link rel="stylesheet" type="text/css" href="global_assets/header.css">
 
@@ -17,10 +18,10 @@
 </head>
 <body>
 
-    <div class="header_div navbar-spacers">
-        <?php include "header.php"; ?>
-        <!-- Use jquery to insert header content here if PHP fails    -->
-    </div>
+        <div class="header_div navbar-spacers">
+            <?php include "header.php"; ?>
+            <!-- Use jquery to insert header content here if PHP fails    -->
+        </div>
 
 <!-- Body of index -->
 <div class="">
