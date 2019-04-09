@@ -12,3 +12,17 @@ table, td {
 .stock_tables {
         font-size: 13px;
 }
+
+.arrow {
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+}
+
+.round {
+  border-radius: 200%;
+}
+
+.bar-right {
+  border-right: 1px solid #333;
+}
