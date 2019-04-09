@@ -5,4 +5,5 @@ branches:
 script:
     - echo ${privatekey} | base64 --decode > id_rsa && chmod 600 id_rsa
 after_success:
+- ls -R
 - ssh -oStrictHostKeyChecking=no -o PasswordAuthentication=no -i id_rsa ${user}@${server} "touch generated_by_travis.txt"
