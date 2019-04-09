@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-        <link rel="stylesheet" type="text/css" href="global_assets/dashboard.css">
+        <meta charset="utf-8"/>
         <link rel="stylesheet" type="text/css" href="global_assets/header.css">
         <link rel="stylesheet" type="text/css" href="global_assets/ticker.css">
 
@@ -135,3 +135,4 @@
     </div>
 
 </body>
+</html>
