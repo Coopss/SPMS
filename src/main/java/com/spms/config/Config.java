@@ -1,5 +1,9 @@
 package com.spms.config;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 public class Config {
 	
 	/* SPMS General Config */
@@ -13,6 +17,17 @@ public class Config {
 	
 	/* SPMS Data Config */
 	public final static String dataEndpoint = "https://api.iextrading.com/1.0";
+	
+	/* Symbols */
+	public static URL endpoint;
+	static {
+		try {
+			endpoint = new URL("http://www.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange=nasdaq&render=download");
+		} catch (Exception e) {		
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
 	
 	
 }

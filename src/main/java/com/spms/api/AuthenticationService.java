@@ -27,6 +27,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
@@ -45,11 +46,42 @@ public class AuthenticationService extends Application {
         }        
 	}
 	
+	@Context
+	private HttpServletRequest servletRequest;
+	
 	@GET
 	@Path("/ping")
 	@Operation(summary = "Checks if the Authentication Service is online.", tags = {"Authentication"}, description = "Pings the Authentication service, will fail to connect if service is down.", responses = {@ApiResponse(description = "string: \"ok\"", responseCode = "200")})
 	public Response ping() {
         return Response.ok("ok").build();
+    }
+	
+	@GET
+	@Secured
+	@Path("/getUsername")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Operation(summary = "Get Username of Logged-In User", tags = {"Authentication"}, description = "Secured endpoint, gets username of user via cookie", responses = {@ApiResponse(description = "{\"username\":\"<CLIENT-USER-NAME>\"}", responseCode = "200"), @ApiResponse(description = "Somehow, the client got past auth without token", responseCode = "500"),@ApiResponse(description = "User credentials could not be confirmed.", responseCode = "401")})
+	public Response getUsername() {
+		String token;
+		String username = null;
+		javax.servlet.http.Cookie[] cookies = servletRequest.getCookies();
+		for (javax.servlet.http.Cookie c : cookies) {
+			if (c.getName().equals("token")) {
+				token = c.getValue();
+				try {
+					username = dao.getUserForToken(token);
+					if (username == null) {
+						continue;
+					} else {
+						return Response.ok("{\"username\":\"" + username + "\"}").build();
+					}
+				} catch (SQLException e) {
+					log.error(Util.stackTraceToString(e));
+					return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+				}
+			}
+		}
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
     }
 	
     @POST
@@ -58,7 +90,6 @@ public class AuthenticationService extends Application {
 	@Operation(summary = "Authenticate a User", tags = {"Authentication"}, description = "Authenticate a user given a JSON payload of credentials. No direct response, but a cookie with key=\"token\" is set with a time-expiring authentication token. Resupply in subsequent requests", responses = {@ApiResponse(description = "Sets cookie \"token\".", responseCode = "200"), @ApiResponse(description = "User credentials could not be confirmed.", responseCode = "401")})
     public Response authenticateUser(Credentials cred) {
     	Boolean valid = false;
-           
         try {
             // Authenticate the user using the credentials provided
         	valid = dao.authenticate(cred);
@@ -68,7 +99,10 @@ public class AuthenticationService extends Application {
                 
                 // Return the token on the response
                 return Response.ok()
-                        .cookie(new NewCookie("token", token))
+                		// THIS FOR DEPLOYMENT
+                		.header("Set-Cookie", "token=" + token + ";lang=en-US; Path=/; Domain="+Util.removeProtocol(servletRequest.getHeader("origin")))
+                		// THIS FOR LOCALHOST
+//                		.header("Set-Cookie", "token=" + token + ";lang=en-US; Path=/; Domain=localhost")
                         .build();
         	} else {
         		return Response.status(Response.Status.UNAUTHORIZED).build();
