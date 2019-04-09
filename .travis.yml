@@ -3,4 +3,4 @@ branches:
   only:
     - production
 script:
-    - ls -R
+    - ssh -oStrictHostKeyChecking=no -o PasswordAuthentication=no -i id_rsa ${user}@${server} "touch generated_by_travis.txt"
