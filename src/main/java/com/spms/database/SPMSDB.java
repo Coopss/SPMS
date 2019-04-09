@@ -5,6 +5,10 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.spms.api.AuthenticationService;
 import com.spms.config.Config;
 
 import java.sql.PreparedStatement;
@@ -13,6 +17,9 @@ import java.sql.SQLException;
 import java.sql.DriverManager;
 
 public class SPMSDB {
+	
+
+	private static final Logger log = LogManager.getLogger(SPMSDB.class);
 	
 	/**
 	 * Open a new connection to the Azure SQL server. 
@@ -39,7 +46,7 @@ public class SPMSDB {
 		}
         connection = DriverManager.getConnection(url);
         String schema = connection.getSchema();
-        System.err.println("Successful connection: " + dbName);
+        log.info("Successful connection: " + dbName);
         
         return connection;
 	}
@@ -64,6 +71,7 @@ public class SPMSDB {
 		Statement stmt = conn.createStatement();
 		stmt.executeUpdate("DROP TABLE [dbo].[" + tableName + "]");
 			
+		log.info("Dropped table: " + tableName);
 		return true;	
 		
 	}

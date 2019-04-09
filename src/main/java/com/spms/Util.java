@@ -12,4 +12,8 @@ public class Util {
 		return sw.toString();
 	}
 	
+	public static String removeProtocol(String url) {
+		return url.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)","");
+	}
+	
 }
