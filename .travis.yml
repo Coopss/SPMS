@@ -5,5 +5,7 @@ branches:
 script:
     - echo ${privatekey} | base64 --decode > id_rsa && chmod 600 id_rsa
 after_success:
-- ls -R
-- ssh -oStrictHostKeyChecking=no -o PasswordAuthentication=no -i id_rsa ${user}@${server} "touch generated_by_travis.txt"
+- cp target/SPMS.war ./
+- tar -czvf bundle.tar.gz public_html/ SPMS.war
+- scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i id_rsa bundle.tar.gz ${user}@${server}:~ 2>/dev/null
+- ssh -oStrictHostKeyChecking=no -o PasswordAuthentication=no -i id_rsa ${user}@${server} "rm -f -r deploy/ && mkdir ~/deploy && cp bundle.tar.gz deploy/ && cd deploy && tar -xvf bundle.tar.gz >>~/travis.log 2>&1"
