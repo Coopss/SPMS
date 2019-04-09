@@ -6,6 +6,6 @@ script:
     - echo ${privatekey} | base64 --decode > id_rsa && chmod 600 id_rsa
 after_success:
 - cp target/SPMS.war ./
-- tar -czvf bundle.tar.gz public_html/ SPMS.war
+- tar -czvf bundle.tar.gz public_html/ SPMS.war clean.sh deploy.sh
 - scp -P 1022 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i id_rsa bundle.tar.gz ${user}@${server}:~ 2>/dev/null
 - ssh -p 1022 -oStrictHostKeyChecking=no -o PasswordAuthentication=no -i id_rsa ${user}@${server} "rm -f -r deploy/ && mkdir ~/deploy && cp bundle.tar.gz deploy/ && cd deploy && tar -xvf bundle.tar.gz >>~/travis.log 2>&1"
