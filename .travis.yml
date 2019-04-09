@@ -3,4 +3,4 @@ branches:
   only:
     - production
 script:
-    - echo hello world
+    - ls -R
