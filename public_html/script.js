@@ -221,7 +221,7 @@ function search() {
 		method: "GET",
 		crossDomain: true,
 		xhrFields: { withCredentials: true },
-		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/search/?q=" + input,
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/search?q=" + input,
 	})
 	.done(function(data, textStatus, xhr) {
 		console.log('Found search results: ' + data);
