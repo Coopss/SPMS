@@ -1,4 +1,6 @@
 $(document).ready(function() {
+	
+	
 	if ($('.header_div').eq(0).children().length < 1) { //Load header+footer manually if PHP didn't do it.
 		$(".header_div").load("./header.php");
 		$(".footer_div").load("./footer.php");
@@ -120,7 +122,12 @@ function get_user() {
 		switch (statusNum) {
 			case 401:
 				feedback = "get_user: 401 (token not found, or invalid)";
-				//TODO: redirect to sign on page?
+				
+				//redirect to login or signup
+				var cur_page = document.location.href.substr(document.location.href.lastIndexOf('/') + 1);
+				if (cur_page != 'login.php' && cur_page != 'signup.php') {
+					window.location.replace("./login.php");
+				}
 				break;
 			case 500:
 				feedback = "Auth'ed without a valid token. Guess we got hacked.";
