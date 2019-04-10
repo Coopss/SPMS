@@ -1,3 +1,6 @@
 /bin/
 /target/
 /target
+*.log
+*.ucls
+*.useq
