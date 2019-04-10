@@ -19,7 +19,7 @@
 <body>
 
         <div class="header_div navbar-spacers">
-            <?php include "header_new.php"; ?>
+            <?php include "header.php"; ?>
             <!-- Use jquery to insert header content here if PHP fails    -->
         </div>
 
