@@ -3,9 +3,9 @@ $(document).ready(function() {
 		$(".header_div").load("./header.php");
 		$(".footer_div").load("./footer.php");
 	}
-	
+
 	get_user();
-	
+
 	//Initialize hidden elements
 	$(".hide_me_code").hide();
 	$(".hide_me_project").hide();
@@ -25,14 +25,14 @@ function register() {
 	var password = $('#password').val();
 	var password_confirm = $('#password_confirm').val();
 	//alert('user: ' + username + '; pass: ' + password);
-	
+
 	$('#feedback').empty(); //clear previous errors
-	
+
 	if (password != password_confirm) { //ensure passwords match
 		$('#feedback').html('Passwords do not match');
 		return;
 	}
-	
+
 	$.ajax({
 		method: "POST",
 		crossDomain: true,
@@ -49,7 +49,7 @@ function register() {
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
 		var statusNum = xhr.status;
-		
+
 		switch (statusNum) {
 			case 400:
 				$('#feedback').html("Username already in use");
@@ -67,9 +67,9 @@ function authenticate_user () {
 	var username = $('#username').val();
 	var password = $('#password').val();
 	//alert('user: ' + username + '; pass: ' + password);
-	
+
 	$('#feedback').empty();
-	
+
 	$.ajax({
 		method: "POST",
 		crossDomain: true,
@@ -87,7 +87,7 @@ function authenticate_user () {
 	.fail(function (xhr, textStatus, errorThrown) {
 		var statusNum = xhr.status;
 		var feedback = "";
-		
+
 		switch (statusNum) {
 			case 401:
 				feedback = "Invalid username and/or password";
@@ -102,7 +102,7 @@ function authenticate_user () {
 }
 
 function get_user() {
-	
+
 	$.ajax({
 		method: "GET",
 		crossDomain: true,
@@ -116,7 +116,7 @@ function get_user() {
 	.fail(function (xhr, textStatus, errorThrown) {
 		var statusNum = xhr.status;
 		var feedback = "";
-		
+
 		switch (statusNum) {
 			case 401:
 				feedback = "get_user: 401 (token not found, or invalid)";
@@ -131,14 +131,14 @@ function get_user() {
 		}
 		console.log(feedback);
 		//$('#feedback').html(feedback);
-		
+
 	});
 }
 
 //TODO: return statements don't actually cause this function to return since they're inside inline functions- delete this
 function is_authenticated () {
 	var is_auth = -1;
-	
+
 	$.ajax({
 		method: 'GET',
 		crossDomain: true,
@@ -198,19 +198,64 @@ $(".hide_me").click(function() {
 //Function to hide/unhide specific elements
 function hide_me(el) {
 	if( $(el).css("display") ==  "none") {
-		
+
 		if ($(el).attr('class') == "hide_me_code"){
 			$(".hide_me_code").hide(); //hide all other codes
 		} else {
 			$(".hide_me_project").hide(); //hide all other projects
 		}
-		
+
 		$(el).show("medium");
-		
+
 	}
 	else {
 		$(el).hide("medium");
 	}
+}
+
+function search() {
+	$('#search_list'); //datalist parent, add options within
+	var input = $('#search_term').val();
+
+	$.ajax({
+		method: "GET",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/search/?q=" + input,
+	})
+	.done(function(data, textStatus, xhr) {
+		console.log('Found search results: ' + data);
+		var num_cols = 3; //how many things per row
+
+		for (var i = 0; i < data.length; i++) { //parse each line
+			var line = '';
+			for (var j = 0; j < num_cols; j++) { //parse data in each line
+				line += data[i][j] + ' - ';
+			}
+
+			$('#search_list').append('<option value="' + line + '">');
+		}
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var feedback = "";
+
+		switch (statusNum) {
+			case 401:
+				feedback = "search: 401 (token not found, or invalid)";
+				//TODO: redirect to sign on page?
+				break;
+			case 500:
+				feedback = "Auth'ed without a valid token. Guess we got hacked.";
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
+		console.log(feedback);
+		//$('#feedback').html(feedback);
+
+	});
 }
 
 
