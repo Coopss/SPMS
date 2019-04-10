@@ -12,11 +12,11 @@
                 <div class="search-pos col-lg-3 align_left">
                         <div class="float-left">
                                 <form class="form-inline">
-                                  <input class="form-control" type="text" placeholder="Search" list="stock_search" size="60" id="search"></input>
-                                  <datalist id="stock_search">
-                                          <option value="HTML">
-                                          <option value="CSS">
-                                  </datalist>
+                                   <input class="form-control" type="text" placeholder="Search" list="search_term" size="60" id="search_term" oninput="JavaScript:search()"></input>
+                                          <datalist id="stock_search">
+                                                  <option value="HTML">
+                                                  <option value="CSS">
+                                          </datalist>
                                 </form>
                         </div>
                 </div>
