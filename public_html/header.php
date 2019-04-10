@@ -12,7 +12,7 @@
               <div class="search-pos col-lg-3 align_left">
                       <div class="float-left">
                               <form class="form-inline">
-                                 <input class="form-control" type="text" placeholder="Search" list="search_term" size="60" id="search_term" oninput="JavaScript:search()"></input>
+                                 <input class="form-control" type="text" placeholder="Search" list="search_list" size="60" id="search_term" oninput="JavaScript:search()"></input>
                                         <datalist id="search_list">
                                                 <!-- option value="HTML">
                                                 <option value="CSS"  -->
