@@ -13,6 +13,10 @@
                         <div class="float-left">
                                 <form class="form-inline">
                                   <input class="form-control" type="text" placeholder="Search" list="stock_search" size="60" id="search"></input>
+                                  <datalist id="stock_search">
+                                          <option value="HTML">
+                                          <option value="CSS">
+                                  </datalist>
                                 </form>
                         </div>
                 </div>
