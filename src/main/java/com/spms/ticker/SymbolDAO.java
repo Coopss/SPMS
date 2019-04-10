@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -28,9 +30,9 @@ import com.spms.database.SPMSDB;
 import com.spms.ticker.tools.Requests;
 
 
-public class Symbols {
+public class SymbolDAO {
 
-	private static final Logger log = LogManager.getLogger(Symbols.class);
+	private static final Logger log = LogManager.getLogger(SymbolDAO.class);
 	private final static String tableName = "internal.los";
 	private Connection conn;
 	
@@ -43,7 +45,7 @@ public class Symbols {
 		}
 	}
 	
-	public boolean createTable() throws SQLException {				
+	private boolean createTable() throws SQLException {				
 		if (SPMSDB.tableExists(conn, tableName)) {
 			return false;
 		}
@@ -63,21 +65,23 @@ public class Symbols {
 		
 	}
 
-	public boolean populateTable() {
+	private boolean populateTable() {
 		String csvContent = Requests.followRedirect(Config.endpoint);
 		String lines[] = csvContent.split("\\r?\\n");
-		String header = lines[0];
+		String header = lines[0];	
 		
 		for (String line : Arrays.copyOfRange(lines, 1, lines.length)) {
 			try {
+				log.info("Inserting " + line);
 				insertRow(rowToSymbol(header, line));
 			} catch (SQLException e) {
 				log.error("Failed to insert into " + tableName + " : " + line);
 				log.error(Util.stackTraceToString(e));
+				return false;
 			}
 		}
 	
-		return false;
+		return true;
 		
 	}
 	
@@ -115,12 +119,32 @@ public class Symbols {
 		return sym;
 	}
 	
-	public static void main(String[] args) throws SQLException, IOException {
-		Symbols s = new Symbols();
+	public Boolean reloadSymbols() throws SQLException {
 		log.info("Beginning symbol table reload");
-		log.info("Dropping old symbol table: " + SPMSDB.dropTable(s.conn, tableName));
-		log.info("Creating new symbol table: " + s.createTable());
-		log.info("Populate symbol table from NASDAQ data: " + s.populateTable());		
+		log.info("Dropping old symbol table: " + SPMSDB.dropTable(conn, tableName));
+		log.info("Creating new symbol table: " + createTable());
+		log.info("Populate symbol table from NASDAQ data: " + populateTable());
+		return true;
+	}
+	
+	public List<Symbol> search(String query) throws SQLException {
+		List<Symbol> syms = new ArrayList<Symbol>();
+		PreparedStatement stmt = conn.prepareStatement("select Symbol,Name,Sector from [internal.los] where [Name] like '%" + query + "%' OR [Symbol] like '%" + query + "%'");
+				
+		ResultSet rs = stmt.executeQuery();		
+	    while(rs.next() && syms.size() < 10) {
+	    	Symbol s = new Symbol();
+	    	s.Symbol = rs.getString(1);
+	    	s.Name = rs.getString(2);
+	    	s.Sector = rs.getString(3);
+	    	syms.add(s);
+	    }
+	    return syms;
+	}
+	
+	public static void main(String[] args) throws SQLException, IOException {
+		SymbolDAO s = new SymbolDAO();
+		s.reloadSymbols();
 	}
 	
 	
