@@ -9,10 +9,10 @@
               </div>
 
               <!-- Text box for search -->
-              <div class="search-pos col-lg-3 align_left">
-                      <div class="float-left">
+              <div class="search-pos col-lg-5 align_left">
+                      <div class="float-left search_term" width="100%">
                               <form class="form-inline">
-                                 <input class="form-control" type="text" placeholder="Search" list="search_list" size="60" id="search_term" onInput="JavaScript:search()" autoComplete="off"></input>
+                                 <input class="form-control" type="text" placeholder="Search" list="search_list" id="search_term" onInput="JavaScript:search()" style="width:100%;" autoComplete="off"></input>
                                         <datalist id="search_list">
                                                 <!-- option value="HTML">
                                                 <option value="CSS"  -->
@@ -22,7 +22,7 @@
               </div>
 
                 <!-- Page links -->
-                <div class="col-lg-7">
+                <div class="col-lg-5">
                         <ul class="z-back navbar-nav float-right">
                           <li class="nav-item active">
                             <a class="nav-link" href="index.php">Dashboard <span class="sr-only"></span></a>
