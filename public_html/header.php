@@ -5,7 +5,7 @@
 
               <!-- Logo -->
               <div class="header_logo col-lg-2">
-                      <a class="navbar-brand header-logo" href="#"><img src="global_assets/img/logo.png" alt="Logo" height="40px"></img></a>
+                      <a class="navbar-brand header-logo" href="index.php"><img src="global_assets/img/logo.png" alt="Logo" height="40px"></img></a>
               </div>
 
               <!-- Text box for search -->

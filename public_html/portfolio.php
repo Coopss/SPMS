@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" type="text/css" href="global_assets/dashboard.css">
+        <link rel="stylesheet" type="text/css" href="global_assets/portfolio.css">
         <link rel="stylesheet" type="text/css" href="global_assets/header.css">
 
         <title>Stock Overflow</title>
@@ -23,79 +23,88 @@
             <!-- Use jquery to insert header content here if PHP fails    -->
         </div>
 
-<!-- Body of index -->
+<!-- Body of portfolio -->
 <div class="">
-                <div class="row">
-                        <div class="offset-lg-2 col-lg-5 bar-right">
-                                <h3>Summary</h3>
-                                <img src="global_assets/img/graph.png" class="img-fluid">
-                        </div>
-                        <div class="col-lg-3">
-                                <!-- List of Stocks -->
-                                <table class = "table">
-                                        <h4> Stocks </h4>
-                                   <thead>
-                                      <tr>
-                                         <th>Stock</th>
-                                         <th>Shares</th>
-                                         <th>Graph</th>
-                                         <th>Price</th>
-                                      </tr>
-                                   </thead>
+        <div class="row">
+                <div class="offset-lg-1 col-lg-10">
+                        <!-- Table goes here -->
+                        <table class = "table stock_tables">
 
-                                   <tbody>
-                                      <tr>
-                                         <td>AMD</td>
-                                         <td>2</td>
-                                         <td>Graph</td>
-                                         <td>Price</td>
-                                      </tr>
-                                   </tbody>
-                                </table>
+                           <tbody>
+                              <tr>
+                                         <td> Sym </td>
+                                         <td> Price </td>
+                                         <td> Chg </td>
+                                         <td> Chg % </td>
+                                         <td> Chg $ </td>
+                                         <td> Vol </td>
+                                         <td> Avg Vol </td>
+                                         <td> Shrs </td>
+                                         <td> $/Shrs </td>
+                                         <td> Cost Basis </td>
+                                         <td> Mkt Val </td>
+                                         <td> Tot Chg $ </td>
+                                         <td> Tot Chg % </td>
+                                         <td> Day Rng </td>
+                                         <td> YTD Chg % </td>
+                              </tr>
+                              <tr>
+                                      <td class="" id="Sym"> <a href="#">AMZN</a> </td>
+                                      <td class="positive" id="Price"> $1783.76 </td>
+                                      <td class="positive" id="Chg"> +9.50 </td>
+                                      <td class="positive" id="Chg %"> +0.53% </td>
+                                      <td class="positive" id="Chg $"> +2850.00 </td>
+                                      <td id="Vol"> 4,632,933 </td>
+                                      <td id="Avg Vol"> 4,368,875 </td>
+                                      <td id="Shrs"> 300</td>
+                                      <td id="$/Shrs"> 327.37 </td>
+                                      <td id="Cost Basis"> 98,210 </td>
+                                      <td id="Mkt Val"> 535,128 </td>
+                                      <td class="positive" id="Tot Chg $"> +436,918 </td>
+                                      <td class="positive" id="Tot Chg %"> +444.88% </td>
+                                      <td id="Day Rng"> 1773.36 - 1805.77 </td>
+                                      <td id="YTD Chg %"> 16.43% </td>
+                              </tr>
+                              <tr>
+                                      <td class="" id="Sym"> <a href="#">GOOGL</a> </td>
+                                      <td class="negative" id="Price"> $1189.84 </td>
+                                      <td class="negative" id="Chg"> -7.54 </td>
+                                      <td class="negative" id="Chg %"> -0.63% </td>
+                                      <td class="negative" id="Chg $"> -3016.00 </td>
+                                      <td id="Vol"> 1,497,895 </td>
+                                      <td id="Avg Vol"> 1,499,716 </td>
+                                      <td id="Shrs"> 400</td>
+                                      <td id="$/Shrs"> 605.14 </td>
+                                      <td id="Cost Basis"> 242,056 </td>
+                                      <td id="Mkt Val"> 475,935 </td>
+                                      <td class="positive" id="Tot Chg $"> +233,879 </td>
+                                      <td class="positive" id="Tot Chg %"> +96.62% </td>
+                                      <td id="Day Rng"> 1181.76 - 1207.65 </td>
+                                      <td id="YTD Chg %"> 12.19% </td>
+                              </tr>
+                              <tr>
+                                      <td id="Sym"> Total </td>
+                                      <td id="Price"> - </td>
+                                      <td id="Chg"> - </td>
+                                      <td id="Chg %"> - </td>
+                                      <td id="Chg $"> - </td>
+                                      <td id="Vol"> - </td>
+                                      <td id="Avg Vol"> - </td>
+                                      <td id="Shrs"> - </td>
+                                      <td id="$/Shrs"> - </td>
+                                      <td id="Cost Basis"> - </td>
+                                      <td id="Mkt Val"> - </td>
+                                      <td id="Tot Chg $"> - </td>
+                                      <td id="Tot Chg %"> - </td>
+                                      <td id="Day Rng"> - </td>
+                                      <td id="YTD Chg %"> - </td>
+                              </tr>
+                           </tbody>
 
-                                <!-- Watchlist -->
-                                <table class = "table">
-                                         <h4> Watch List </h4>
-                                   <thead>
-                                      <tr>
-                                         <th>Stock</th>
-                                         <th>Graph</th>
-                                         <th>Price</th>
-                                      </tr>
-                                   </thead>
-
-                                   <tbody>
-                                      <tr>
-                                         <td>SNE</td>
-                                         <td>Graph</td>
-                                         <td>Price</td>
-                                      </tr>
-                                   </tbody>
-
-                                </table>
-                        </div>
-                        <div class="col-lg-2">
-                        </div>
+                        </table>
                 </div>
-                <div class="offset-lg-2">
-                        <h3>Top Movers</h3>
-                        <p> Articles go here </p>
-                </div>
-                <div class="offset-lg-2">
-                        <h3>Relevant articles</h3>
-                        <div class="row">
-                                <div class="col-lg-2">
-                                        <a href="#" class="bg-mute round arrow">Previous &laquo;</a>
-                                </div>
-                                <div class="col-lg-6">
-                                        <h3> Articles </h3>
-                                </div>
-                                <div class="col-lg-2">
-                                        <a href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
-                                </div>
-                        </div>
+        </div>
 
-                </div>
 
 </div>
 <div class="footer_div">
