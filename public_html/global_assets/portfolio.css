@@ -1,0 +1,13 @@
+/* Color based on states */
+.positive {
+        color: rgb(0, 102, 0);
+}
+
+.negative {
+        color: rgb(204, 0, 0);
+}
+
+/* Stripe the tables */
+tr:nth-child(odd) {
+  background-color: #f2f2f2
+}
