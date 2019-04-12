@@ -4,12 +4,12 @@
       <div class="collapse navbar-collapse row" id="navbarsExample04">
 
               <!-- Logo -->
-              <div class="header_logo col-lg-2">
+              <div class="header_logo col-lg-2 col-md-2 col-sm-2 col-xs-2">
                       <a class="navbar-brand header-logo" href="index.php"><img src="global_assets/img/logo.png" alt="Logo" height="40px"></img></a>
               </div>
 
               <!-- Text box for search -->
-              <div class="search-pos col-lg-5 align_left">
+              <div class="search-mds  col-lg-5 col-md-5 col-sm-5 col-xs-5  align_left">
                       <div class="float-left search_term" width="100%">
                               <form class="form-inline">
                                  <input class="form-control" type="text" placeholder="Search" list="search_list" id="search_term" onInput="JavaScript:search()" style="width:100%;" autoComplete="off"></input>
@@ -22,7 +22,7 @@
               </div>
 
                 <!-- Page links -->
-                <div class="col-lg-5">
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
                         <ul class="z-back navbar-nav float-right">
                           <li class="nav-item active">
                             <a class="nav-link" href="index.php">Dashboard <span class="sr-only"></span></a>
