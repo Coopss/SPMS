@@ -6,7 +6,7 @@
 
 	<title>SPMS: page 2</title>
 	<link rel="icon" href="./global_assets/favicon.png" type="image/png">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
 <body>
@@ -22,11 +22,11 @@
         <h1>page 2</h1>
         <hr><br>
     </div>
-    
+
     <p>
         This is page 2
     </p>
-    
+
 
 
 <br><br>
