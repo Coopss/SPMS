@@ -1,4 +1,6 @@
 $(document).ready(function() {
+	
+	
 	if ($('.header_div').eq(0).children().length < 1) { //Load header+footer manually if PHP didn't do it.
 		$(".header_div").load("./header.php");
 		$(".footer_div").load("./footer.php");
@@ -120,7 +122,12 @@ function get_user() {
 		switch (statusNum) {
 			case 401:
 				feedback = "get_user: 401 (token not found, or invalid)";
-				//TODO: redirect to sign on page?
+				
+				//redirect to login or signup
+				var cur_page = document.location.href.substr(document.location.href.lastIndexOf('/') + 1);
+				if (cur_page != 'login.php' && cur_page != 'signup.php') {
+					window.location.replace("./login.php");
+				}
 				break;
 			case 500:
 				feedback = "Auth'ed without a valid token. Guess we got hacked.";
@@ -214,39 +221,48 @@ function hide_me(el) {
 }
 
 function search() {
-	$('#search_list'); //datalist parent, add options within
 	var input = $('#search_term').val();
 
 	$.ajax({
 		method: "GET",
 		crossDomain: true,
 		xhrFields: { withCredentials: true },
-		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/search/?q=" + input,
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/search?q=" + input,
 	})
 	.done(function(data, textStatus, xhr) {
 		console.log('Found search results: ' + data);
-		var num_cols = 3; //how many things per row
-
+		
+		$('#search_list').empty(); //clear previous entries
+		var option_block = '';
+		
 		for (var i = 0; i < data.length; i++) { //parse each line
-			var line = '';
-			for (var j = 0; j < num_cols; j++) { //parse data in each line
-				line += data[i][j] + ' - ';
+			var match = '';
+			
+			for (var j = 0; j < data[i].length; j++) { //parse data in each line
+				if (j == data[i].length - 1) {
+					match += data[i][j]; //special tratment for last data segment
+				} else {
+					match += data[i][j] + ' - '; //build up an option tag's value
+				}
 			}
-
-			$('#search_list').append('<option value="' + line + '">');
+			
+			option_block += '<option value="' + match + '">'; //build the entire block of options for this search
+			
 		}
+		$('#search_list').append(option_block);
+		$('#search_term').focus(); //forces refresh of list; add autoComplete="off" to input if it's not working
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
 		var statusNum = xhr.status;
 		var feedback = "";
 
 		switch (statusNum) {
+			case 200: //not sure why this is considered a fail...
+				feedback = "No results found for current search";
+				break;
 			case 401:
 				feedback = "search: 401 (token not found, or invalid)";
 				//TODO: redirect to sign on page?
-				break;
-			case 500:
-				feedback = "Auth'ed without a valid token. Guess we got hacked.";
 				break;
 			default:
 				feedback = "The server returned an undefined response: Status code " + statusNum;

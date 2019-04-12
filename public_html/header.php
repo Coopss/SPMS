@@ -5,20 +5,24 @@
 
               <!-- Logo -->
               <div class="header_logo col-lg-2">
-                      <a class="navbar-brand header-logo" href="#"><img src="global_assets/img/logo.png" alt="Logo" height="40px"></img></a>
+                      <a class="navbar-brand header-logo" href="index.php"><img src="global_assets/img/logo.png" alt="Logo" height="40px"></img></a>
               </div>
 
-                <!-- Text box for search -->
-                <div class="search-pos col-lg-3 align_left">
-                        <div class="float-left">
-                                <form class="form-inline">
-                                  <input class="form-control" type="text" placeholder="Search" list="stock_search" size="60" id="search"></input>
-                                </form>
-                        </div>
-                </div>
+              <!-- Text box for search -->
+              <div class="search-pos col-lg-5 align_left">
+                      <div class="float-left search_term" width="100%">
+                              <form class="form-inline">
+                                 <input class="form-control" type="text" placeholder="Search" list="search_list" id="search_term" onInput="JavaScript:search()" style="width:100%;" autoComplete="off"></input>
+                                        <datalist id="search_list">
+                                                <!-- option value="HTML">
+                                                <option value="CSS"  -->
+                                        </datalist>
+                              </form>
+                      </div>
+              </div>
 
                 <!-- Page links -->
-                <div class="col-lg-7">
+                <div class="col-lg-5">
                         <ul class="z-back navbar-nav float-right">
                           <li class="nav-item active">
                             <a class="nav-link" href="index.php">Dashboard <span class="sr-only"></span></a>

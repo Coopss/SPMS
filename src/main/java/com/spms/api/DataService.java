@@ -21,8 +21,7 @@ public class DataService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Get overview (descriptive) details of a symbol", tags = {"Data"}, description = "", responses = {@ApiResponse(description = "", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
 	public Response get(@PathParam("symbol") String symbol) {
-		String resp = Requests.followRedirect("https://api.iextrading.com/1.0/stock/"+symbol+"/chart/1d");
-		return Response.ok(resp).build();
+		return Response.ok().build();
 	}
 	
 	@GET
