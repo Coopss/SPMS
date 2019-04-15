@@ -27,10 +27,10 @@
         <div class="">
                         <div class="row">
                                 <div class="offset-lg-2 col-lg-5 bar-right">
-                                        <h3>Stock Name Here</h3>
+                                        <h3 id="company_name">Stock Name Here</h3>
                                         <img src="global_assets/img/graph.png" class="img-fluid">
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-3" id="stock_table_div">
                                         <a href="#">Add to Watchlist</a><p></p>
                                         <table class = "table stock_tables">
                                                 <!-- Portfolio stock details -->
@@ -107,7 +107,7 @@
                         </div>
                         <div class="offset-lg-2">
                                 <h3>About</h3>
-                                <p>More info about a stock goes here if available</p>
+                                <p id="ticker_about">More info about a stock goes here if available</p>
                         </div>
                         <div class="offset-lg-2">
                                 <h3>Relevant articles</h3>

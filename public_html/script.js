@@ -274,6 +274,102 @@ function search() {
 	});
 }
 
+//prototype function for populating data in ticker.php
+function ticker() {
+	var symbol = getUrlParameter('s');
+
+	$.ajax({
+		method: "GET",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol,
+	})
+	.done(function(data, textStatus, xhr) {
+		console.log('Ticker data retrieved: ' + data);
+		
+		var name = data.name;
+		var symbol = data.symbol;
+		var oneDay = data.oneDay;
+		var stats = data.statistics;
+		var about = data.about;
+		var articles = data.articles;
+		
+		//fill in company Name and About
+		$("#company_name").html(name);
+		$("#ticker_about").html(about);
+		
+		var i, j;
+		var new_table = "<table class='table stock_tables'>";
+		
+		//dynamically generate tables based on server data
+		for (i = 0; i < stats.length; i++) {
+			new_table += "<tr>"
+			
+			for (j = 0; j < stats[i].length; j++) { //add cell
+				if (i == 0) { //table header
+					new_table += "<th colspan = " + stats[i].length + ">" + stats[i][j] + "</th>";
+					//may need to add a CONTINUE here
+				} else { //table cell
+					new_table += "<td>" + stats[i][j] + "</td>";
+				}
+			}
+			
+			new_table += "</tr>"
+		}
+		new_table += "</table>"
+		
+		//insert the table into the page
+		$("#stock_table_div").html(new_table);
+		
+		/* News Articles; waiting on front end implementation before going further
+		var new_article = "";
+		for (i = 0; i < articles.length; i++) {
+			new_article = "";
+			new_article += "Title: " articles[i][0] + "<br/>";
+			new_article += "Description: " articles[i][1] + "<br/>";
+			new_article += "URL: " articles[i][2] + "<br/>";
+		}
+		*/
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var feedback = "";
+
+		switch (statusNum) {
+			case 200: //not sure why this is considered a fail...
+				feedback = "No results found for this ticker";
+				break;
+			case 401:
+				feedback = "search: 401 (token not found, or invalid)";
+				//TODO: redirect to sign on page?
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
+		console.log(feedback);
+		//$('#feedback').html(feedback);
+
+	});
+}
+
+
+//taken from best answer here: https://stackoverflow.com/questions/19491336/get-url-parameter-jquery-or-how-to-get-query-string-values-in-js
+function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+};
+
 
 
 
