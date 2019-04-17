@@ -83,18 +83,24 @@
                         <p> Articles go here </p>
                 </div>
                 <div class="offset-lg-2">
-                        <h3>Relevant articles</h3>
                         <div class="row">
+                                <div class="mx-auto col-lg-6">
+                                        <h3 class="text-center">Relevant articles</h3>
+                                </div>
                                 <div class="col-lg-2 col-md-2 col-sm-2">
+                                </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
                                         <a href="#" class="bg-mute round arrow">Previous &laquo;</a>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
 
                                         <!-- First Article -->
                                         <div class="card mb-3" style="max-width: 100%;">
-                                          <div class="row no-gutters">
+                                          <div class="row no-gutters hoverable">
                                             <div class="col-md-4">
-                                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="card-img" alt="Image Unavailable">
+                                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="hoverable card-img" alt="Image Unavailable">
                                             </div>
                                             <div class="col-md-8">
                                               <div class="card-body">
@@ -155,7 +161,7 @@
                                         </div>
 
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
                                         <a href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
                                 </div>
                         </div>
