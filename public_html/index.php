@@ -85,13 +85,73 @@
                 <div class="offset-lg-2">
                         <h3>Relevant articles</h3>
                         <div class="row">
-                                <div class="col-lg-2">
+                                <div class="col-lg-2 col-md-2 col-sm-2">
                                         <a href="#" class="bg-mute round arrow">Previous &laquo;</a>
                                 </div>
-                                <div class="col-lg-6">
-                                        <h3> Articles </h3>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+
+                                        <!-- First Article -->
+                                        <div class="card mb-3" style="max-width: 100%;">
+                                          <div class="row no-gutters">
+                                            <div class="col-md-4">
+                                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="card-img" alt="Image Unavailable">
+                                            </div>
+                                            <div class="col-md-8">
+                                              <div class="card-body">
+                                                <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
+                                                <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <!-- Second Article -->
+                                        <div class="card mb-3" style="max-width: 100%;">
+                                          <div class="row no-gutters">
+                                            <div class="col-md-4">
+                                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="card-img" alt="Image Unavailable">
+                                            </div>
+                                            <div class="col-md-8">
+                                              <div class="card-body">
+                                                <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
+                                                <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <!-- Third Article -->
+                                        <div class="card mb-3" style="max-width: 100%;">
+                                          <div class="row no-gutters">
+                                            <div class="col-md-4">
+                                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="card-img" alt="Image Unavailable">
+                                            </div>
+                                            <div class="col-md-8">
+                                              <div class="card-body">
+                                                <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
+                                                <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <!-- Fourth Article -->
+                                        <div class="card mb-3" style="max-width: 100%;">
+                                          <div class="row no-gutters">
+                                            <div class="col-md-4">
+                                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="card-img" alt="Image Unavailable">
+                                            </div>
+                                            <div class="col-md-8">
+                                              <div class="card-body">
+                                                <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
+                                                <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-2 col-md-2 col-sm-2">
                                         <a href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
                                 </div>
                         </div>
