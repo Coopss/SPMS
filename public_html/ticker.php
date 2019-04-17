@@ -127,6 +127,7 @@
                                                       <div class="card-body">
                                                         <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
                                                         <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
+                                                        <a href="https://www.wsj.com/articles/tesla-cant-stop-dreaming-big-11555318801" class="card-link">Read the article</a>
                                                       </div>
                                                     </div>
                                                   </div>
@@ -142,6 +143,7 @@
                                                       <div class="card-body">
                                                         <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
                                                         <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
+                                                        <a href="https://www.wsj.com/articles/tesla-cant-stop-dreaming-big-11555318801" class="card-link">Read the article</a>
                                                       </div>
                                                     </div>
                                                   </div>
@@ -157,6 +159,7 @@
                                                       <div class="card-body">
                                                         <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
                                                         <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
+                                                        <a href="https://www.wsj.com/articles/tesla-cant-stop-dreaming-big-11555318801" class="card-link">Read the article</a>
                                                       </div>
                                                     </div>
                                                   </div>
@@ -172,6 +175,7 @@
                                                       <div class="card-body">
                                                         <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
                                                         <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
+                                                        <a href="https://www.wsj.com/articles/tesla-cant-stop-dreaming-big-11555318801" class="card-link">Read the article</a>
                                                       </div>
                                                     </div>
                                                   </div>

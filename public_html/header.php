@@ -23,7 +23,7 @@
                 <!-- Page links -->
                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
                         <ul class="z-back navbar-nav float-right">
-                                <li class="nav-item active">
+                                <li class="nav-item">
                                         <a class="nav-link" href="index.php">Dashboard <span class="sr-only"></span></a>
                                 </li>
                                 <li class="nav-item">
