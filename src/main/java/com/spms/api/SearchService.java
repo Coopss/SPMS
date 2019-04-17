@@ -17,8 +17,8 @@ import org.apache.logging.log4j.Logger;
 import com.spms.Util;
 import com.spms.api.annotations.Secured;
 import com.spms.auth.AuthDAO;
-import com.spms.ticker.Symbol;
-import com.spms.ticker.SymbolDAO;
+import com.spms.ticker.los.Symbol;
+import com.spms.ticker.los.SymbolDAO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,7 +37,7 @@ public class SearchService {
 	}
 		
 	@GET
-	@Secured
+//	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Search for a term. Returns list of possible matches", tags = {"Search"}, description = "Search for a term, my be a sector, industry, company name, ticker, or any other potential search term", responses = {@ApiResponse(description = "JSON Array of results [[ticker, name, sector], [ticker, name, sector], ... ]]", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
 	public Response search(@QueryParam("q") String query) {
