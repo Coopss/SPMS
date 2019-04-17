@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -43,10 +45,13 @@ public class StockDataRetriever {
 		
 	}
 	
-	public static JSONObject stringToJSON(String jsonString) throws ParseException {
+	private static JSONArray stringToJSONArray(String jsonString) throws ParseException {
 		JSONParser parser = new JSONParser();
-		JSONObject jobj = (JSONObject) parser.parse(jsonString);
-
-		return jobj;
+		return (JSONArray) parser.parse(jsonString);
+	}
+	
+	public static JSONArray get(String urlExt) throws MalformedURLException, ParseException {
+		String resp = getResponse(urlExt);
+		return stringToJSONArray(resp);
 	}
 }
