@@ -26,7 +26,7 @@
 <!-- Body of portfolio -->
 <div class="">
         <div class="row">
-                <div class="offset-lg-1 col-lg-10">
+                <div class="offset-lg-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
                         <!-- Table goes here -->
                         <table class = "table stock_tables">
 
