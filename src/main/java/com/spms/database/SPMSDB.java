@@ -85,6 +85,9 @@ public class SPMSDB {
 	}
 	
 	public static String getMSSQLDatetime(String date) throws ParseException {
+		if (date.equals("0")) {
+			return null;
+		}
 		Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);  
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String msSqlDate = sdf.format(date1).trim();

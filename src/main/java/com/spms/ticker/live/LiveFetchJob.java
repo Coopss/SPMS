@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.spms.BatchJobRunner;
 import com.spms.Util;
-import com.spms.ticker.tools.StockDataRetriever;
+import com.spms.ticker.tools.Requests;
 
 public class LiveFetchJob implements Runnable {
 
@@ -29,7 +29,7 @@ public class LiveFetchJob implements Runnable {
 	}
 	
 	private Float getSymbolCurrentPrice(String symbol) throws MalformedURLException {
-		return Float.parseFloat(StockDataRetriever.getResponse(endpoint(symbol.toLowerCase())));
+		return Float.parseFloat(Requests.getResponse(endpoint(symbol.toLowerCase())));
 	}
 	
 	public boolean fetch() throws SQLException, MalformedURLException {
