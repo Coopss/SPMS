@@ -29,6 +29,8 @@
                                 <div class="offset-lg-2 col-lg-5 bar-right">
                                         <h3 id="company_name">Stock Name Here</h3>
                                         <img src="global_assets/img/graph.png" class="img-fluid">
+                                        <h3 class="text-center">About</h3>
+                                        <p id="ticker_about">More info about a stock goes here if available</p>
                                 </div>
                                 <div class="col-lg-3" id="stock_table_div">
                                         <a href="#">Add to Watchlist</a><p></p>
@@ -105,10 +107,7 @@
                                 <div class="col-lg-2">
                                 </div>
                         </div>
-                        <div class="offset-lg-2">
-                                <h3>About</h3>
-                                <p id="ticker_about">More info about a stock goes here if available</p>
-                        </div>
+
                         <div class="offset-lg-2">
                                 <div class="row">
                                         <div class="mx-auto col-lg-6">
@@ -124,6 +123,7 @@
                                         <div class="col-lg-6 col-md-6 col-sm-6">
 
                                                 <!-- First Article -->
+                                                <a href="#" class="nounderline">
                                                 <div class="card mb-3" style="max-width: 100%;">
                                                   <div class="row no-gutters hoverable">
                                                     <div class="col-md-4">
@@ -133,59 +133,62 @@
                                                       <div class="card-body">
                                                         <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
                                                         <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
-                                                        <a href="https://www.wsj.com/articles/tesla-cant-stop-dreaming-big-11555318801" class="card-link">Read the article</a>
                                                       </div>
                                                     </div>
                                                   </div>
                                                 </div>
+                                                </a>
 
                                                 <!-- Second Article -->
+                                                <a href="#" class="nounderline">
                                                 <div class="card mb-3" style="max-width: 100%;">
-                                                  <div class="row no-gutters">
+                                                  <div class="row no-gutters hoverable">
                                                     <div class="col-md-4">
-                                                      <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="card-img" alt="Image Unavailable">
+                                                      <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="hoverable card-img" alt="Image Unavailable">
                                                     </div>
                                                     <div class="col-md-8">
                                                       <div class="card-body">
                                                         <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
                                                         <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
-                                                        <a href="https://www.wsj.com/articles/tesla-cant-stop-dreaming-big-11555318801" class="card-link">Read the article</a>
                                                       </div>
                                                     </div>
                                                   </div>
                                                 </div>
+                                                </a>
 
                                                 <!-- Third Article -->
+                                                <a href="#" class="nounderline">
                                                 <div class="card mb-3" style="max-width: 100%;">
-                                                  <div class="row no-gutters">
+                                                  <div class="row no-gutters hoverable">
                                                     <div class="col-md-4">
-                                                      <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="card-img" alt="Image Unavailable">
+                                                      <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="hoverable card-img" alt="Image Unavailable">
                                                     </div>
                                                     <div class="col-md-8">
                                                       <div class="card-body">
                                                         <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
                                                         <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
-                                                        <a href="https://www.wsj.com/articles/tesla-cant-stop-dreaming-big-11555318801" class="card-link">Read the article</a>
                                                       </div>
                                                     </div>
                                                   </div>
                                                 </div>
+                                                </a>
 
                                                 <!-- Fourth Article -->
+                                                <a href="#" class="nounderline">
                                                 <div class="card mb-3" style="max-width: 100%;">
-                                                  <div class="row no-gutters">
+                                                  <div class="row no-gutters hoverable">
                                                     <div class="col-md-4">
-                                                      <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="card-img" alt="Image Unavailable">
+                                                      <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="hoverable card-img" alt="Image Unavailable">
                                                     </div>
                                                     <div class="col-md-8">
                                                       <div class="card-body">
                                                         <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
                                                         <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
-                                                        <a href="https://www.wsj.com/articles/tesla-cant-stop-dreaming-big-11555318801" class="card-link">Read the article</a>
                                                       </div>
                                                     </div>
                                                   </div>
                                                 </div>
+                                                </a>
 
                                         </div>
                                         <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
