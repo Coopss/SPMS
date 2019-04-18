@@ -17,7 +17,7 @@ import com.spms.Util;
 import com.spms.database.SPMSDB;
 import com.spms.ticker.los.Symbol;
 import com.spms.ticker.los.SymbolDAO;
-import com.spms.ticker.tools.StockDataRetriever;
+import com.spms.ticker.tools.Requests;
 
 public class TickerHistoryController {
 	public TickerHistoryDAO dao;
@@ -42,7 +42,7 @@ public class TickerHistoryController {
 	public boolean getAllTickers() {
 		for (Symbol sym : los) {
 			try {
-				JSONArray r = StockDataRetriever.get(buildExt(sym.Symbol));
+				JSONArray r = (JSONArray) Requests.get(buildExt(sym.Symbol), Requests.ReturnType.array);
 				List<List<Object>> chunks = Lists.partition(r, r.size() / numberOfChunksPerCommit);
 				
 				for (List<Object> chunk : chunks) {

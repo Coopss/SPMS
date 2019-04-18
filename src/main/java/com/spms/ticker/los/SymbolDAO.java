@@ -33,7 +33,6 @@ import com.spms.Util;
 import com.spms.config.Config;
 import com.spms.database.SPMSDB;
 import com.spms.ticker.tools.Requests;
-import com.spms.ticker.tools.StockDataRetriever;
 
 
 public class SymbolDAO {
@@ -53,9 +52,7 @@ public class SymbolDAO {
 	
 	private static void addAdditionalInfo(Symbol s) throws MalformedURLException, ParseException {
 		String urlExt = "/stock/" + s.Symbol.toLowerCase() + "/company";
-		String r = StockDataRetriever.getResponse(urlExt);
-		JSONParser parser = new JSONParser();
-		JSONObject jobj = (JSONObject) parser.parse(r);
+		JSONObject jobj = (JSONObject) Requests.get(urlExt, Requests.ReturnType.object);
 		
 		if (jobj.containsKey("description")) {
 			s.Description = ((String) jobj.get("description"));
