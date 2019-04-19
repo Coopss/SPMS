@@ -14,12 +14,12 @@ import org.json.simple.parser.ParseException;
 import com.spms.database.SPMSDB;
 import com.spms.ticker.los.Symbol;
 import com.spms.ticker.los.SymbolDAO;
-import com.spms.ticker.tools.StockDataRetriever;
+import com.spms.ticker.tools.Requests;
 
 public class NewsAggregator {
 	
 	public static JSONArray getArticles(String ticker) throws MalformedURLException, ParseException {
-		return StockDataRetriever.get("/stock/" + ticker + "/news");
+		return (JSONArray) Requests.get("/stock/" + ticker + "/news", Requests.ReturnType.array);
 	}
 	
 	public static void addNews() throws MalformedURLException, ParseException, SQLException {
@@ -32,15 +32,7 @@ public class NewsAggregator {
 	}
 
 	public static void main(String[] args) throws MalformedURLException, ParseException, SQLException {
-		//TickerNewsDAO.createTickerNewsTable();
-		//TickerNewsDAO.createTickerNewsSymTable();
-		//addNews();
-		//System.out.println(TickerNewsDAO.Trim("Meme's review"));
-		ArrayList<NewsArticle> tmp = TickerNewsDAO.getNews("AAPL");
-		
-		for (NewsArticle na : tmp) {
-			System.out.println(na.headline);
-		}
+		addNews();
 	}
 
 }

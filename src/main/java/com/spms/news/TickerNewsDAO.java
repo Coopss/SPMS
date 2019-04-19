@@ -40,11 +40,11 @@ public class TickerNewsDAO extends Thread {
 		String makeTableCommand = 
 				"CREATE TABLE [dbo].[" + tableName + "](\n" + 
 				"	[Date] [datetime] NOT NULL,\n" + 
-				"	[Headline] [char](255) NULL,\n" + 
-				"	[Source] [char](2555) NULL,\n" + 
-				"	[URL] [char](255) NULL UNIQUE,\n" + 
-				"	[Summary] [char](255) NULL,\n" + 
-				"	[Image] [char](255) NULL,\n" + 
+				"	[Headline] [nvarchar](max) NULL,\n" + 
+				"	[Source] [nvarchar](max) NULL,\n" + 
+				"	[URL] [nvarchar](4000) NULL UNIQUE,\n" + 
+				"	[Summary] [nvarchar](max) NULL,\n" + 
+				"	[Image] [nvarchar](max) NULL,\n" + 
 				") ON [PRIMARY]\n";
 		Statement stmt = conn.createStatement();
 		stmt.executeUpdate(makeTableCommand);
