@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.spms.news.NewsAggregator;
 import com.spms.ticker.live.LiveFetchJob;
 
 
@@ -24,9 +25,12 @@ public class BatchJobRunner extends HttpServlet {
 		
 		if (isProd) {
 			Thread liveFetch;
+			Thread newsFetch;
 			try {
 				liveFetch = new Thread(new LiveFetchJob());
+				newsFetch = new Thread(new NewsAggregator());
 				liveFetch.start();
+				newsFetch.start();
 			} catch (SQLException e) {
 				log.error(Util.stackTraceToString(e));
 				log.error("UNRECOVERABLE ERROR: Could not init LiveFetchJob()");
