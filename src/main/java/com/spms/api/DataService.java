@@ -20,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.Gson;
 import com.spms.Util;
 import com.spms.api.annotations.Secured;
+import com.spms.news.NewsArticle;
 import com.spms.news.TickerNewsDAO;
 import com.spms.ticker.live.TickerController;
 import com.spms.ticker.live.TickerDAO;
@@ -72,13 +73,14 @@ public class DataService {
 			TickerController.reload(symbol, tdao);
 			List<TickerData> todayData = tdao.getTodayData(symbol);
 			Stats statistics = stdao.get(symbol);
+			List<NewsArticle> articles = ndao.getNews(symbol);
 			
 			response.put("company", s.Name);
 			response.put("symbol", s.Symbol);
 			response.put("about", s.Description);
 			response.put("todayData", todayData);
 			response.put("statistics", statistics);
-			response.put("articles", new ArrayList());
+			response.put("articles", articles);
 			
 			return Response.ok(gson.toJson(response)).build();
 		} catch (Exception e) {

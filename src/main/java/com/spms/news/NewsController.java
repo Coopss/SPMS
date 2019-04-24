@@ -58,7 +58,7 @@ public class NewsController implements Controller {
 		return true;
 	}
 
-	public static void main(String[] args) throws MalformedURLException, ParseException, SQLException {
+	public static void main(String[] args) throws MalformedURLException, ParseException, SQLException, java.text.ParseException {
 		NewsController na = new NewsController();
 		na.reload();
 	}

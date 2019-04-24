@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -61,11 +63,21 @@ public class TickerNewsDAO {
 		return s.replace("'", "''");
 	}
 	
+	public String formatDate(String date) throws java.text.ParseException {
+		if (date.equals("0")) {
+			return null;
+		}
+		Date date1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse(date);  
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String msSqlDate = sdf.format(date1).trim();
+		return msSqlDate.replace(" ","T").toString();
+	}
+	
 	public void insertNews(JSONObject tickerNews) throws SQLException, java.text.ParseException {
 		if (tickerNews != null && !exists(Trim(tickerNews.get("url").toString()))) {
 			// inserts news article of selected stock
 			String command = "INSERT INTO [" + tableName + "] ([Date], [Headline], [Source], [URL], [Summary], [Image]) VALUES ";
-			command += "('" + SPMSDB.getMSSQLDatetime(tickerNews.get("datetime").toString()) + "','" + Trim(objectToString(tickerNews.get("headline"))) + "','" + Trim(objectToString(tickerNews.get("source"))) + "','" + Trim(objectToString(tickerNews.get("url"))) + "','" + Trim(objectToString(tickerNews.get("summary"))) + "','" + Trim(objectToString(tickerNews.get("image"))) + "');";
+			command += "('" + formatDate(tickerNews.get("datetime").toString()) + "','" + Trim(objectToString(tickerNews.get("headline"))) + "','" + Trim(objectToString(tickerNews.get("source"))) + "','" + Trim(objectToString(tickerNews.get("url"))) + "','" + Trim(objectToString(tickerNews.get("summary"))) + "','" + Trim(objectToString(tickerNews.get("image"))) + "');";
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(command);
 		}
