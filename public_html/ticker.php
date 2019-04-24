@@ -27,10 +27,12 @@
         <div class="">
                         <div class="row">
                                 <div class="offset-lg-2 col-lg-5 bar-right">
-                                        <h3>Stock Name Here</h3>
+                                        <h3 id="company_name">Stock Name Here</h3>
                                         <img src="global_assets/img/graph.png" class="img-fluid">
+                                        <h3 class="text-center">About</h3>
+                                        <p id="ticker_about">More info about a stock goes here if available</p>
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-3" id="stock_table_div">
                                         <a href="#">Add to Watchlist</a><p></p>
                                         <table class = "table stock_tables">
                                                 <!-- Portfolio stock details -->
@@ -105,20 +107,91 @@
                                 <div class="col-lg-2">
                                 </div>
                         </div>
+
                         <div class="offset-lg-2">
-                                <h3>About</h3>
-                                <p>More info about a stock goes here if available</p>
-                        </div>
-                        <div class="offset-lg-2">
-                                <h3>Relevant articles</h3>
                                 <div class="row">
-                                        <div class="col-lg-2">
+                                        <div class="mx-auto col-lg-6">
+                                                <h3 class="text-center">Relevant articles</h3>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-2">
+                                        </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
                                                 <a href="#" class="bg-mute round arrow">Previous &laquo;</a>
                                         </div>
-                                        <div class="col-lg-6">
-                                                <h3> Articles </h3>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+
+                                                <!-- First Article -->
+                                                <a href="#" class="nounderline">
+                                                <div class="card mb-3" style="max-width: 100%;">
+                                                  <div class="row no-gutters hoverable">
+                                                    <div class="col-md-4">
+                                                      <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="hoverable card-img" alt="Image Unavailable">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                      <div class="card-body">
+                                                        <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
+                                                        <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                </a>
+
+                                                <!-- Second Article -->
+                                                <a href="#" class="nounderline">
+                                                <div class="card mb-3" style="max-width: 100%;">
+                                                  <div class="row no-gutters hoverable">
+                                                    <div class="col-md-4">
+                                                      <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="hoverable card-img" alt="Image Unavailable">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                      <div class="card-body">
+                                                        <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
+                                                        <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                </a>
+
+                                                <!-- Third Article -->
+                                                <a href="#" class="nounderline">
+                                                <div class="card mb-3" style="max-width: 100%;">
+                                                  <div class="row no-gutters hoverable">
+                                                    <div class="col-md-4">
+                                                      <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="hoverable card-img" alt="Image Unavailable">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                      <div class="card-body">
+                                                        <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
+                                                        <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                </a>
+
+                                                <!-- Fourth Article -->
+                                                <a href="#" class="nounderline">
+                                                <div class="card mb-3" style="max-width: 100%;">
+                                                  <div class="row no-gutters hoverable">
+                                                    <div class="col-md-4">
+                                                      <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="hoverable card-img" alt="Image Unavailable">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                      <div class="card-body">
+                                                        <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
+                                                        <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                </a>
+
                                         </div>
-                                        <div class="col-lg-2">
+                                        <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
                                                 <a href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
                                         </div>
                                 </div>

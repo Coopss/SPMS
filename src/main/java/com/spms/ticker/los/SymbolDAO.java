@@ -1,9 +1,10 @@
-package com.spms.ticker;
+package com.spms.ticker.los;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +21,10 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -45,6 +50,21 @@ public class SymbolDAO {
 		}
 	}
 	
+	private static void addAdditionalInfo(Symbol s) throws MalformedURLException, ParseException {
+		String urlExt = "/stock/" + s.Symbol.toLowerCase() + "/company";
+		JSONObject jobj = (JSONObject) Requests.get(urlExt, Requests.ReturnType.object);
+		
+		if (jobj.containsKey("description")) {
+			s.Description = ((String) jobj.get("description"));
+		}
+		if (jobj.containsKey("CEO")) {
+			s.CEO = (String) jobj.get("CEO");
+		}
+		if (jobj.containsKey("website")) {
+			s.URL = (String) jobj.get("website");
+		}
+	}
+	
 	private boolean createTable() throws SQLException {				
 		if (SPMSDB.tableExists(conn, tableName)) {
 			return false;
@@ -56,6 +76,9 @@ public class SymbolDAO {
 				+ "[MarketCap] [nvarchar](max) NOT NULL,"
 				+ "[Sector] [nvarchar](max) NOT NULL,"
 				+ "[Industry] [nvarchar](max) NOT NULL,"
+				+ "[CEO] [nvarchar](max) NOT NULL,"
+				+ "[Description] [nvarchar](max) NOT NULL,"
+				+ "[Website] [nvarchar](max) NOT NULL,"
 				+ ") ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]";
 		
 		Statement stmt = conn.createStatement();
@@ -87,7 +110,14 @@ public class SymbolDAO {
 	
 	private Boolean insertRow(Symbol sym) throws SQLException {
 		Statement stmt = conn.createStatement();
-		stmt.executeUpdate("INSERT INTO [" + tableName + "] (Symbol, Name, MarketCap, Sector, Industry) VALUES ('" + sym.Symbol + "', '" + sym.Name + "', '" + sym.MarketCap + "', '" + sym.Sector + "', '"  + sym.Industry + "');");
+		
+		if (sym.Description == null) {
+			sym.Description = "";
+		}
+		if (sym.CEO == null) {
+			sym.CEO = "";
+		}
+		stmt.executeUpdate("INSERT INTO [" + tableName + "] (Symbol, Name, MarketCap, Sector, Industry, CEO, Description, Website) VALUES ('" + sym.Symbol + "', '" + sym.Name + "', '" + sym.MarketCap + "', '" + sym.Sector + "', '"  + sym.Industry + "', '"  + sym.CEO.replaceAll("'", "") + "', '"  + sym.Description.replaceAll("'", "") + "', '"  + sym.URL + "');");
 			
 		return true;
 	}
@@ -116,6 +146,11 @@ public class SymbolDAO {
 				break;
 			}
 		}
+		try {
+			addAdditionalInfo(sym);
+		} catch (MalformedURLException | ParseException | java.lang.NullPointerException e) {
+			log.error(Util.stackTraceToString(e));
+		}
 		return sym;
 	}
 	
@@ -142,9 +177,22 @@ public class SymbolDAO {
 	    return syms;
 	}
 	
-	public static void main(String[] args) throws SQLException, IOException {
+	public List<Symbol> getAll() throws SQLException {
+		List<Symbol> syms = new ArrayList<Symbol>();
+		PreparedStatement stmt = conn.prepareStatement("select Symbol from [internal.los]");
+		ResultSet rs = stmt.executeQuery();		
+	    while(rs.next()) {
+	    	Symbol s = new Symbol();
+	    	s.Symbol = rs.getString(1);
+	    	syms.add(s);
+	    }
+	    return syms;
+	}
+	
+	public static void main(String[] args) throws SQLException, IOException, ParseException {
 		SymbolDAO s = new SymbolDAO();
 		s.reloadSymbols();
+		
 	}
 	
 	
