@@ -30,17 +30,17 @@
                         <!-- Table goes here -->
                         <table class = "table stock_tables">
                            <thead>
-                                  <td> Sym </td>
-                                  <td> Shares</td>
-                                  <td> Last Price</td>
-                                  <td> Change</td>
-                                  <td> Change $ </td>
-                                  <td> Pct. </td>
-                                  <td> Total Cost</td>
-                                  <td> Total Return</td>
-                                  <td> Total Change</td>
-                                  <td> Pct. </td>
-                                  <td> CAGR </td>
+                                  <th> Sym </th>
+                                  <th> Shares</th>
+                                  <th> Last Price</th>
+                                  <th> Change</th>
+                                  <th> Change $ </th>
+                                  <th> Pct. </th>
+                                  <th> Total Cost</th>
+                                  <th> Total Return</th>
+                                  <th> Total Change</th>
+                                  <th> Pct. </th>
+                                  <th> CAGR </th>
                            </thead>
 
                            <tbody>
