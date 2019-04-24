@@ -319,17 +319,6 @@ function ticker() {
 			new_table += "<td>" + key + "</td>";
 			new_table += "<td>" + stats[key] + "</td>";
 			
-			/*
-			for (j = 0; j < stats[i].length; j++) { //add cell
-				if (i == 0) { //table header
-					new_table += "<th colspan = " + stats[i].length + ">" + stats[i][j] + "</th>";
-					//may need to add a CONTINUE here
-				} else { //table cell
-					new_table += "<td>" + stats[i][j] + "</td>";
-				}
-			}
-			*/
-			
 			new_table += "</tr>"
 		}
 		new_table += "</table>"
@@ -337,15 +326,20 @@ function ticker() {
 		//insert the table into the page
 		$("#stats_go_here").html(new_table);
 		
-		/* News Articles; waiting on front end implementation before going further
-		var new_article = "";
+		
+		var new_article;
 		for (i = 0; i < articles.length; i++) {
-			new_article = "";
-			new_article += "Title: " articles[i][0] + "<br/>";
-			new_article += "Description: " articles[i][1] + "<br/>";
-			new_article += "URL: " articles[i][2] + "<br/>";
+			/*$(new_article).find(".artcile_img").html("<img src=" + articles[i].image + ">");*/
+			new_article = $("#article_template").clone();
+			$(new_article).removeClass("d-none");
+			$(new_article).removeAttr("id");
+			$(new_article).find(".artcile_headline").html(articles[i].headline);
+			$(new_article).find(".artcile_summary").html(articles[i].summary);
+			$(new_article).find(".article_url").removeAttr("href");
+			$(new_article).find(".article_url").attr("href", articles[i].url);
+			$("#news_articles").append(new_article);
 		}
-		*/
+		
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
 		var statusNum = xhr.status;
