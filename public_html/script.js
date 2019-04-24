@@ -329,16 +329,18 @@ function ticker() {
 		
 		var new_article;
 		for (i = 0; i < articles.length; i++) {
-			/*$(new_article).find(".artcile_img").html("<img src=" + articles[i].image + ">");*/
 			new_article = $("#article_template").clone();
 			$(new_article).removeClass("d-none");
 			$(new_article).removeAttr("id");
-			$(new_article).find(".artcile_headline").html(articles[i].headline);
-			$(new_article).find(".artcile_summary").html(articles[i].summary);
-			$(new_article).find(".article_url").removeAttr("href");
-			$(new_article).find(".article_url").attr("href", articles[i].url);
+			
+			$(new_article).find(".artcile_img").html("<img src=" + articles[i].image + ">");
+			$(new_article).find(".article_headline").html(articles[i].headline);
+			$(new_article).find(".article_summary").html(articles[i].summary);
+			$(new_article).attr("href", articles[i].url);
 			$("#news_articles").append(new_article);
 		}
+		
+		$("#article_page_number").html("1");
 		
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
@@ -379,6 +381,79 @@ function getUrlParameter(sParam) {
         }
     }
 };
+
+
+function articleGet(n_or_p) {
+	var symbol = getUrlParameter('s');
+	var cur_page = parseInt($("article_page_number").html());
+	
+	/* Calc next or previous page number */
+	if (n_or_p == 'p') {
+		cur_page --;
+	} else {
+		cur_page++;
+	}
+	
+	/* Wrap article pages, display new page number */
+	if (cur_page > 3) {
+		cur_page = 1;
+	} else if (cur_page < 1) {
+		cur_page = 3;
+	}
+	$("#article_page_number").html(cur_page);
+	
+	/* Clear previous articles */
+	$("#news_articles").find(".article_url").not("#article_template").remove();
+	
+	
+	$.ajax({
+		method: "GET",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol + "/news/" + cur_page,
+	})
+	.done(function(data, textStatus, xhr) {
+		console.log('Article data retrieved: ' + data);
+		
+		var articles = data.articles;
+
+		var new_article;
+		for (i = 0; i < articles.length; i++) {
+			new_article = $("#article_template").clone();
+			$(new_article).removeClass("d-none");
+			$(new_article).removeAttr("id");
+			
+			$(new_article).find(".artcile_img").html("<img src=" + articles[i].image + ">");
+			$(new_article).find(".article_headline").html(articles[i].headline);
+			$(new_article).find(".article_summary").html(articles[i].summary);
+			$(new_article).attr("href", articles[i].url);
+			$("#news_articles").append(new_article);
+		}
+		
+		$("#article_page_number").html("1");
+		
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var feedback = "";
+
+		switch (statusNum) {
+			case 200: //not sure why this is considered a fail...
+				feedback = "No results found for this ticker";
+				break;
+			case 401:
+				feedback = "search: 401 (token not found, or invalid)";
+				//TODO: redirect to sign on page?
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
+		console.log(feedback);
+		$('#stats_go_here').html(feedback);
+
+	});
+}
 
 
 

@@ -81,12 +81,16 @@
                                 </div>
                                 <div class="row">
                                         <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
-                                                <a href="#" class="bg-mute round arrow">Previous &laquo;</a>
+                                                <a id="article_prev" onclick="articleGet('p')" href="#" class="bg-mute round arrow">Previous &laquo;</a>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6" id="news_articles">
+                                            <div>
+                                                Page <span id="article_page_number">0</span>
+                                            </div>
+                                            <br/>
 
                                                 <!-- Article reference format, not displayed -->
-                                                <a href="nothing" class="nounderline d-none article_url" id='article_template'>
+                                                <a href="#" class="nounderline d-none article_url" id='article_template'>
                                                 <div class="card mb-3" style="max-width: 100%;">
                                                   <div class="row no-gutters hoverable">
                                                     <div class="col-md-4 artcile_img">
@@ -94,7 +98,7 @@
                                                     </div>
                                                     <div class="col-md-8">
                                                       <div class="card-body">
-                                                        <h5 class="card-title artcile_headline"> Tesla Can't Stop Dreaming Big</h5>
+                                                        <h5 class="card-title article_headline"> Tesla Can't Stop Dreaming Big</h5>
                                                         <p class="card-text article_summary">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
                                                       </div>
                                                     </div>
@@ -103,7 +107,7 @@
                                                 </a>
                                         </div>
                                         <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
-                                                <a href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
+                                                <a id="article_next" onclick="articleGet('n')" href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
                                         </div>
                                 </div>
 
