@@ -164,7 +164,7 @@ public class SymbolDAO {
 	
 	public List<Symbol> search(String query) throws SQLException {
 		List<Symbol> syms = new ArrayList<Symbol>();
-		PreparedStatement stmt = conn.prepareStatement("select Symbol,Name,Sector from [internal.los] where [Name] like '%" + query + "%' OR [Symbol] like '%" + query + "%'");
+		PreparedStatement stmt = conn.prepareStatement("select Symbol,Name,Sector from [internal.los] where [Name] like '%" + query + "%' OR [Symbol] like '%" + query + "%' ORDER BY 5 * Difference([Symbol], '" + query + "') + Difference([Name], '" + query + "') DESC");
 				
 		ResultSet rs = stmt.executeQuery();		
 	    while(rs.next() && syms.size() < 10) {
