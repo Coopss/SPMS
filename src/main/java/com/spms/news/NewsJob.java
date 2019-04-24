@@ -27,20 +27,8 @@ public class NewsJob implements Runnable {
     /**
      * Get time until next 4 am 
      */
-    public Long getTimeout() {
-        Calendar cal = Calendar.getInstance();
-        if (cal.get(Calendar.HOUR_OF_DAY) >= 4) {
-            cal.add(Calendar.DATE, 1);
-        }
-        cal.set(Calendar.HOUR_OF_DAY,4);
-        cal.set(Calendar.MINUTE,0);
-        cal.set(Calendar.SECOND,0);
-        cal.set(Calendar.MILLISECOND,0);
-
-        Date nextRuntime = cal.getTime();
-        Date now = new Date();
-        
-        return nextRuntime.getTime() - now.getTime();
+    public Long getTimeout() {        
+        return new Long(900000);
     }
     
     public void timeout() {
