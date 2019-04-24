@@ -4,6 +4,8 @@ import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,43 +15,47 @@ import org.json.simple.JSONObject;
 import com.spms.Util;
 import com.spms.database.SPMSDB;
 import com.spms.ticker.live.TickerDAO;
+import com.spms.tops.TopMoversController;
 
-public class NewsJob extends Thread {
+public class NewsJob implements Runnable {
 	private static final Logger log = LogManager.getLogger(NewsJob.class);
 	
-	private TickerNewsDAO tnd;
-	private String[] symbols;
-	
-	NewsJob(String ticker, TickerNewsDAO dao) { 
-        this.symbols = ticker.split(",");
-        this.tnd = dao;
+	public NewsJob() { 
+
 	}
 	
-	public void fetch() throws SQLException, ParseException, MalformedURLException, org.json.simple.parser.ParseException {
-		tnd = new TickerNewsDAO();
-		for (String sym : symbols) {
-			JSONArray symArticles = NewsAggregator.getArticles(sym);
-			if (symArticles != null)
-				for (int i = 0; i < symArticles.size(); i++) {
-					tnd.insertNews((JSONObject)symArticles.get(i));
-			}
-		}
-	}
+    /**
+     * Get time until next 4 am 
+     */
+    public Long getTimeout() {        
+        return new Long(900000);
+    }
+    
+    public void timeout() {
+        try {
+            Thread.sleep(getTimeout());
+        } catch (InterruptedException e) {
+            log.error("Failed to sleep.");
+            log.error(Util.stackTraceToString(e));
+        }
+    }
 	
 	@Override
 	public void run() {
-		try {
-			fetch();
-		} catch (ParseException e) {
-			log.error(Util.stackTraceToString(e));
-		} catch (SQLException e) {
-			log.info("Unique constraint ");
-		} catch (MalformedURLException e) {
-			log.error(Util.stackTraceToString(e));
-		} catch (org.json.simple.parser.ParseException e) {
-			log.error(Util.stackTraceToString(e));
-		} catch (NullPointerException e) {
-			
-		}
+        while (true) {
+            try {
+                timeout();
+                
+                log.info("Started " + this);
+                NewsController controller;
+                controller = new NewsController();
+                controller.reload();
+                controller = null;
+                
+            } catch (Exception e) {
+                log.error("Failed to reload news data -- Critical");
+                log.error(Util.stackTraceToString(e));
+            }    
+        }
 	}
 }
