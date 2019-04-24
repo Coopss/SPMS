@@ -277,6 +277,14 @@ function search() {
 //prototype function for populating data in ticker.php
 function ticker() {
 	var symbol = getUrlParameter('s');
+	var feedback = "";
+	
+	if (!symbol) {
+		feedback = "No search query supplied, please use the search bar to find a stock symbol";
+		console.log(feedback);
+		$('#stats_go_here').html(feedback);
+		return;
+	}
 
 	$.ajax({
 		method: "GET",
@@ -287,7 +295,7 @@ function ticker() {
 	.done(function(data, textStatus, xhr) {
 		console.log('Ticker data retrieved: ' + data);
 		
-		var name = data.name;
+		var name = data.company;
 		var symbol = data.symbol;
 		var oneDay = data.oneDay;
 		var stats = data.statistics;
@@ -300,11 +308,18 @@ function ticker() {
 		
 		var i, j;
 		var new_table = "<table class='table stock_tables'>";
+		new_table += "<tr><th>Statistics</th></tr>";
+		
+		//console.log("Stats length: " + stats.length + "; Row length: " + stats[1].length);
 		
 		//dynamically generate tables based on server data
-		for (i = 0; i < stats.length; i++) {
-			new_table += "<tr>"
+		for (key in stats) {
+			new_table += "<tr>";
 			
+			new_table += "<td>" + key + "</td>";
+			new_table += "<td>" + stats[key] + "</td>";
+			
+			/*
 			for (j = 0; j < stats[i].length; j++) { //add cell
 				if (i == 0) { //table header
 					new_table += "<th colspan = " + stats[i].length + ">" + stats[i][j] + "</th>";
@@ -313,13 +328,14 @@ function ticker() {
 					new_table += "<td>" + stats[i][j] + "</td>";
 				}
 			}
+			*/
 			
 			new_table += "</tr>"
 		}
 		new_table += "</table>"
 		
 		//insert the table into the page
-		$("#stock_table_div").html(new_table);
+		$("#stats_go_here").html(new_table);
 		
 		/* News Articles; waiting on front end implementation before going further
 		var new_article = "";
@@ -348,7 +364,7 @@ function ticker() {
 				break;
 		}
 		console.log(feedback);
-		//$('#feedback').html(feedback);
+		$('#stats_go_here').html(feedback);
 
 	});
 }

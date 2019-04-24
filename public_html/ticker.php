@@ -14,13 +14,16 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-
 </head>
 <body>
 
         <div class="header_div navbar-spacers">
             <?php include "header.php"; ?>
             <!-- Use jquery to insert header content here if PHP fails    -->
+        </div>
+        
+        <div id="feedback">
+            
         </div>
 
         <!-- Body of ticker -->
@@ -60,57 +63,17 @@
                                         </table>
 
                                         <!-- Statistics -->
-                                        <table class = "table stock_tables">
-
-                                           <tbody>
-                                              <tr>
-                                                 <th colspan="2">
-                                                         <b>Statistics</b>
-                                                 </th>
-                                              </tr>
-                                              <tr>
-                                                 <td>Previous Close</td>
-                                                 <td> Value</td>
-                                              </tr>
-                                              <tr>
-                                                 <td>Open</td>
-                                                 <td>Value</td>
-                                              </tr>
-                                              <tr>
-                                                 <td>High</td>
-                                                 <td>Value</td>
-                                              </tr>
-                                              <tr>
-                                                 <td>Low</td>
-                                                 <td>Value</td>
-                                              </tr>
-                                              <tr>
-                                                 <td>52 Wk. High</td>
-                                                 <td>Value</td>
-                                              </tr>
-                                              <tr>
-                                                 <td>52 Wk. Low</td>
-                                                 <td>Value</td>
-                                              </tr>
-                                              <tr>
-                                                 <td>Volume</td>
-                                                 <td>Value</td>
-                                              </tr>
-                                              <tr>
-                                                 <td>Avg. Volume</td>
-                                                 <td>Value</td>
-                                              </tr>
-                                           </tbody>
-
-                                        </table>
+                                        <span id='stats_go_here'>Loading stats, please wait...</span>
                                 </div>
                                 <div class="col-lg-2">
                                 </div>
                         </div>
 
+                                                        <!-- NEWS ARTCILES -->
                         <div class="offset-lg-2">
                                 <div class="row">
                                         <div class="mx-auto col-lg-6">
+                                            <br><br><br><br>
                                                 <h3 class="text-center">Relevant articles</h3>
                                         </div>
                                         <div class="col-lg-2 col-md-2 col-sm-2">
@@ -120,7 +83,7 @@
                                         <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
                                                 <a href="#" class="bg-mute round arrow">Previous &laquo;</a>
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="col-lg-6 col-md-6 col-sm-6" id="news_articles">
 
                                                 <!-- First Article -->
                                                 <a href="#" class="nounderline">
@@ -207,6 +170,11 @@
 </div>
 
 <script src='script.js'></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        ticker();
+    });
+</script>
 
 </body>
 </html>
