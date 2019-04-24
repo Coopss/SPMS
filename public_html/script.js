@@ -277,6 +277,14 @@ function search() {
 //prototype function for populating data in ticker.php
 function ticker() {
 	var symbol = getUrlParameter('s');
+	var feedback = "";
+	
+	if (!symbol) {
+		feedback = "No search query supplied, please use the search bar to find a stock symbol";
+		console.log(feedback);
+		$('#stats_go_here').html(feedback);
+		return;
+	}
 
 	$.ajax({
 		method: "GET",
@@ -287,7 +295,7 @@ function ticker() {
 	.done(function(data, textStatus, xhr) {
 		console.log('Ticker data retrieved: ' + data);
 		
-		var name = data.name;
+		var name = data.company;
 		var symbol = data.symbol;
 		var oneDay = data.oneDay;
 		var stats = data.statistics;
@@ -300,36 +308,40 @@ function ticker() {
 		
 		var i, j;
 		var new_table = "<table class='table stock_tables'>";
+		new_table += "<tr><th>Statistics</th></tr>";
+		
+		//console.log("Stats length: " + stats.length + "; Row length: " + stats[1].length);
 		
 		//dynamically generate tables based on server data
-		for (i = 0; i < stats.length; i++) {
-			new_table += "<tr>"
+		for (key in stats) {
+			new_table += "<tr>";
 			
-			for (j = 0; j < stats[i].length; j++) { //add cell
-				if (i == 0) { //table header
-					new_table += "<th colspan = " + stats[i].length + ">" + stats[i][j] + "</th>";
-					//may need to add a CONTINUE here
-				} else { //table cell
-					new_table += "<td>" + stats[i][j] + "</td>";
-				}
-			}
+			new_table += "<td>" + key + "</td>";
+			new_table += "<td>" + stats[key] + "</td>";
 			
 			new_table += "</tr>"
 		}
 		new_table += "</table>"
 		
 		//insert the table into the page
-		$("#stock_table_div").html(new_table);
+		$("#stats_go_here").html(new_table);
 		
-		/* News Articles; waiting on front end implementation before going further
-		var new_article = "";
+		
+		var new_article;
 		for (i = 0; i < articles.length; i++) {
-			new_article = "";
-			new_article += "Title: " articles[i][0] + "<br/>";
-			new_article += "Description: " articles[i][1] + "<br/>";
-			new_article += "URL: " articles[i][2] + "<br/>";
+			new_article = $("#article_template").clone();
+			$(new_article).removeClass("d-none");
+			$(new_article).removeAttr("id");
+			
+			$(new_article).find(".artcile_img").html("<img src=" + articles[i].image + ">");
+			$(new_article).find(".article_headline").html(articles[i].headline);
+			$(new_article).find(".article_summary").html(articles[i].summary);
+			$(new_article).attr("href", articles[i].url);
+			$("#news_articles").append(new_article);
 		}
-		*/
+		
+		$("#article_page_number").html("1");
+		
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
 		var statusNum = xhr.status;
@@ -348,7 +360,7 @@ function ticker() {
 				break;
 		}
 		console.log(feedback);
-		//$('#feedback').html(feedback);
+		$('#stats_go_here').html(feedback);
 
 	});
 }
@@ -369,6 +381,79 @@ function getUrlParameter(sParam) {
         }
     }
 };
+
+
+function articleGet(n_or_p) {
+	var symbol = getUrlParameter('s');
+	var cur_page = parseInt($("article_page_number").html());
+	
+	/* Calc next or previous page number */
+	if (n_or_p == 'p') {
+		cur_page --;
+	} else {
+		cur_page++;
+	}
+	
+	/* Wrap article pages, display new page number */
+	if (cur_page > 3) {
+		cur_page = 1;
+	} else if (cur_page < 1) {
+		cur_page = 3;
+	}
+	$("#article_page_number").html(cur_page);
+	
+	/* Clear previous articles */
+	$("#news_articles").find(".article_url").not("#article_template").remove();
+	
+	
+	$.ajax({
+		method: "GET",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol + "/news/" + cur_page,
+	})
+	.done(function(data, textStatus, xhr) {
+		console.log('Article data retrieved: ' + data);
+		
+		var articles = data.articles;
+
+		var new_article;
+		for (i = 0; i < articles.length; i++) {
+			new_article = $("#article_template").clone();
+			$(new_article).removeClass("d-none");
+			$(new_article).removeAttr("id");
+			
+			$(new_article).find(".artcile_img").html("<img src=" + articles[i].image + ">");
+			$(new_article).find(".article_headline").html(articles[i].headline);
+			$(new_article).find(".article_summary").html(articles[i].summary);
+			$(new_article).attr("href", articles[i].url);
+			$("#news_articles").append(new_article);
+		}
+		
+		$("#article_page_number").html("1");
+		
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var feedback = "";
+
+		switch (statusNum) {
+			case 200: //not sure why this is considered a fail...
+				feedback = "No results found for this ticker";
+				break;
+			case 401:
+				feedback = "search: 401 (token not found, or invalid)";
+				//TODO: redirect to sign on page?
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
+		console.log(feedback);
+		$('#stats_go_here').html(feedback);
+
+	});
+}
 
 
 

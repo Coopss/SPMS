@@ -11,7 +11,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import com.spms.Util;
-import com.spms.news.NewsAggregator;
 import com.spms.news.TickerNewsDAO;
 import com.spms.ticker.los.Symbol;
 import com.spms.ticker.los.SymbolDAO;

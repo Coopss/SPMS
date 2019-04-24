@@ -164,7 +164,7 @@ public class SymbolDAO {
 	
 	public List<Symbol> search(String query) throws SQLException {
 		List<Symbol> syms = new ArrayList<Symbol>();
-		PreparedStatement stmt = conn.prepareStatement("select Symbol,Name,Sector from [internal.los] where [Name] like '%" + query + "%' OR [Symbol] like '%" + query + "%'");
+		PreparedStatement stmt = conn.prepareStatement("select Symbol,Name,Sector from [internal.los] where [Name] like '%" + query + "%' OR [Symbol] like '%" + query + "%' ORDER BY 5 * Difference([Symbol], '" + query + "') + Difference([Name], '" + query + "') DESC");
 				
 		ResultSet rs = stmt.executeQuery();		
 	    while(rs.next() && syms.size() < 10) {
@@ -187,6 +187,24 @@ public class SymbolDAO {
 	    	syms.add(s);
 	    }
 	    return syms;
+	}
+	
+	public Symbol get(String ticker) throws SQLException {
+		PreparedStatement stmt = conn.prepareStatement("select [Symbol],[Name],[MarketCap],[Sector],[Industry],[CEO],[Description],[Website] from [internal.los] where Symbol = '" + ticker.toUpperCase() + "';");
+		ResultSet rs = stmt.executeQuery();		
+		Symbol s = new Symbol();
+	    while(rs.next()) {
+	    	s.Symbol = rs.getString(1);
+	    	s.Name = rs.getString(2);
+	    	s.MarketCap = rs.getString(3);
+	    	s.Sector = rs.getString(4);
+	    	s.Industry = rs.getString(5);
+	    	s.CEO = rs.getString(6);
+	    	s.Description = rs.getString(7);
+	    	s.URL = rs.getString(8);
+	    }
+	    
+	    return s;
 	}
 	
 	public static void main(String[] args) throws SQLException, IOException, ParseException {
