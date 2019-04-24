@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServlet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.spms.news.NewsAggregator;
 import com.spms.ticker.history.TickerHistoryJob;
 import com.spms.ticker.live.TickerJob;
-
 
 public class BatchJobRunner extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -21,8 +21,7 @@ public class BatchJobRunner extends HttpServlet {
 		log.info("----------");
 		
 		
-		if (isProd) {
-			
+		if (isProd) {		
 			// live ticker job
 			Thread tickerJob;
 			try {
@@ -45,6 +44,6 @@ public class BatchJobRunner extends HttpServlet {
 				System.exit(1);
 			}
 			
-		}
     }
+  }
 }
