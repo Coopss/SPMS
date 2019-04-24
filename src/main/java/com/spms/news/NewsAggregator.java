@@ -38,7 +38,7 @@ public class NewsAggregator implements Controller {
 	public void addNews() throws MalformedURLException, ParseException, SQLException, java.text.ParseException {
 		for (Symbol sym : dao.getAll()) {
 			JSONArray symArticles = NewsAggregator.getArticles(sym.Symbol);
-			if (symArticles != null)l
+			if (symArticles != null)
 				for (int i = 0; i < symArticles.size(); i++) {
 					log.info(symArticles.get(i));
 					tnd.insertNews((JSONObject)symArticles.get(i));
