@@ -78,7 +78,7 @@ public class SPMSDB {
 	}
 
 	public static String getMSSQLDatetime() {
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date javaDate = new Date();
 		String msSqlDate = sdf.format(javaDate).trim();
 		return msSqlDate.replace(" ","T").toString();
@@ -89,8 +89,14 @@ public class SPMSDB {
 			return null;
 		}
 		Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);  
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String msSqlDate = sdf.format(date1).trim();
+		return msSqlDate.replace(" ","T").toString();
+	}
+	
+	public static String getMSSQLDatetime(Date date) throws ParseException { 
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String msSqlDate = sdf.format(date).trim();
 		return msSqlDate.replace(" ","T").toString();
 	}
 }

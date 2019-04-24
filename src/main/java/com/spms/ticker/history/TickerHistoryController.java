@@ -13,13 +13,14 @@ import org.json.simple.parser.ParseException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.spms.Controller;
 import com.spms.Util;
 import com.spms.database.SPMSDB;
 import com.spms.ticker.los.Symbol;
 import com.spms.ticker.los.SymbolDAO;
 import com.spms.ticker.tools.Requests;
 
-public class TickerHistoryController {
+public class TickerHistoryController implements Controller {
 	public TickerHistoryDAO dao;
 	public SymbolDAO sdao;
 	private static final Integer numberOfChunksPerCommit = 5;
@@ -39,7 +40,7 @@ public class TickerHistoryController {
 		return "/stock/" + ticker + "/chart/5y";
 	}
 	
-	public boolean getAllTickers() {
+	public boolean reload() {
 		for (Symbol sym : los) {
 			try {
 				JSONArray r = (JSONArray) Requests.get(buildExt(sym.Symbol), Requests.ReturnType.array);
@@ -54,14 +55,14 @@ public class TickerHistoryController {
 				log.error(Util.stackTraceToString(e));
 			}
 		}
-
 		
 		return true;
+
 	}	
 	
 	public static void main(String[] args) throws SQLException, MalformedURLException, ParseException, java.text.ParseException {
 		TickerHistoryController thc = new TickerHistoryController();
-		thc.getAllTickers();
+		thc.reload();
 	}
 	
 	

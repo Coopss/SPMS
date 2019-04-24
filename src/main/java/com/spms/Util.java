@@ -3,6 +3,8 @@ package com.spms;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Util {
@@ -112,6 +114,25 @@ public class Util {
 		} else {
 			return o.toString();
 		}
+  }
+	
+	/**
+	 * Get time until next X oclock
+	 */
+	public static Long getTimeout(Integer hour) {
+		Calendar cal = Calendar.getInstance();
+		if (cal.get(Calendar.HOUR_OF_DAY) >= hour) {
+			cal.add(Calendar.DATE, 1);
+		}
+		cal.set(Calendar.HOUR_OF_DAY, hour);
+		cal.set(Calendar.MINUTE,0);
+		cal.set(Calendar.SECOND,0);
+		cal.set(Calendar.MILLISECOND,0);
+
+		Date nextRuntime = cal.getTime();
+		Date now = new Date();
+		
+		return nextRuntime.getTime() - now.getTime();
 	}
 	
 }
