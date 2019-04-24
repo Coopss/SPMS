@@ -100,9 +100,9 @@ public class AuthenticationService extends Application {
                 // Return the token on the response
                 return Response.ok()
                 		// THIS FOR DEPLOYMENT
-//                		.header("Set-Cookie", "token=" + token + ";lang=en-US; Path=/; Domain="+Util.removeProtocol(servletRequest.getHeader("origin")))
+                		.header("Set-Cookie", "token=" + token + ";lang=en-US; Path=/; Domain="+Util.removeProtocol(servletRequest.getHeader("origin")))
                 		// THIS FOR LOCALHOST
-                		.header("Set-Cookie", "token=" + token + ";lang=en-US; Path=/; Domain=localhost")
+//                		.header("Set-Cookie", "token=" + token + ";lang=en-US; Path=/; Domain=localhost")
                         .build();
         	} else {
         		return Response.status(Response.Status.UNAUTHORIZED).build();
