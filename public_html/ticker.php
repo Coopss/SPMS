@@ -14,6 +14,9 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+        <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
 
 </head>
 <body>
@@ -71,8 +74,17 @@
                                                 <div class="tab-content" id="myTabContent">
                                                   <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
                                                     <h5 class="card-title">Buy</h5>
+                                                    <input id="datepicker" onkeydown="return false" placeholder="Date of Purchase" />
+                                                            <script>
+                                                            $('#datepicker').datepicker({
+                                                                daysOfWeekDisabled: [0,6]
+                                                                });
+                                                            </script>
                                                     <form class="form-inline">
                                                             <input class="form-control" type="text" placeholder="Amount" id="buycount" style="width:100%"> </input>
+                                                    </form>
+                                                    <form class="form-inline">
+                                                            <input class="form-control" type="text" placeholder="Cost of all shares" id="buyprice" style="width:100%"> </input>
                                                     </form>
                                                     <p class="card-text">Here is where you buy a stock.</p>
                                                   </div>
@@ -85,7 +97,7 @@
                                                   </div>
                                                   <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
                                                     <h5 class="card-title">Watchlist</h5>
-                                                   <a href="#" class="btn btn-primary">Add</a>   
+                                                   <a href="#" class="btn btn-primary">Add</a>
                                                     <p class="card-text">Add/Remove this stock from your watchlist</p>
                                                   </div>
 
