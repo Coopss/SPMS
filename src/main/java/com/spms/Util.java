@@ -106,5 +106,12 @@ public class Util {
         return result;
     }
 
+	public static String objectToString(Object o) {
+		if (o == null) {
+			return null;
+		} else {
+			return o.toString();
+		}
+	}
 	
 }

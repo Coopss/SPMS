@@ -62,7 +62,7 @@ public class TickerNewsDAO {
 		String makeTableCommand = 
 				"CREATE TABLE [dbo].[" + tableNameSym + "](\n" + 
 				"	[Symbol] [char](255) NULL,\n" + 
-				"	[URL] [char](255) NULL,\n" + 
+				"	[URL] [nvarchar](4000) NULL,\n" + 
 				") ON [PRIMARY]\n";
 		Statement stmt = conn.createStatement();
 		stmt.executeUpdate(makeTableCommand);
