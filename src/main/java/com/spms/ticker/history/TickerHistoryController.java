@@ -2,6 +2,7 @@ package com.spms.ticker.history;
 
 import java.net.MalformedURLException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class TickerHistoryController implements Controller {
 	public TickerHistoryDAO dao;
 	public SymbolDAO sdao;
 	private static final Integer numberOfChunksPerCommit = 5;
+	private static final Integer numWorkers = 16;
 	private static final Logger log = LogManager.getLogger(TickerHistoryController.class);
 	
 	public List<Symbol> los;
@@ -36,29 +38,39 @@ public class TickerHistoryController implements Controller {
 		
 	}
 	
-	private static String buildExt(String ticker) {
+	public static String buildExt(String ticker) {
+//		return "/stock/" + ticker + "/chart/1m";
 		return "/stock/" + ticker + "/chart/5y";
 	}
 	
 	public boolean reload() {
-		for (Symbol sym : los) {
+		List<Thread> workers = new ArrayList<Thread>();
+		
+		// create runners
+		for (List<Symbol> part : Lists.partition(los, Util.ceil(los.size()/ (Double.parseDouble(numWorkers.toString()))))) {
 			try {
-				JSONArray r = (JSONArray) Requests.get(buildExt(sym.Symbol), Requests.ReturnType.array);
-				List<List<Object>> chunks = Lists.partition(r, r.size() / numberOfChunksPerCommit);
-				
-				for (List<Object> chunk : chunks) {
-					dao.insertTicker(chunk, sym.Symbol);
-					log.info("Finished chunk: " + sym.Symbol);
-				}
-			} catch (Exception e) {
-				log.error("Failed to insert " + sym.Symbol);
+				Thread runner = new Thread(new TickerHistoryJobWorker(part));
+				workers.add(runner);
+				runner.start();
+			} catch (SQLException e) {
+				log.error("Failed to create runner to update -- critical");
 				log.error(Util.stackTraceToString(e));
+				return false;
 			}
 		}
 		
+		// rejoin all threads
+		for (Thread t : workers) {
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				log.error("Failed to stop a runner, possible memory leak");
+				log.error(Util.stackTraceToString(e));
+			}
+		}
+	
 		return true;
-
-	}	
+	}
 	
 	public static void main(String[] args) throws SQLException, MalformedURLException, ParseException, java.text.ParseException {
 		TickerHistoryController thc = new TickerHistoryController();

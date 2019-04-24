@@ -149,4 +149,8 @@ public class Util {
 		Date now = new Date();
 		return now.getTime() - oldDate.getTime();
 	}
+	
+	public static Integer ceil(Double d) {
+		return (int) Math.round(Math.ceil(d));
+	}
 }
