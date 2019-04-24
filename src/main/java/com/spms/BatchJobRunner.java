@@ -1,14 +1,13 @@
  package com.spms;
 
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.spms.ticker.live.LiveFetchJob;
+import com.spms.ticker.history.TickerHistoryJob;
+import com.spms.ticker.live.TickerJob;
 
 
 public class BatchJobRunner extends HttpServlet {
@@ -23,15 +22,29 @@ public class BatchJobRunner extends HttpServlet {
 		
 		
 		if (isProd) {
-			Thread liveFetch;
+			
+			// live ticker job
+			Thread tickerJob;
 			try {
-				liveFetch = new Thread(new LiveFetchJob());
-				liveFetch.start();
-			} catch (SQLException e) {
+				tickerJob = new Thread(new TickerJob());
+				tickerJob.start();
+			} catch (Exception e) {
 				log.error(Util.stackTraceToString(e));
-				log.error("UNRECOVERABLE ERROR: Could not init LiveFetchJob()");
+				log.error("UNRECOVERABLE ERROR: Could not init TickerJob()");
 				System.exit(1);
 			}
+			
+			// ticker history
+			Thread tickerHistoryJob;
+			try {
+				tickerHistoryJob = new Thread(new TickerHistoryJob());
+				tickerHistoryJob.start();
+			} catch (Exception e) {
+				log.error(Util.stackTraceToString(e));
+				log.error("UNRECOVERABLE ERROR: Could not init TickerHistoryJob()");
+				System.exit(1);
+			}
+			
 		}
     }
 }
