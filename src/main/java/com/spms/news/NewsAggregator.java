@@ -19,65 +19,47 @@ import com.spms.ticker.los.Symbol;
 import com.spms.ticker.los.SymbolDAO;
 import com.spms.ticker.tools.Requests;
 
-public class NewsAggregator implements Runnable {
+public class NewsAggregator {
 	
 	private TickerNewsDAO tnd;
-	private Boolean running;
-	private Integer msTimeout = 900000;
+	private SymbolDAO dao;
 	private static final Logger log = LogManager.getLogger(NewsAggregator.class);
-	private int gSize = 5;
 	
-	public NewsAggregator() {
-		this.running = true;
+	public NewsAggregator() throws SQLException {
+		tnd = new TickerNewsDAO();
+		dao = new SymbolDAO();
 	}
 	
 	public static JSONArray getArticles(String ticker) throws MalformedURLException, ParseException {
 		return (JSONArray) Requests.get("/stock/" + ticker + "/news", Requests.ReturnType.array);
 	}
 	
-	public void addNews() throws MalformedURLException, ParseException, SQLException {
-		SymbolDAO dao = new SymbolDAO();
-		tnd = new TickerNewsDAO();
-		ArrayList<Symbol> allSyms = (ArrayList<Symbol>) dao.getAll();
-		for (int i = 0; i < allSyms.size(); i+=gSize) {
-			String symList = "";
-			for (int j = 0; j < gSize; j++) {
-				if (i+j < allSyms.size()) {
-					symList += allSyms.get(i+j).Symbol + ",";
-				}
+	public void addNews() throws MalformedURLException, ParseException, SQLException, java.text.ParseException {
+		for (Symbol sym : dao.getAll()) {
+			JSONArray symArticles = NewsAggregator.getArticles(sym.Symbol);
+			if (symArticles != null)
+				for (int i = 0; i < symArticles.size(); i++) {
+					log.info(symArticles.get(i));
+					tnd.insertNews((JSONObject)symArticles.get(i));
 			}
-			symList = symList.substring(0, symList.length()-1);
-			System.out.println(symList);
-			NewsJob nj = new NewsJob(symList, tnd);
-			nj.start();
 		}
-		tnd = new TickerNewsDAO();
 	}
 	
-	@Override
-	public void run() {
-		while (running) {
-			try {
-				Thread.sleep(msTimeout);
-			} catch (InterruptedException e) {
-				continue;
-			}
-			log.info("Running news fetch batch job...");
-			try {
-				addNews();
-			} catch (MalformedURLException e) {
-				log.error(Util.stackTraceToString(e));
-			} catch (SQLException e) {
-				log.error(Util.stackTraceToString(e));
-			} catch (ParseException e) {
-				log.error(Util.stackTraceToString(e));
-			}
+	public boolean reload() {
+		try {
+			tnd.createTickerNewsTable();
+			addNews();
+		} catch (Exception e) {
+			log.error(Util.stackTraceToString(e));
+			return false;
 		}
+		
+		return true;
 	}
 
 	public static void main(String[] args) throws MalformedURLException, ParseException, SQLException {
-		NewsAggregator ng = new NewsAggregator();
-		ng.addNews();
+		NewsAggregator na = new NewsAggregator();
+		na.reload();
 	}
 
 }
