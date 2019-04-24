@@ -8,12 +8,13 @@ import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import com.spms.Controller;
 import com.spms.Util;
 import com.spms.ticker.los.Symbol;
 import com.spms.ticker.los.SymbolDAO;
 import com.spms.ticker.tools.Requests;
 
-public class TopMoversController {
+public class TopMoversController implements Controller {
 	
 	private TopMoversDAO tmd;
 	private SymbolDAO dao;
@@ -30,7 +31,6 @@ public class TopMoversController {
 	}
 	
 	public boolean reload() {
-		
 		try {
 			tmd.createTopMoversTable();
 			

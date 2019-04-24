@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import com.spms.news.NewsAggregator;
 import com.spms.ticker.history.TickerHistoryJob;
 import com.spms.ticker.live.TickerJob;
+import com.spms.tops.TopMoversJob;
 
 public class BatchJobRunner extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -22,7 +23,7 @@ public class BatchJobRunner extends HttpServlet {
 		
 		
 		if (isProd) {		
-			// live ticker job
+			// live ticker job (every 20 min)
 			Thread tickerJob;
 			try {
 				tickerJob = new Thread(new TickerJob());
@@ -33,7 +34,7 @@ public class BatchJobRunner extends HttpServlet {
 				System.exit(1);
 			}
 			
-			// ticker history
+			// ticker history (5 pm daily)
 			Thread tickerHistoryJob;
 			try {
 				tickerHistoryJob = new Thread(new TickerHistoryJob());
@@ -44,6 +45,17 @@ public class BatchJobRunner extends HttpServlet {
 				System.exit(1);
 			}
 			
-    }
-  }
+			// ticker history (4 am daily)
+			Thread topMoversJob;
+			try {
+				topMoversJob = new Thread(new TopMoversJob());
+				topMoversJob.start();
+			} catch (Exception e) {
+				log.error(Util.stackTraceToString(e));
+				log.error("UNRECOVERABLE ERROR: Could not init TickerHistoryJob()");
+				System.exit(1);
+			}
+			
+		}
+	}
 }
