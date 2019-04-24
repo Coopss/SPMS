@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServlet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.spms.news.NewsAggregator;
 import com.spms.ticker.history.TickerHistoryJob;
 import com.spms.ticker.live.TickerJob;
 import com.spms.tops.TopMoversJob;
