@@ -13,13 +13,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import com.spms.Controller;
 import com.spms.Util;
 import com.spms.database.SPMSDB;
 import com.spms.ticker.los.Symbol;
 import com.spms.ticker.los.SymbolDAO;
 import com.spms.ticker.tools.Requests;
 
-public class NewsAggregator {
+public class NewsAggregator implements Controller {
 	
 	private TickerNewsDAO tnd;
 	private SymbolDAO dao;
@@ -37,7 +38,7 @@ public class NewsAggregator {
 	public void addNews() throws MalformedURLException, ParseException, SQLException, java.text.ParseException {
 		for (Symbol sym : dao.getAll()) {
 			JSONArray symArticles = NewsAggregator.getArticles(sym.Symbol);
-			if (symArticles != null)
+			if (symArticles != null)l
 				for (int i = 0; i < symArticles.size(); i++) {
 					log.info(symArticles.get(i));
 					tnd.insertNews((JSONObject)symArticles.get(i));
