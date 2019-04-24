@@ -20,7 +20,7 @@ import com.spms.tops.TopMoversController;
 public class NewsJob implements Runnable {
 	private static final Logger log = LogManager.getLogger(NewsJob.class);
 	
-	NewsJob() { 
+	public NewsJob() { 
 
 	}
 	

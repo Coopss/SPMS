@@ -59,7 +59,7 @@ public class DataService {
 	
 	
 	@GET
-	@Secured
+//	@Secured
 	@Path("/{symbol}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Get overview (descriptive) details of a symbol", tags = {"Data"}, description = "", responses = {@ApiResponse(description = "", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
