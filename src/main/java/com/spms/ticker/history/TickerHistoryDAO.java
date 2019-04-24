@@ -37,8 +37,7 @@ public class TickerHistoryDAO {
 		String tableName = generateTickerTableName(tickerName);
 		
 		if (SPMSDB.tableExists(conn, tableName)) {
-//			return false;
-			SPMSDB.dropTable(conn, tableName);
+			return false;
 		}
 				
 		String makeTableCommand = 
