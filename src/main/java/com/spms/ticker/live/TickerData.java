@@ -48,6 +48,11 @@ public class TickerData {
 		return null;
 	}
 	
+	public TickerData() {
+		
+		
+	}
+	
 	public TickerData(JSONObject data, String ticker) throws ParseException {
 		StringBuilder dateString = new StringBuilder();
 		dateString.append(data.get("date"));
@@ -82,5 +87,7 @@ public class TickerData {
 		changeOverTime = get("changeOverTime");
 		marketChangeOverTime = get("marketChangeOverTime");
 	}
+
+
 	
 }

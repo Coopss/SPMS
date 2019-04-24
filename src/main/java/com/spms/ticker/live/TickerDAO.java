@@ -18,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 
+import com.spms.Util;
 import com.spms.auth.AuthUtil;
 import com.spms.database.SPMSDB;
 
@@ -136,8 +137,26 @@ public class TickerDAO {
 		return true;
 	}
 
-	public List<TickerData> getTodayData(String tickerName) {
-		return null;
+	public List<TickerData> getTodayData(String tickerName) throws ParseException, SQLException {
+		String tableName = generateTickerTableName(tickerName);
+		String now = SPMSDB.getMSSQLDatetime(Util.getDateWithoutTimeUsingCalendar());
+		List<TickerData> dat = new ArrayList<TickerData>();
+		
+		PreparedStatement stmt = conn.prepareStatement("SELECT [date],[marketAverage],[marketVolume],[marketNumberOfTrades] FROM [dbo].[" + tableName + "] where date > '" + now + "';");
+		
+		ResultSet rs = stmt.executeQuery();		
+	    
+		while(rs.next()) {
+			TickerData td = new TickerData();
+			td.date = rs.getString(1);
+			td.marketAverage = rs.getString(2);
+			td.marketVolume = rs.getString(3);
+			td.marketNumberOfTrades = rs.getString(4);
+			
+			dat.add(td);
+	    }
+		
+		return dat;
 		
 	}
 	
