@@ -23,7 +23,7 @@ public class TickerNewsDAO {
 	private JSONArray articles;
 	private String ticker;
 	
-	TickerNewsDAO() throws SQLException {
+	public TickerNewsDAO() throws SQLException {
 		conn  = SPMSDB.getConnection();
 	}
 	
