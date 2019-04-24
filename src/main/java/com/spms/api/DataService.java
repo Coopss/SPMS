@@ -74,10 +74,12 @@ public class DataService {
 			List<TickerData> todayData = tdao.getTodayData(symbol);
 			Stats statistics = stdao.get(symbol);
 			List<NewsArticle> articles = ndao.getNews(symbol);
+			TickerData yesterdayClose = tdao.getYesterdayClose(symbol);
 			
 			response.put("company", s.Name);
 			response.put("symbol", s.Symbol);
 			response.put("about", s.Description);
+			response.put("yesterdayClose", yesterdayClose);
 			response.put("todayData", todayData);
 			response.put("statistics", statistics);
 			response.put("articles", articles);

@@ -14,20 +14,21 @@ public class TickerJob implements Runnable {
 	
 	@Override
 	public void run() {
+		log.info("TickerJob started " + this);
 		while (true) {
-			log.info("Started " + this);
+			timeout(); 
 			TickerController tc;
 			try {
 				tc = new TickerController();
+				log.info("Started " + tc);
 				tc.reload();
 				tc = null;
-				
+				log.info("Finished " + tc);
 			} catch (SQLException e) {
 				log.error("Failed to reload live data -- Critical");
 				log.error(Util.stackTraceToString(e));
-			}	
+			}				
 		}
-		
 	}
 	
 	public void timeout() {

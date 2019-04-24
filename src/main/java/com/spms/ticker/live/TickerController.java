@@ -34,10 +34,6 @@ public class TickerController implements Controller {
 		return "/stock/" + ticker + "/chart/1d";
 	}
 	
-	private static Integer ceil(Double d) {
-		return (int) Math.round(Math.ceil(d));
-	}
-	
 	public TickerController() throws SQLException {
 		sdao = new SymbolDAO();		
 		los = sdao.getAll();
@@ -47,7 +43,7 @@ public class TickerController implements Controller {
 		List<Thread> workers = new ArrayList<Thread>();
 		
 		// create runners
-		for (List<Symbol> part : Lists.partition(los, ceil(los.size()/ (Double.parseDouble(numWorkers.toString()))))) {
+		for (List<Symbol> part : Lists.partition(los, Util.ceil(los.size()/ (Double.parseDouble(numWorkers.toString()))))) {
 			try {
 				Thread runner = new Thread(new TickerJobWorker(part));
 				workers.add(runner);
