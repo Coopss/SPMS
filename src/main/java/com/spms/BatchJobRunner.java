@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.spms.news.NewsJob;
 import com.spms.ticker.history.TickerHistoryJob;
 import com.spms.ticker.live.TickerJob;
 import com.spms.tops.TopMoversJob;
@@ -44,16 +45,27 @@ public class BatchJobRunner extends HttpServlet {
 				System.exit(1);
 			}
 			
-			// ticker history (4 am daily)
+			// top movers (4 am daily)
 			Thread topMoversJob;
 			try {
 				topMoversJob = new Thread(new TopMoversJob());
 				topMoversJob.start();
 			} catch (Exception e) {
 				log.error(Util.stackTraceToString(e));
-				log.error("UNRECOVERABLE ERROR: Could not init TickerHistoryJob()");
+				log.error("UNRECOVERABLE ERROR: Could not init TopMoversJob()");
 				System.exit(1);
 			}
+			
+			// get news (every 15 min)
+			Thread newsJob;
+			try {
+				newsJob = new Thread(new NewsJob());
+				newsJob.start();
+			} catch (Exception e) {
+				log.error(Util.stackTraceToString(e));
+				log.error("UNRECOVERABLE ERROR: Could not init NewsJob()");
+				System.exit(1);
+			}			
 			
 		}
 	}
