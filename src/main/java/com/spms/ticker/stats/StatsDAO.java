@@ -20,26 +20,71 @@ import com.spms.ticker.live.TickerData;
 import com.spms.ticker.los.Symbol;
 import com.spms.ticker.los.SymbolDAO;
 import com.spms.ticker.tools.Requests;
+import com.spms.tops.TopMoversController;
 
 public class StatsDAO {
-	private String tableName = "ticker.stats";
+	private String tableName = "internal.stats";
 	private static final Logger log = LogManager.getLogger(StatsDAO.class);
 	private Connection conn;
-	private SymbolDAO sdao;
 	
 	public StatsDAO() {
 		try {
 			conn = SPMSDB.getConnection();
 		} catch (SQLException e) {
 			log.error(Util.stackTraceToString(e));
-		}
-		
-		sdao = new SymbolDAO();
-		
+		}		
 	}
 	
-	private String getURLExt(String symbol) {
-		return "/stock/" + symbol + "/stats";
+	public boolean dropTable() throws SQLException {
+		return SPMSDB.dropTable(conn, tableName);
+	}
+	
+	public static String quote(String s) {
+		return "'" + s + "',";
+	}
+	
+	public static String makeInsertCommand(String tableName, String keys, String values) {
+		String[] keysArr = keys.split(",");
+		String[] valsArr = values.split(",");
+		
+		String command = "INSERT INTO [" + tableName + "] (";
+		
+		for (int i = 0; i < keysArr.length; i++) {
+			command += "[" + keysArr[i] + "]";
+			
+			if (i < keysArr.length - 1)
+				command += ",";
+		}
+		
+		command += ") VALUES (";
+		
+		for (int i = 0; i < valsArr.length; i++) {
+			command += valsArr[i];
+			
+			if (i < valsArr.length - 1)
+				command += ",";
+		}
+		
+		command += ");";
+		
+		return command;
+	}
+	
+	public static String makeUpdateCommand(String tableName, String keys, String values) {
+		String[] keysArr = keys.split(",");
+		String[] valsArr = values.split(",");
+		
+		String command = "UPDATE [" + tableName + "] SET ";
+		
+		for (int i = 0; i < keysArr.length; i++) {
+			command += keysArr[i].substring(1,keysArr[i].length()-1) + "=" + valsArr[i];
+			
+			if (i < keysArr.length - 1)
+				command += ", ";
+		}
+		command += "' WHERE companyName=" + valsArr[0] + ";";
+		
+		return command;		
 	}
 	
 	public boolean createTable() throws SQLException {
@@ -114,193 +159,24 @@ public class StatsDAO {
 		return "'" + formatted + "'";
 	}
 	
-	public boolean insertRow(Stats s) throws SQLException, java.text.ParseException {
+	private void updateRow(Stats s) throws SQLException, java.text.ParseException {
 		Statement stmt = conn.createStatement();
-		stmt.executeUpdate("INSERT INTO [" + tableName + "] ([companyName],[marketcap],[beta],[week52high],[week52low],[week52change],[shortInterest],[shortDate],[dividendRate],[dividendYield],[exDividendDate],[latestEPS],[latestEPSDate],[sharesOutstanding],[float],[returnOnEquity],[consensusEPS],[numberOfEstimates],[symbol],[EBITDA],[revenue],[grossProfit],[cash],[debt],[ttmEPS],[revenuePerShare],[revenuePerEmployee],[peRatioHigh],[peRatioLow],[EPSSurpriseDollar],[EPSSurprisePercent],[returnOnAssets],[returnOnCapital],[profitMargin],[priceToSales],[priceToBook],[day200MovingAvg],[day50MovingAvg],[institutionPercent],[insiderPercent],[shortRatio],[year5ChangePercent],[year2ChangePercent],[year1ChangePercent],[ytdChangePercent],[month6ChangePercent],[month3ChangePercent],[month1ChangePercent],[day5ChangePercent]) VALUES " + "('" +  s.companyName + "', '" + s.marketcap + "', '" + s.beta + "', '" + s.week52high+ "', '" + s.week52low + "', '" + s.week52change + "', '" + s.shortInterest + "', " + dateWrapper(s.shortDate) + ", '" + s.dividendRate + "', '" + s.dividendYield + "', " + dateWrapper(s.exDividendDate) + ", '" + s.latestEPS + "', " + dateWrapper(s.latestEPSDate) + ", '" + s.sharesOutstanding + "', '" + s.Float + "', '" + s.returnOnEquity+ "', '" + s.consensusEPS + "', '" + s.numberOfEstimates + "', '" + s.symbol + "', '" + s.EBITDA + "', '" + s.revenue + "', '" + s.grossProfit + "', '" + s.cash + "', '" + s.debt + "', '" + s.ttmEPS + "', '" + s.revenuePerShare + "', '" + s.revenuePerEmployee + "', '" + s.peRatioHigh + "', '" + s.peRatioLow + "', '" + s.EPSSurpriseDollar + "', '" + s.EPSSurprisePercent + "', '" + s.returnOnAssets + "', '" + s.returnOnCapital + "', '" + s.profitMargin + "', '" + s.priceToSales + "', '" + s.priceToBook + "', '" + s.day200MovingAvg + "', '" + s.day50MovingAvg + "', '" + s.institutionPercent + "', '" + s.insiderPercent+ "', '" + s.shortRatio + "', '" + s.year5ChangePercent + "', '" + s.year2ChangePercent+ "', '" + s.year1ChangePercent+ "', '" + s.ytdChangePercent+ "', '" + s.month6ChangePercent+ "', '" + s.month3ChangePercent+ "', '" + s.month1ChangePercent+ "', '" + s.day5ChangePercent + "')");
-		
-		return false;
+		stmt.execute(makeUpdateCommand(tableName, "[companyName],[marketcap],[beta],[week52high],[week52low],[week52change],[shortInterest],[shortDate],[dividendRate],[dividendYield],[exDividendDate],[latestEPS],[latestEPSDate],[sharesOutstanding],[float],[returnOnEquity],[consensusEPS],[numberOfEstimates],[EBITDA],[revenue],[grossProfit],[cash],[debt],[ttmEPS],[revenuePerShare],[revenuePerEmployee],[peRatioHigh],[peRatioLow],[EPSSurpriseDollar],[EPSSurprisePercent],[returnOnAssets],[returnOnCapital],[profitMargin],[priceToSales],[priceToBook],[day200MovingAvg],[day50MovingAvg],[institutionPercent],[insiderPercent],[shortRatio],[year5ChangePercent],[year2ChangePercent],[year1ChangePercent],[ytdChangePercent],[month6ChangePercent],[month3ChangePercent],[month1ChangePercent],[day5ChangePercent]", quote(fixQ(s.companyName)) + quote(s.marketcap) + quote(s.beta) + quote(s.week52high) + quote(s.week52low) + quote(s.week52change) + quote(s.shortInterest) + dateWrapper(s.shortDate) + "," + quote(s.dividendRate) + quote(s.dividendYield) + dateWrapper(s.exDividendDate) + "," + quote(s.latestEPS) + dateWrapper(s.latestEPSDate) + "," +  quote(s.sharesOutstanding) + quote(s.Float) + quote(s.returnOnEquity) + quote(s.consensusEPS) + quote(s.numberOfEstimates) + quote(s.EBITDA) + quote(s.revenue) + quote(s.grossProfit) + quote(s.cash) + quote(s.debt) + quote(s.ttmEPS) + quote(s.revenuePerShare) + quote(s.revenuePerEmployee) + quote(s.peRatioHigh) + quote(s.peRatioLow) + quote(s.EPSSurpriseDollar) + quote(s.EPSSurprisePercent) + quote(s.returnOnAssets) + quote(s.returnOnCapital) + quote(s.profitMargin) + quote(s.priceToSales) + quote(s.priceToBook) + quote(s.day200MovingAvg) + quote(s.day50MovingAvg) + quote(s.institutionPercent) + quote(s.insiderPercent) + quote(s.shortRatio) + quote(s.year5ChangePercent) + quote(s.year2ChangePercent) + quote(s.year1ChangePercent) + quote(s.ytdChangePercent) + quote(s.month6ChangePercent) + quote(s.month3ChangePercent) + quote(s.month1ChangePercent) + quote(s.day5ChangePercent).substring(0,s.day5ChangePercent.length()-1)));
 	}
 	
-	public void reload() throws SQLException, MalformedURLException, ParseException, java.text.ParseException {
-		log.info("Beginning ticker statistics table reload");
-		log.info("Dropping old table: " + SPMSDB.dropTable(conn, tableName));
-		log.info("Creating new table: " + createTable());
-		log.info("Beginning insertion of data");
-		
-		for (Symbol sym : sdao.getAll()) {
-			try {
-				JSONObject jobj = (JSONObject) Requests.get(getURLExt(sym.Symbol), Requests.ReturnType.object);
-				Stats s = new Stats();
-				for (Object key : jobj.keySet()) {
-				
-					if (jobj.get(key) == null) {
-						continue;
-					}
-					
-					switch ((String) key) {
-					  	case "companyName":
-		                    s.companyName = (String) jobj.get("companyName").toString();
-		                    if (s.companyName.equals("0")) {
-		                    	s.companyName = null;
-		                    }
-		                    break;
-		                case "marketcap":
-		                    s.marketcap = (String) jobj.get("marketcap").toString();
-		                    break;
-		                case "beta":
-		                    s.beta = (String) jobj.get("beta").toString();
-		                    break;
-		                case "week52high":
-		                    s.week52high = (String) jobj.get("week52high").toString();
-		                    break;
-		                case "week52low":
-		                    s.week52low = (String) jobj.get("week52low").toString();
-		                    break;
-		                case "week52change":
-		                    s.week52change = (String) jobj.get("week52change").toString();
-		                    break;
-		                case "shortInterest":
-		                    s.shortInterest = (String) jobj.get("shortInterest").toString();
-		                    break;
-		                case "shortDate":
-		                    s.shortDate = (String) jobj.get("shortDate").toString();
-		                    break;
-		                case "dividendRate":
-		                    s.dividendRate = (String) jobj.get("dividendRate").toString();
-		                    break;
-		                case "dividendYield":
-		                    s.dividendYield = (String) jobj.get("dividendYield").toString();
-		                    break;
-		                case "exDividendDate":
-		                    s.exDividendDate = (String) jobj.get("exDividendDate").toString();
-		                    break;
-		                case "latestEPS":
-		                    s.latestEPS = (String) jobj.get("latestEPS").toString();
-		                    break;
-		                case "latestEPSDate":
-		                    s.latestEPSDate = (String) jobj.get("latestEPSDate").toString();
-		                    break;
-		                case "sharesOutstanding":
-		                    s.sharesOutstanding = (String) jobj.get("sharesOutstanding").toString();
-		                    break;
-		                case "float":
-		                	if (jobj.get("Float") != null) {
-		                        s.Float = (String) jobj.get("Float").toString();
-		                	} else {
-		                		s.Float = null;
-		                	}
-		                	break;
-		
-		                case "returnOnEquity":
-		                    s.returnOnEquity = (String) jobj.get("returnOnEquity").toString();
-		                    break;
-		                case "consensusEPS":
-		                    s.consensusEPS = (String) jobj.get("consensusEPS").toString();
-		                    break;
-		                case "numberOfEstimates":
-		                    s.numberOfEstimates = (String) jobj.get("numberOfEstimates").toString();
-		                    break;
-		                case "symbol":
-		                    s.symbol = (String) jobj.get("symbol").toString();
-		                    break;
-		                case "EBITDA":
-		                    s.EBITDA = (String) jobj.get("EBITDA").toString();
-		                    break;
-		                case "revenue":
-		                    s.revenue = (String) jobj.get("revenue").toString();
-		                    break;
-		                case "grossProfit":
-		                    s.grossProfit = (String) jobj.get("grossProfit").toString();
-		                    break;
-		                case "cash":
-		                    s.cash = (String) jobj.get("cash").toString();
-		                    break;
-		                case "debt":
-		                    s.debt = (String) jobj.get("debt").toString();
-		                    break;
-		                case "ttmEPS":
-		                    s.ttmEPS = (String) jobj.get("ttmEPS").toString();
-		                    break;
-		                case "revenuePerShare":
-		                    s.revenuePerShare = (String) jobj.get("revenuePerShare").toString();
-		                    break;
-		                case "revenuePerEmployee":
-		                    s.revenuePerEmployee = (String) jobj.get("revenuePerEmployee").toString();
-		                    break;
-		                case "peRatioHigh":
-		                    s.peRatioHigh = (String) jobj.get("peRatioHigh").toString();
-		                    break;
-		                case "peRatioLow":
-		                    s.peRatioLow = (String) jobj.get("peRatioLow").toString();
-		                    break;
-		                case "EPSSurpriseDollar":
-		                    s.EPSSurpriseDollar = (String) jobj.get("EPSSurpriseDollar").toString();
-		                    break;
-		                case "EPSSurprisePercent":
-		                    s.EPSSurprisePercent = (String) jobj.get("EPSSurprisePercent").toString();
-		                    break;
-		                case "returnOnAssets":
-		                    s.returnOnAssets = (String) jobj.get("returnOnAssets").toString();
-		                    break;
-		                case "returnOnCapital":
-		                    s.returnOnCapital = (String) jobj.get("returnOnCapital").toString();
-		                    break;
-		                case "profitMargin":
-		                    s.profitMargin = (String) jobj.get("profitMargin").toString();
-		                    break;
-		                case "priceToSales":
-		                    s.priceToSales = (String) jobj.get("priceToSales").toString();
-		                    break;
-		                case "priceToBook":
-		                    s.priceToBook = (String) jobj.get("priceToBook").toString();
-		                    break;
-		                case "day200MovingAvg":
-		                    s.day200MovingAvg = (String) jobj.get("day200MovingAvg").toString();
-		                    break;
-		                case "day50MovingAvg":
-		                    s.day50MovingAvg = (String) jobj.get("day50MovingAvg").toString();
-		                    break;
-		                case "institutionPercent":
-		                    s.institutionPercent = (String) jobj.get("institutionPercent").toString();
-		                    break;
-		                case "insiderPercent":
-		                    s.insiderPercent = (String) jobj.get("insiderPercent").toString();
-		                    break;
-		                case "shortRatio":
-		                    s.shortRatio = (String) jobj.get("shortRatio").toString();
-		                    break;
-		                case "year5ChangePercent":
-		                    s.year5ChangePercent = (String) jobj.get("year5ChangePercent").toString();
-		                    break;
-		                case "year2ChangePercent":
-		                    s.year2ChangePercent = (String) jobj.get("year2ChangePercent").toString();
-		                    break;
-		                case "year1ChangePercent":
-		                    s.year1ChangePercent = (String) jobj.get("year1ChangePercent").toString();
-		                    break;
-		                case "ytdChangePercent":
-		                    s.ytdChangePercent = (String) jobj.get("ytdChangePercent").toString();
-		                    break;
-		                case "month6ChangePercent":
-		                    s.month6ChangePercent = (String) jobj.get("month6ChangePercent").toString();
-		                    break;
-		                case "month3ChangePercent":
-		                    s.month3ChangePercent = (String) jobj.get("month3ChangePercent").toString();
-		                    break;
-		                case "month1ChangePercent":
-		                    s.month1ChangePercent = (String) jobj.get("month1ChangePercent").toString();
-		                    break;
-		                case "day5ChangePercent":
-		                    s.day5ChangePercent = (String) jobj.get("day5ChangePercent").toString();
-		                    break;
-					}
-				}
-				
-				insertRow(s);
-				log.info("Inserted statistics for " + s.symbol);
-			} catch (Exception e) {
-				log.error(Util.stackTraceToString(e));
-			}
+	public static String fixQ(String s) {
+		if (s == null)
+			return "";
+		else
+			return s.replace("'", "''");
+	}
+	
+	public void insertRow(Stats s) {
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("INSERT INTO [" + tableName + "] ([companyName],[marketcap],[beta],[week52high],[week52low],[week52change],[shortInterest],[shortDate],[dividendRate],[dividendYield],[exDividendDate],[latestEPS],[latestEPSDate],[sharesOutstanding],[float],[returnOnEquity],[consensusEPS],[numberOfEstimates],[symbol],[EBITDA],[revenue],[grossProfit],[cash],[debt],[ttmEPS],[revenuePerShare],[revenuePerEmployee],[peRatioHigh],[peRatioLow],[EPSSurpriseDollar],[EPSSurprisePercent],[returnOnAssets],[returnOnCapital],[profitMargin],[priceToSales],[priceToBook],[day200MovingAvg],[day50MovingAvg],[institutionPercent],[insiderPercent],[shortRatio],[year5ChangePercent],[year2ChangePercent],[year1ChangePercent],[ytdChangePercent],[month6ChangePercent],[month3ChangePercent],[month1ChangePercent],[day5ChangePercent]) VALUES " + "('" +  fixQ(s.companyName) + "', '" + s.marketcap + "', '" + s.beta + "', '" + s.week52high+ "', '" + s.week52low + "', '" + s.week52change + "', '" + s.shortInterest + "', " + dateWrapper(s.shortDate) + ", '" + s.dividendRate + "', '" + s.dividendYield + "', " + dateWrapper(s.exDividendDate) + ", '" + s.latestEPS + "', " + dateWrapper(s.latestEPSDate) + ", '" + s.sharesOutstanding + "', '" + s.Float + "', '" + s.returnOnEquity+ "', '" + s.consensusEPS + "', '" + s.numberOfEstimates + "', '" + s.symbol + "', '" + s.EBITDA + "', '" + s.revenue + "', '" + s.grossProfit + "', '" + s.cash + "', '" + s.debt + "', '" + s.ttmEPS + "', '" + s.revenuePerShare + "', '" + s.revenuePerEmployee + "', '" + s.peRatioHigh + "', '" + s.peRatioLow + "', '" + s.EPSSurpriseDollar + "', '" + s.EPSSurprisePercent + "', '" + s.returnOnAssets + "', '" + s.returnOnCapital + "', '" + s.profitMargin + "', '" + s.priceToSales + "', '" + s.priceToBook + "', '" + s.day200MovingAvg + "', '" + s.day50MovingAvg + "', '" + s.institutionPercent + "', '" + s.insiderPercent+ "', '" + s.shortRatio + "', '" + s.year5ChangePercent + "', '" + s.year2ChangePercent+ "', '" + s.year1ChangePercent+ "', '" + s.ytdChangePercent+ "', '" + s.month6ChangePercent+ "', '" + s.month3ChangePercent+ "', '" + s.month1ChangePercent+ "', '" + s.day5ChangePercent + "')");
+		} catch (Exception e) {
+			log.error(Util.stackTraceToString(e));
 		}
 	}
 	
@@ -339,11 +215,5 @@ public class StatsDAO {
 		
 		return s;
 		
-	}
-	
-	public static void main(String[] args) throws SQLException, IOException, ParseException, java.text.ParseException {
-		StatsDAO sdao = new StatsDAO();
-		sdao.reload();
-	}
-	
+	}	
 }

@@ -237,6 +237,7 @@ function search() {
 		
 		for (var i = 0; i < data.length; i++) { //parse each line
 			var match = '';
+			var symbol = '';
 			
 			for (var j = 0; j < data[i].length; j++) { //parse data in each line
 				if (j == data[i].length - 1) {
@@ -245,12 +246,14 @@ function search() {
 					match += data[i][j] + ' - '; //build up an option tag's value
 				}
 			}
+			symbol = data[i][0];
 			
-			option_block += '<option value="' + match + '">'; //build the entire block of options for this search
+			option_block += '<option value="' + match + '" >'; //build the entire block of options for this search
 			
 		}
 		$('#search_list').append(option_block);
 		$('#search_term').focus(); //forces refresh of list; add autoComplete="off" to input if it's not working
+		
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
 		var statusNum = xhr.status;
@@ -259,6 +262,19 @@ function search() {
 		switch (statusNum) {
 			case 200: //not sure why this is considered a fail...
 				feedback = "No results found for current search";
+				/* Taken from https://stackoverflow.com/questions/30022728/perform-action-when-clicking-html5-datalist-option */
+				var val = document.getElementById("search_term").value;
+			    var opts = document.getElementById('search_list').childNodes;
+			    for (var i = 0; i < opts.length; i++) {
+			      if (opts[i].value === val) {
+			        // An item was selected from the list!
+			        // yourCallbackHere()
+					var symbol = val.split(" - ")[0];
+			        goToTicker(symbol);
+					console.log("search match selected!")
+			        break;
+			      }
+			    }
 				break;
 			case 401:
 				feedback = "search: 401 (token not found, or invalid)";
@@ -272,6 +288,10 @@ function search() {
 		//$('#feedback').html(feedback);
 
 	});
+}
+
+function goToTicker(symbol) {
+	window.location.href = "./ticker.php?s=" + symbol;
 }
 
 //prototype function for populating data in ticker.php
