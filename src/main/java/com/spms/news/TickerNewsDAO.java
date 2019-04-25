@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -92,8 +94,10 @@ public class TickerNewsDAO {
 		return msSqlDate.replace(" ","T").toString();
 	}
 
-	public void insertNews(Symbol sym, JSONObject tickerNews) throws SQLException, java.text.ParseException {
+	public boolean insertNews(Symbol sym, JSONObject tickerNews) throws SQLException, java.text.ParseException {
 		String url = Trim(objectToString(tickerNews.get("url")));
+		HashSet<String> syms = new HashSet<String>();
+		
 		if (tickerNews != null && !exists(url)) {
 			// inserts news article of selected stock
 			String command = "INSERT INTO [" + tableName + "] ([Date], [Headline], [Source], [URL], [Summary], [Image]) VALUES ";
@@ -101,20 +105,26 @@ public class TickerNewsDAO {
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(command);
 
-			// links this symbol with url in foreign key table
-			stmt.executeUpdate(makeCommand(sym.Symbol, url));
-
-			// links all related symbols to this url in foreign key table
-			for (String s : getRelatedSymbols(Trim(objectToString(tickerNews.get("related")))))
-				stmt.executeUpdate(makeCommand(s, url));
+			
+			syms.add(sym.Symbol.toUpperCase());
+			syms.addAll(getRelatedSymbols(Trim(objectToString(tickerNews.get("related")))));
+			stmt.executeUpdate(makeCommand(syms, url));
+			
+			return true;
 		}
+		
+		return false;
 	}
 
-	private String makeCommand(String sym, String url) {
-		String command;
-		command = "INSERT INTO [" + tableNameSym + "] ([Symbol], [URL]) VALUES ";
-		command += "('" + sym + "','" + url + "');";
-		return command;
+	private String makeCommand(Set<String> relatedSymbols, String url) {
+		StringBuilder cmd = new StringBuilder();
+		cmd.append("INSERT INTO [" + tableNameSym + "] ([Symbol], [URL]) VALUES ");
+		for (String sym : relatedSymbols) {
+			cmd.append("('" + sym + "','" + url + "'),");
+		}
+		cmd.setLength(cmd.length() - 1);
+		cmd.append(";");
+		return cmd.toString();
 	}
 
 	private ArrayList<String> getRelatedSymbols(String o) throws SQLException {
@@ -123,7 +133,7 @@ public class TickerNewsDAO {
 		String[] relatives = o.split(",");
 
 		for (String s : relatives) {
-			if (NewsController.getSyms().contains(s))
+			if (NewsController.isValidSymbol(s))
 				relatedSyms.add(s);
 		}
 
