@@ -215,11 +215,5 @@ public class StatsDAO {
 		
 		return s;
 		
-	}
-	
-	public static void main(String[] args) throws SQLException, IOException, ParseException, java.text.ParseException {
-		StatsDAO sdao = new StatsDAO();
-		sdao.reload();
-	}
-	
+	}	
 }
