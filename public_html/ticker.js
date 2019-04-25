@@ -39,8 +39,6 @@ function ticker() {
 		var new_table = "<table class='table stock_tables'>";
 		new_table += "<tr><th>Statistics</th></tr>";
 		
-		//console.log("Stats length: " + stats.length + "; Row length: " + stats[1].length);
-		
 		//dynamically generate tables based on server data
 		for (key in stats) {
 			new_table += "<tr>";
@@ -71,6 +69,7 @@ function ticker() {
 		
 		$("#article_page_number").html("1");
 		
+        $('#chart_placeholder').remove();
 		graph(graphData);
 		
 	})

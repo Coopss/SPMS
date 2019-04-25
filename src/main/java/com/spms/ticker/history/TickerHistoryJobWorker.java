@@ -1,6 +1,7 @@
 package com.spms.ticker.history;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -15,6 +16,7 @@ import com.spms.ticker.tools.Requests;
 
 public class TickerHistoryJobWorker implements Runnable {
 	public TickerHistoryDAO dao;
+	private static final Boolean chunked = false;
 	private static final Integer numberOfChunksPerCommit = 5;
 	private static final Logger log = LogManager.getLogger(TickerHistoryJobWorker.class);
 	
@@ -31,7 +33,15 @@ public class TickerHistoryJobWorker implements Runnable {
 			try {
 				dao.createTickerHistoryTable(sym.Symbol);
 				JSONArray r = (JSONArray) Requests.get(TickerHistoryController.buildExt(sym.Symbol), Requests.ReturnType.array);
-				List<List<Object>> chunks = Lists.partition(r, r.size() / numberOfChunksPerCommit);
+				
+				List<List<Object>> chunks;
+			
+				if (chunked) {
+					chunks = Lists.partition(r, r.size() / numberOfChunksPerCommit);
+				} else {
+					chunks = new ArrayList<List<Object>>();
+					chunks.add(r);
+				}
 				
 				for (List<Object> chunk : chunks) {
 					dao.insertTicker(chunk, sym.Symbol);
