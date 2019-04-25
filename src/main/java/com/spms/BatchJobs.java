@@ -5,4 +5,5 @@ public enum BatchJobs {
 	tickerHistoryJob,
 	topMoversJob,
 	newsJob,
+	statsJob
 }

@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import com.spms.news.NewsJob;
 import com.spms.ticker.history.TickerHistoryJob;
 import com.spms.ticker.live.TickerJob;
+import com.spms.ticker.stats.StatsJob;
 import com.spms.tops.TopMoversJob;
 
 public class BatchJobRunner extends HttpServlet {
@@ -30,6 +31,7 @@ public class BatchJobRunner extends HttpServlet {
 		enabled.put(BatchJobs.tickerHistoryJob, false);
 		enabled.put(BatchJobs.topMoversJob, false);
 		enabled.put(BatchJobs.newsJob, false);
+		enabled.put(BatchJobs.statsJob, true);
 	}
 	
 	
@@ -93,8 +95,23 @@ public class BatchJobRunner extends HttpServlet {
 				log.error(Util.stackTraceToString(e));
 				log.error("UNRECOVERABLE ERROR: Could not init NewsJob()");
 				System.exit(1);
+			}				
+		}
+		
+		// get stats (4 am daily)
+		if (enabled.get(BatchJobs.newsJob)) {	
+			Thread statsJob;
+			try {
+				statsJob = new Thread(new StatsJob());
+				statsJob.start();
+				batchJobThreads.add(statsJob);
+			} catch (Exception e) {
+				log.error(Util.stackTraceToString(e));
+				log.error("UNRECOVERABLE ERROR: Could not init NewsJob()");
+				System.exit(1);
 			}			
 			
 		}
+		
 	}
 }
