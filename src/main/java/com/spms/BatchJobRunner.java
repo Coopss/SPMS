@@ -28,19 +28,14 @@ public class BatchJobRunner extends HttpServlet {
 		batchJobThreads = new ArrayList<Thread>();
 		
 		enabled.put(BatchJobs.tickerJob, true);
-		enabled.put(BatchJobs.tickerHistoryJob, false);
+		enabled.put(BatchJobs.tickerHistoryJob, true);
 		enabled.put(BatchJobs.topMoversJob, false);
 		enabled.put(BatchJobs.newsJob, false);
 		enabled.put(BatchJobs.statsJob, true);
 	}
 	
 	
-	public void init() throws ServletException {
-		log.info("----------");
-		log.info("----------  Initialized successfully ----------");
-		log.info("----------");
-		
-		
+	public void init() throws ServletException {	
 		// live ticker job (every 20 min)
 		if (enabled.get(BatchJobs.tickerJob)) {		
 			Thread tickerJob;
@@ -56,7 +51,7 @@ public class BatchJobRunner extends HttpServlet {
 		}
 		
 		
-		// ticker history (5 pm daily)
+		// ticker history (5 am daily)
 		if (enabled.get(BatchJobs.tickerHistoryJob)) {	
 			Thread tickerHistoryJob;
 			try {
@@ -99,7 +94,7 @@ public class BatchJobRunner extends HttpServlet {
 		}
 		
 		// get stats (4 am daily)
-		if (enabled.get(BatchJobs.newsJob)) {	
+		if (enabled.get(BatchJobs.statsJob)) {	
 			Thread statsJob;
 			try {
 				statsJob = new Thread(new StatsJob());
@@ -112,6 +107,8 @@ public class BatchJobRunner extends HttpServlet {
 			}			
 			
 		}
-		
+		log.info("----------");
+		log.info("----------  Initialized successfully ----------");
+		log.info("----------");
 	}
 }

@@ -21,7 +21,7 @@ public class TopMoversJob implements Runnable {
     
     @Override
     public void run() {
-        
+    	log.info("TopMoversJob started " + this);
         while (true) {
             timeout();
             
