@@ -15,6 +15,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import com.google.common.collect.Lists;
 import com.spms.Controller;
 import com.spms.Util;
 import com.spms.database.SPMSDB;
@@ -27,15 +28,18 @@ public class NewsController implements Controller {
 	private TickerNewsDAO tnd;
 	private SymbolDAO dao;
 	private static final Logger log = LogManager.getLogger(NewsController.class);
-	
+	private List<Symbol> los;
+	private static final Integer numWorkers = 8;
 	private static Set<String> allSyms;
 	
 	public NewsController() throws SQLException {
 		tnd = new TickerNewsDAO();
 		dao = new SymbolDAO();
 		
+		los = dao.getAll();
+		
 		allSyms = new HashSet<String>();
-		for (Symbol s : dao.getAll()) {
+		for (Symbol s : los) {
 			allSyms.add(s.Symbol.toUpperCase());
 		}
 		
@@ -51,33 +55,34 @@ public class NewsController implements Controller {
 	}
 	
 	public boolean reload() {
-		try {
-			tnd.createTickerNewsTable();
-			tnd.createTickerNewsTableSym();
-			for (Symbol sym : dao.getAll()) {
-				try {
-					JSONArray symArticles = NewsController.getArticles(sym.Symbol);
-					if (symArticles != null)
-						for (Object obj : symArticles) {
-							JSONObject jobj = (JSONObject) obj;
-//							log.info(symArticles.get(i));
-							if (tnd.insertNews(sym, jobj)) {
-								log.info("Added " + jobj.get("url"));
-							} else {
-								log.info("Already have " + jobj.get("url"));
-							}
-					} 
-				} catch (Exception e) {
-					log.error(Util.stackTraceToString(e));
-				}
+		List<Thread> workers = new ArrayList<Thread>();
+		
+		// create runners
+		for (List<Symbol> part : Lists.partition(los, Util.ceil(los.size()/ (Double.parseDouble(numWorkers.toString()))))) {
+			try {
+				Thread runner = new Thread(new NewsJobWorker(part));
+				workers.add(runner);
+				runner.start();
+			} catch (SQLException e) {
+				log.error("Failed to create runner to update -- critical");
+				log.error(Util.stackTraceToString(e));
+				return false;
 			}
-		} catch (Exception e) {
-			log.error(Util.stackTraceToString(e));
 		}
 		
+		// rejoin all threads
+		for (Thread t : workers) {
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				log.error("Failed to stop a runner, possible memory leak");
+				log.error(Util.stackTraceToString(e));
+			}
+		}
+	
 		return true;
 	}
-
+	
 	public static void main(String[] args) throws MalformedURLException, ParseException, SQLException {
 		NewsController na = new NewsController();
 		na.reload();
