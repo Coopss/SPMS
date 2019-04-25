@@ -18,6 +18,7 @@ public class TickerHistoryJob implements Runnable {
 	
 	@Override
 	public void run() {
+		log.info("TickerHistoryJob started " + this);
 		while (true) {
 			timeout();
 			
@@ -37,7 +38,7 @@ public class TickerHistoryJob implements Runnable {
 	
 	public void timeout() {
 		try {
-			Thread.sleep(Util.getTimeout(17));
+			Thread.sleep(Util.getTimeout(5));
 		} catch (InterruptedException e) {
 			log.error("Failed to sleep.");
 			log.error(Util.stackTraceToString(e));

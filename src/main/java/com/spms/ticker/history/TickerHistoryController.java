@@ -3,6 +3,8 @@ package com.spms.ticker.history;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,7 +26,6 @@ import com.spms.ticker.tools.Requests;
 public class TickerHistoryController implements Controller {
 	public TickerHistoryDAO dao;
 	public SymbolDAO sdao;
-	private static final Integer numberOfChunksPerCommit = 5;
 	private static final Integer numWorkers = 16;
 	private static final Logger log = LogManager.getLogger(TickerHistoryController.class);
 	
@@ -39,8 +40,8 @@ public class TickerHistoryController implements Controller {
 	}
 	
 	public static String buildExt(String ticker) {
-//		return "/stock/" + ticker + "/chart/1m";
-		return "/stock/" + ticker + "/chart/5y";
+		return "/stock/" + ticker + "/chart/1w";
+//		return "/stock/" + ticker + "/chart/5y";
 	}
 	
 	public boolean reload() {

@@ -42,6 +42,7 @@ public class NewsJob implements Runnable {
 	
 	@Override
 	public void run() {
+		log.info("NewsJob started " + this);
         while (true) {
             try {
                 timeout();

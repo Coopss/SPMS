@@ -15,7 +15,7 @@ public class StatsJob implements Runnable {
     
     @Override
     public void run() {
-        
+    	log.info("StatsJob started " + this);
         while (true) {
             timeout();
             

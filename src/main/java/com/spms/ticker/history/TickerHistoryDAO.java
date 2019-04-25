@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +89,7 @@ public class TickerHistoryDAO {
 				try {
 					insertTicker((JSONObject) obj, tickerName);
 				} catch (SQLServerException e2) {
-					log.warn("Duplicate value not added");
+//					log.debug("Duplicate value not added");
 				}
 			}
 		}
@@ -111,9 +112,7 @@ public class TickerHistoryDAO {
 		PreparedStatement stmt = conn.prepareStatement("SELECT TOP (1) [Date], [Open],[High],[Low],[Close],[Volume],[UnadjustedVolume],[ChangeOverTime],[Change],[Vwap],[ChangePercent] FROM [dbo].[ticker."+ticker.toUpperCase()+".history] WHERE [date] <= '" + SPMSDB.getMSSQLDatetime(date)+ "' ORDER BY [date] desc;");
 			
 			ResultSet rs = stmt.executeQuery();		
-		    
 			TickerHistoryData thd = new TickerHistoryData();
-			
 			while(rs.next()) {
 				thd.Date = rs.getString(1);
 				thd.Open = rs.getString(2);
@@ -127,9 +126,35 @@ public class TickerHistoryDAO {
 				thd.Vwap = rs.getString(10);
 				thd.ChangePercent = rs.getString(11);
 		    }
-			
 			return thd;
 	}
+	
+	public List<TickerHistoryData> getTickerOverRange(String ticker, DateRange range) throws SQLException, ParseException {
+		Date minDate = DateRange.getDateRangeOffsetFromNow(range);
+		List<TickerHistoryData> data = new ArrayList<TickerHistoryData>();
+		
+		PreparedStatement stmt = conn.prepareStatement("SELECT [Date],[Open],[High],[Low],[Close],[Volume],[UnadjustedVolume],[ChangeOverTime],[Change],[Vwap],[ChangePercent] FROM [dbo].[ticker."+ticker.toUpperCase()+".history] WHERE [date] >= '" + SPMSDB.getMSSQLDatetime(minDate)+ "' ORDER BY [date] desc;");
+			
+			ResultSet rs = stmt.executeQuery();		
+			
+			while(rs.next()) {
+				TickerHistoryData thd = new TickerHistoryData();
+				thd.Date = rs.getString(1);
+				thd.Open = rs.getString(2);
+				thd.High = rs.getString(3);
+				thd.Low = rs.getString(4);
+				thd.Close = rs.getString(5);
+				thd.Volume = rs.getString(6);
+				thd.UnadjustedVolume = rs.getString(7);
+				thd.ChangeOverTime = rs.getString(8);
+				thd.Change = rs.getString(9);
+				thd.Vwap = rs.getString(10);
+				thd.ChangePercent = rs.getString(11);
+				data.add(thd);
+		    }
+			return data;
+	}
+	
 	
 	
 }
