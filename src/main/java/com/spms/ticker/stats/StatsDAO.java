@@ -168,12 +168,12 @@ public class StatsDAO {
 			return s.replace("'", "''");
 	}
 	
-	public void insertRow(Stats s) throws SQLException, java.text.ParseException {
-		Statement stmt = conn.createStatement();
+	public void insertRow(Stats s) {
 		try {
+			Statement stmt = conn.createStatement();
 			stmt.executeUpdate("INSERT INTO [" + tableName + "] ([companyName],[marketcap],[beta],[week52high],[week52low],[week52change],[shortInterest],[shortDate],[dividendRate],[dividendYield],[exDividendDate],[latestEPS],[latestEPSDate],[sharesOutstanding],[float],[returnOnEquity],[consensusEPS],[numberOfEstimates],[symbol],[EBITDA],[revenue],[grossProfit],[cash],[debt],[ttmEPS],[revenuePerShare],[revenuePerEmployee],[peRatioHigh],[peRatioLow],[EPSSurpriseDollar],[EPSSurprisePercent],[returnOnAssets],[returnOnCapital],[profitMargin],[priceToSales],[priceToBook],[day200MovingAvg],[day50MovingAvg],[institutionPercent],[insiderPercent],[shortRatio],[year5ChangePercent],[year2ChangePercent],[year1ChangePercent],[ytdChangePercent],[month6ChangePercent],[month3ChangePercent],[month1ChangePercent],[day5ChangePercent]) VALUES " + "('" +  fixQ(s.companyName) + "', '" + s.marketcap + "', '" + s.beta + "', '" + s.week52high+ "', '" + s.week52low + "', '" + s.week52change + "', '" + s.shortInterest + "', " + dateWrapper(s.shortDate) + ", '" + s.dividendRate + "', '" + s.dividendYield + "', " + dateWrapper(s.exDividendDate) + ", '" + s.latestEPS + "', " + dateWrapper(s.latestEPSDate) + ", '" + s.sharesOutstanding + "', '" + s.Float + "', '" + s.returnOnEquity+ "', '" + s.consensusEPS + "', '" + s.numberOfEstimates + "', '" + s.symbol + "', '" + s.EBITDA + "', '" + s.revenue + "', '" + s.grossProfit + "', '" + s.cash + "', '" + s.debt + "', '" + s.ttmEPS + "', '" + s.revenuePerShare + "', '" + s.revenuePerEmployee + "', '" + s.peRatioHigh + "', '" + s.peRatioLow + "', '" + s.EPSSurpriseDollar + "', '" + s.EPSSurprisePercent + "', '" + s.returnOnAssets + "', '" + s.returnOnCapital + "', '" + s.profitMargin + "', '" + s.priceToSales + "', '" + s.priceToBook + "', '" + s.day200MovingAvg + "', '" + s.day50MovingAvg + "', '" + s.institutionPercent + "', '" + s.insiderPercent+ "', '" + s.shortRatio + "', '" + s.year5ChangePercent + "', '" + s.year2ChangePercent+ "', '" + s.year1ChangePercent+ "', '" + s.ytdChangePercent+ "', '" + s.month6ChangePercent+ "', '" + s.month3ChangePercent+ "', '" + s.month1ChangePercent+ "', '" + s.day5ChangePercent + "')");
-		} catch (SQLException e) {
-			updateRow(s);
+		} catch (Exception e) {
+			log.error(Util.stackTraceToString(e));
 		}
 	}
 	

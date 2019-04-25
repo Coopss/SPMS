@@ -31,6 +31,7 @@ public class StatsController implements Controller {
 	
 	public boolean reload() {
 		ArrayList<Symbol> allSyms;
+		boolean output = true;
 		
 		try {
 			allSyms = (ArrayList<Symbol>) dao.getAll();
@@ -215,11 +216,11 @@ public class StatsController implements Controller {
 				log.info("Inserted statistics for " + s.symbol);
 			} catch (Exception e) {
 				log.error(Util.stackTraceToString(e));
-				return false;
+				output = false;
 			}
 		}
 		
-		return true;
+		return output;
 	}
 	
 	private String getURLExt(String symbol) {
