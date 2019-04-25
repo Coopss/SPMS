@@ -20,32 +20,38 @@ import com.spms.ticker.los.Symbol;
 import com.spms.ticker.los.SymbolDAO;
 import com.spms.ticker.tools.Requests;
 
-public class NewsAggregator implements Controller {
-
+public class NewsController implements Controller {
+	
 	private TickerNewsDAO tnd;
 	private SymbolDAO dao;
-	private static final Logger log = LogManager.getLogger(NewsAggregator.class);
-
-	public NewsAggregator() throws SQLException {
+	private static final Logger log = LogManager.getLogger(NewsController.class);
+	
+	private static ArrayList<Symbol> allSyms;
+	
+	public NewsController() throws SQLException {
 		tnd = new TickerNewsDAO();
 		dao = new SymbolDAO();
 	}
-
+	
 	public static JSONArray getArticles(String ticker) throws MalformedURLException, ParseException {
 		return (JSONArray) Requests.get("/stock/" + ticker + "/news", Requests.ReturnType.array);
 	}
-
+	
 	public void addNews() throws MalformedURLException, ParseException, SQLException, java.text.ParseException {
 		for (Symbol sym : dao.getAll()) {
-			JSONArray symArticles = NewsAggregator.getArticles(sym.Symbol);
+			JSONArray symArticles = NewsController.getArticles(sym.Symbol);
 			if (symArticles != null)
 				for (int i = 0; i < symArticles.size(); i++) {
 					log.info(symArticles.get(i));
-					tnd.insertNews((JSONObject)symArticles.get(i));
+					tnd.insertNews(sym, (JSONObject)symArticles.get(i));
 			}
 		}
 	}
-
+	
+	public static ArrayList<Symbol> getSyms() {
+		return allSyms;
+	}
+	
 	public boolean reload() {
 		try {
 			tnd.createTickerNewsTable();
@@ -54,12 +60,12 @@ public class NewsAggregator implements Controller {
 			log.error(Util.stackTraceToString(e));
 			return false;
 		}
-
+		
 		return true;
 	}
 
 	public static void main(String[] args) throws MalformedURLException, ParseException, SQLException {
-		NewsAggregator na = new NewsAggregator();
+		NewsController na = new NewsController();
 		na.reload();
 	}
 
