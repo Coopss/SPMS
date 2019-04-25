@@ -20,32 +20,32 @@ import com.spms.ticker.los.Symbol;
 import com.spms.ticker.los.SymbolDAO;
 import com.spms.ticker.tools.Requests;
 
-public class NewsController implements Controller {
-	
+public class NewsAggregator implements Controller {
+
 	private TickerNewsDAO tnd;
 	private SymbolDAO dao;
-	private static final Logger log = LogManager.getLogger(NewsController.class);
-	
-	public NewsController() throws SQLException {
+	private static final Logger log = LogManager.getLogger(NewsAggregator.class);
+
+	public NewsAggregator() throws SQLException {
 		tnd = new TickerNewsDAO();
 		dao = new SymbolDAO();
 	}
-	
+
 	public static JSONArray getArticles(String ticker) throws MalformedURLException, ParseException {
 		return (JSONArray) Requests.get("/stock/" + ticker + "/news", Requests.ReturnType.array);
 	}
-	
+
 	public void addNews() throws MalformedURLException, ParseException, SQLException, java.text.ParseException {
 		for (Symbol sym : dao.getAll()) {
-			JSONArray symArticles = NewsController.getArticles(sym.Symbol);
-			if (symArticles != null) 
+			JSONArray symArticles = NewsAggregator.getArticles(sym.Symbol);
+			if (symArticles != null)
 				for (int i = 0; i < symArticles.size(); i++) {
 					log.info(symArticles.get(i));
 					tnd.insertNews((JSONObject)symArticles.get(i));
 			}
 		}
 	}
-	
+
 	public boolean reload() {
 		try {
 			tnd.createTickerNewsTable();
@@ -54,12 +54,12 @@ public class NewsController implements Controller {
 			log.error(Util.stackTraceToString(e));
 			return false;
 		}
-		
+
 		return true;
 	}
 
-	public static void main(String[] args) throws MalformedURLException, ParseException, SQLException, java.text.ParseException {
-		NewsController na = new NewsController();
+	public static void main(String[] args) throws MalformedURLException, ParseException, SQLException {
+		NewsAggregator na = new NewsAggregator();
 		na.reload();
 	}
 
