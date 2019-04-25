@@ -46,10 +46,11 @@ public class TickerNewsDAO {
 
 		String makeTableCommand =
 				"CREATE TABLE [dbo].[" + tableName + "](\n" +
+				"	[UID] [nvarchar](4000) NULL UNIQUE,\n" +	
 				"	[Date] [datetime] NOT NULL,\n" +
 				"	[Headline] [nvarchar](max) NULL,\n" +
 				"	[Source] [nvarchar](max) NULL,\n" +
-				"	[URL] [nvarchar](4000) NULL UNIQUE,\n" +
+				"	[URL] [nvarchar](4000) NULL,\n" +
 				"	[Summary] [nvarchar](max) NULL,\n" +
 				"	[Image] [nvarchar](max) NULL,\n" +
 				") ON [PRIMARY]\n";
@@ -66,8 +67,8 @@ public class TickerNewsDAO {
 
 		String makeTableCommand =
 				"CREATE TABLE [dbo].[" + tableNameSym + "](\n" +
+				"	[UID] [nvarchar](4000) NULL,\n" +
 				"	[Symbol] [nvarchar](255) NULL,\n" +
-				"	[URL] [nvarchar](max) NULL,\n" +
 				") ON [PRIMARY]\n";
 		Statement stmt = conn.createStatement();
 		stmt.executeUpdate(makeTableCommand);
@@ -100,8 +101,8 @@ public class TickerNewsDAO {
 		
 		if (tickerNews != null && !exists(url)) {
 			// inserts news article of selected stock
-			String command = "INSERT INTO [" + tableName + "] ([Date], [Headline], [Source], [URL], [Summary], [Image]) VALUES ";
-			command += "('" + formatDate(tickerNews.get("datetime").toString()) + "','" + Trim(objectToString(tickerNews.get("headline"))) + "','" + Trim(objectToString(tickerNews.get("source"))) + "','" + url + "','" + Trim(objectToString(tickerNews.get("summary"))) + "','" + Trim(objectToString(tickerNews.get("image"))) + "');";
+			String command = "INSERT INTO [" + tableName + "] ([Date], [Headline], [Source], [URL], [Summary], [Image], [UID]) VALUES ";
+			command += "('" + formatDate(tickerNews.get("datetime").toString()) + "','" + Trim(objectToString(tickerNews.get("headline"))) + "','" + Trim(objectToString(tickerNews.get("source"))) + "','" + url + "','" + Trim(objectToString(tickerNews.get("summary"))) + "','" + Trim(objectToString(tickerNews.get("image"))) + "', '" + getUID(url) + "');";
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(command);
 
@@ -118,9 +119,9 @@ public class TickerNewsDAO {
 
 	private String makeCommand(Set<String> relatedSymbols, String url) {
 		StringBuilder cmd = new StringBuilder();
-		cmd.append("INSERT INTO [" + tableNameSym + "] ([Symbol], [URL]) VALUES ");
+		cmd.append("INSERT INTO [" + tableNameSym + "] ([Symbol], [UID]) VALUES ");
 		for (String sym : relatedSymbols) {
-			cmd.append("('" + sym + "','" + url + "'),");
+			cmd.append("('" + sym + "','" + getUID(url) + "'),");
 		}
 		cmd.setLength(cmd.length() - 1);
 		cmd.append(";");
@@ -142,7 +143,7 @@ public class TickerNewsDAO {
 
 	public ArrayList<NewsArticle> getNews(String tickerName) throws SQLException {
 		ArrayList<NewsArticle> newsArticles = new ArrayList<NewsArticle>();
-		String command = "SELECT DISTINCT TOP(12) * FROM dbo.[" + tableName + "] as news, dbo.[" + tableNameSym + "] as syms WHERE syms.URL=news.URL AND syms.Symbol='" + tickerName + "' ORDER BY [Date] DESC;";
+		String command = "SELECT DISTINCT TOP(12) * FROM dbo.[" + tableName + "] as news, dbo.[" + tableNameSym + "] as syms WHERE syms.UID=news.UID AND syms.Symbol='" + tickerName + "' ORDER BY [Date] DESC;";
 		PreparedStatement stmt = conn.prepareStatement(command);
 		ResultSet rs = stmt.executeQuery();
 
@@ -160,7 +161,8 @@ public class TickerNewsDAO {
 	}
 
 	private boolean exists(String url) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement("SELECT URL from [dbo].[" + tableName + "] WHERE URL='" + url + "';");
+		String uid = getUID(url);
+        PreparedStatement stmt = conn.prepareStatement("SELECT UID from [dbo].[" + tableName + "] WHERE UID='" + uid + "';");
 
         String link = "";
         ResultSet rs = stmt.executeQuery();
@@ -173,6 +175,11 @@ public class TickerNewsDAO {
         	return false;
         else
         	return true;
+	}
+	
+	private String getUID(String url) {
+		String[] s = url.split("/");
+		return s[s.length - 1];
 	}
 
 }
