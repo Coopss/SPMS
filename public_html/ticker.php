@@ -41,77 +41,78 @@
                                                     <span id="chart_placeholder">Generating graph, please wait...</span>
                                                     <canvas id="myChart" height="400"></canvas>
                                                 </div>
+                                                <div class="card mt-3 tab-card">
+                                                        <div class="card-header tab-card-header">
+                                                          <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="Buy" aria-selected="true">Buy</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Sell" aria-selected="false">Sell</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" id="three-tab" data-toggle="tab" href="#three" role="tab" aria-controls="Watch" aria-selected="false">Watch</a>
+                                                            </li>
+                                                          </ul>
+                                                        </div>
+
+                                                        <div class="tab-content" id="myTabContent">
+                                                          <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
+                                                            <h5 class="card-title">Buy</h5>
+                                                            <input id="datepicker" onkeydown="return false" placeholder="Date of Purchase" />
+                                                                    <script>
+                                                                    $('#datepicker').datepicker({
+                                                                        daysOfWeekDisabled: [0,6]
+                                                                        });
+                                                                    </script>
+                                                            <form class="form-inline">
+                                                                    <input class="form-control" type="text" placeholder="Amount" id="buycount" style="width:100%"> </input>
+                                                            </form>
+                                                            <form class="form-inline">
+                                                                    <input class="form-control" type="text" placeholder="Cost of all shares" id="buyprice" style="width:100%"> </input>
+                                                            </form>
+                                                            <p class="card-text">Here is where you buy a stock.</p>
+                                                          </div>
+                                                          <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
+                                                            <h5 class="card-title">Sell</h5>
+                                                            <form class="form-inline">
+                                                                    <input class="form-control" type="text" placeholder="Amount" id="buycount" style="width:100%"> </input>
+                                                            </form>
+                                                            <p class="card-text">Here is where you sell a stock</p>
+                                                          </div>
+                                                          <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
+                                                            <h5 class="card-title">Watchlist</h5>
+                                                           <a href="#" class="btn btn-primary">Add</a>
+                                                            <p class="card-text">Add/Remove this stock from your watchlist</p>
+                                                          </div>
+
+                                                        </div>
+                                                      </div>
+                                                      <table class = "table stock_tables">
+                                                              <!-- Portfolio stock details -->
+                                                         <tbody>
+                                                            <th colspan="2">
+                                                               <b>Porfolio</b>
+                                                            </th>
+                                                            <tr>
+                                                               <td>Shares</th>
+                                                               <td> SHARE COUNT</th>
+                                                            </tr>
+                                                            <tr>
+                                                               <td> Date Purchased </td>
+                                                               <td> Date </td>
+                                                            </tr>
+                                                            <tr>
+                                                               <td> Time Purchased </td>
+                                                               <td> TIME </td>
+                                                            </tr>
+                                                         </tbody>
+                                                 </table>
                                         <h3 class="text-center">About</h3>
                                         <p id="ticker_about">Loading stock info...</p>
                                 </div>
                                 <div class="col-lg-3" id="stock_table_div">
-                                        <table class = "table stock_tables">
-                                                <!-- Portfolio stock details -->
-                                           <tbody>
-                                              <th colspan="2">
-                                                 <b>Porfolio</b>
-                                              </th>
-                                              <tr>
-                                                 <td>Shares</th>
-                                                 <td> SHARE COUNT</th>
-                                              </tr>
-                                              <tr>
-                                                 <td> Date Purchased </td>
-                                                 <td> Date </td>
-                                              </tr>
-                                              <tr>
-                                                 <td> Time Purchased </td>
-                                                 <td> TIME </td>
-                                              </tr>
-                                           </tbody>
-                                        </table>
-                                        <div class="card mt-3 tab-card">
-                                                <div class="card-header tab-card-header">
-                                                  <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="Buy" aria-selected="true">Buy</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Sell" aria-selected="false">Sell</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" id="three-tab" data-toggle="tab" href="#three" role="tab" aria-controls="Watch" aria-selected="false">Watch</a>
-                                                    </li>
-                                                  </ul>
-                                                </div>
 
-                                                <div class="tab-content" id="myTabContent">
-                                                  <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
-                                                    <h5 class="card-title">Buy</h5>
-                                                    <input id="datepicker" onkeydown="return false" placeholder="Date of Purchase" />
-                                                            <script>
-                                                            $('#datepicker').datepicker({
-                                                                daysOfWeekDisabled: [0,6]
-                                                                });
-                                                            </script>
-                                                    <form class="form-inline">
-                                                            <input class="form-control" type="text" placeholder="Amount" id="buycount" style="width:100%"> </input>
-                                                    </form>
-                                                    <form class="form-inline">
-                                                            <input class="form-control" type="text" placeholder="Cost of all shares" id="buyprice" style="width:100%"> </input>
-                                                    </form>
-                                                    <p class="card-text">Here is where you buy a stock.</p>
-                                                  </div>
-                                                  <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
-                                                    <h5 class="card-title">Sell</h5>
-                                                    <form class="form-inline">
-                                                            <input class="form-control" type="text" placeholder="Amount" id="buycount" style="width:100%"> </input>
-                                                    </form>
-                                                    <p class="card-text">Here is where you sell a stock</p>
-                                                  </div>
-                                                  <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
-                                                    <h5 class="card-title">Watchlist</h5>
-                                                   <a href="#" class="btn btn-primary">Add</a>
-                                                    <p class="card-text">Add/Remove this stock from your watchlist</p>
-                                                  </div>
-
-                                                </div>
-                                              </div>
 
                                         <!-- Statistics -->
                                         <span id='stats_go_here'>Loading stats, please wait...</span>
@@ -145,7 +146,7 @@
                                                 <div class="card mb-3" style="max-width: 100%;">
                                                   <div class="row no-gutters hoverable">
                                                     <div class="col-md-4 artcile_img">
-                                                      <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="hoverable card-img" alt="Image Unavailable">
+                                                      <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" height=50% width=50% class="hoverable card-img" alt="Image Unavailable">
                                                     </div>
                                                     <div class="col-md-8">
                                                       <div class="card-body">
