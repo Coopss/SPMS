@@ -1,5 +1,6 @@
 package com.spms.news;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,9 +29,12 @@ public class TickerNewsDAO {
 	private Connection conn;
 	private JSONArray articles;
 	private String ticker;
+	private ImageFromURL ifu;
+	
 
 	public TickerNewsDAO() throws SQLException {
 		conn  = SPMSDB.getConnection();
+		ifu = new ImageFromURL();
 	}
 
 	TickerNewsDAO(JSONArray jsons, String tickername) throws SQLException {
@@ -95,14 +99,14 @@ public class TickerNewsDAO {
 		return msSqlDate.replace(" ","T").toString();
 	}
 
-	public boolean insertNews(Symbol sym, JSONObject tickerNews) throws SQLException, java.text.ParseException {
+	public boolean insertNews(Symbol sym, JSONObject tickerNews) throws SQLException, java.text.ParseException, IOException, ParseException {
 		String url = Trim(objectToString(tickerNews.get("url")));
 		HashSet<String> syms = new HashSet<String>();
 		
 		if (tickerNews != null && !exists(url)) {
 			// inserts news article of selected stock
 			String command = "INSERT INTO [" + tableName + "] ([Date], [Headline], [Source], [URL], [Summary], [Image], [UID]) VALUES ";
-			command += "('" + formatDate(tickerNews.get("datetime").toString()) + "','" + Trim(objectToString(tickerNews.get("headline"))) + "','" + Trim(objectToString(tickerNews.get("source"))) + "','" + url + "','" + Trim(objectToString(tickerNews.get("summary"))) + "','" + Trim(objectToString(tickerNews.get("image"))) + "', '" + getUID(url) + "');";
+			command += "('" + formatDate(tickerNews.get("datetime").toString()) + "','" + Trim(objectToString(tickerNews.get("headline"))) + "','" + Trim(objectToString(tickerNews.get("source"))) + "','" + url + "','" + Trim(objectToString(tickerNews.get("summary"))) + "','" + ifu.getImage(url) + "', '" + getUID(url) + "');";
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(command);
 
