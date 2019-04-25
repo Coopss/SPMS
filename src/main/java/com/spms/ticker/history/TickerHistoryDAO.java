@@ -9,12 +9,16 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import com.spms.database.SPMSDB;
 
 public class TickerHistoryDAO {
 	private Connection conn;
+	private static final Logger log = LogManager.getLogger(TickerHistoryDAO.class);
 	
 	public TickerHistoryDAO () throws SQLException {
 		conn = SPMSDB.getConnection();
@@ -61,10 +65,6 @@ public class TickerHistoryDAO {
 		StringBuilder command = new StringBuilder();
 		Statement stmt = conn.createStatement();
 		
-		if (!SPMSDB.tableExists(conn, tableName)) {
-			createTickerHistoryTable(tickerName);
-		}
-		
 		// add header
 		command.append("INSERT INTO [" + tableName + "] ([Date], [Open], [High], [Low], [Close], [Volume], [UnadjustedVolume], [ChangeOverTime], [Change], [Vwap], [ChangePercent]) VALUES ");
 		
@@ -76,25 +76,32 @@ public class TickerHistoryDAO {
 		command.setLength(command.length() - 1);
 		command.append(";");
 		
-//		System.out.println(command.toString());
-		
-		stmt.executeUpdate(command.toString());
+		try {
+			stmt.executeUpdate(command.toString());
 			
+		// likely a dupe, insert one by one to be sure
+		} catch (SQLServerException e) {
+			for (Object obj : data) {
+				try {
+					insertTicker((JSONObject) obj, tickerName);
+				} catch (SQLServerException e2) {
+					log.warn("Duplicate value not added");
+				}
+			}
+		}
+	
 		return true;	
-		
 	}
 	
 	public boolean insertTicker(JSONObject data, String tickerName) throws SQLException, ParseException {
 		String tableName = generateTickerTableName(tickerName);
 		
-		if (!SPMSDB.tableExists(conn, tableName)) {
-			createTickerHistoryTable(tickerName);
-		}
-		
 		Statement stmt = conn.createStatement();
 		
-		stmt.executeUpdate("INSERT INTO [" + tableName + "] ([Date], [Open], [High], [Low], [Close], [Volume], [UnadjustedVolume], [ChangeOverTime], [Change], [Vwap], [ChangePercent]) VALUES ('" + SPMSDB.getMSSQLDatetime(data.get("date").toString()) + "', '" + data.get("open") + "', '"+ data.get("high") + "', '"+ data.get("low") + "', '"+ data.get("close") + "', '"+ data.get("volume") + "', '"+ data.get("unadjustedVolume") + "', '"+ data.get("changeOverTime") + "', '"+ data.get("change") + "', '"+ data.get("vwap") + "', '"+ data.get("changePercent") + "');");
-			
+//		stmt.executeUpdate("INSERT INTO [" + tableName + "] ([Date], [Open], [High], [Low], [Close], [Volume], [UnadjustedVolume], [ChangeOverTime], [Change], [Vwap], [ChangePercent]) VALUES ('" + SPMSDB.getMSSQLDatetime(data.get("date").toString()) + "', '" + data.get("open") + "', '"+ data.get("high") + "', '"+ data.get("low") + "', '"+ data.get("close") + "', '"+ data.get("volume") + "', '"+ data.get("unadjustedVolume") + "', '"+ data.get("changeOverTime") + "', '"+ data.get("change") + "', '"+ data.get("vwap") + "', '"+ data.get("changePercent") + "');");
+		
+		stmt.executeUpdate("INSERT INTO [" + tableName + "] ([Date], [Open], [High], [Low], [Close], [Volume], [UnadjustedVolume], [ChangeOverTime], [Change], [Vwap], [ChangePercent]) VALUES " + buildValueString(data));
+		
 		return true;	
 		
 	}
