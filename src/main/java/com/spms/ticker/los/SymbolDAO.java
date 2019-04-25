@@ -88,7 +88,7 @@ public class SymbolDAO {
 		
 	}
 
-	private boolean populateTable() {
+	private boolean populateTable() throws Exception {
 		String csvContent = Requests.followRedirect(Config.endpoint);
 		String lines[] = csvContent.split("\\r?\\n");
 		String header = lines[0];	
@@ -154,7 +154,7 @@ public class SymbolDAO {
 		return sym;
 	}
 	
-	public Boolean reloadSymbols() throws SQLException {
+	public Boolean reloadSymbols() throws Exception {
 		log.info("Beginning symbol table reload");
 		log.info("Dropping old symbol table: " + SPMSDB.dropTable(conn, tableName));
 		log.info("Creating new symbol table: " + createTable());
@@ -207,7 +207,7 @@ public class SymbolDAO {
 	    return s;
 	}
 	
-	public static void main(String[] args) throws SQLException, IOException, ParseException {
+	public static void main(String[] args) throws Exception {
 		SymbolDAO s = new SymbolDAO();
 		s.reloadSymbols();
 		

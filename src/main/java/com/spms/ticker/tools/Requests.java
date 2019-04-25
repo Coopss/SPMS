@@ -31,7 +31,7 @@ public class Requests {
 		array
 	};
 	
-	public static String followRedirect(String url) {
+	public static String followRedirect(String url) throws Exception {
 		try {
 			return followRedirect(new URL(url));
 		} catch (MalformedURLException e) {
@@ -39,7 +39,7 @@ public class Requests {
 		}
 		return null;
 	}
-	public static String followRedirect(URL url) {
+	public static String followRedirect(URL url) throws Exception {
 	    try {
 	    	HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	    	conn.setReadTimeout(10000);
@@ -89,6 +89,10 @@ public class Requests {
 	    	return output.toString();
 
         } catch (Exception e) {
+        	if (e.getMessage().contains("424") || e.getMessage().contains("423") || e.getMessage().contains("429")) {
+        		throw e;
+        	}
+        	
         	log.error(Util.stackTraceToString(e));
         }
 	    

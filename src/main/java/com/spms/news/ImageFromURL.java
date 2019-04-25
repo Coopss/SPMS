@@ -45,13 +45,28 @@ public class ImageFromURL {
 		apiKeys.add("5cc12d2e50da2a42960f37b1d008a7ef84a3d88600756");
 	}
 	
-	public String getImage(String url) throws IOException, ParseException {
+	public String getImage(String url) throws ParseException, MalformedURLException {
 		URL u = new URL(url);
 		JSONParser parser = new JSONParser();
 		String r = null;
 		
 		while(r == null) {
-			r = Requests.followRedirect(getLinkPreviewURL(url));
+			try {
+				r = Requests.followRedirect(getLinkPreviewURL(url));
+			} catch (Exception e) {
+				// unsolvable case, placeholder logo.
+				if (e.getMessage().contains("424") || e.getMessage().contains("423")) {
+					return "http://spms.westus.cloudapp.azure.com/global_assets/img/logo.png";
+				} else if (e.getMessage().contains("429")) {
+					log.warn("Key timeout");
+					try {
+						Thread.sleep(timeout);	
+					} catch (InterruptedException e2) {
+						log.error(Util.stackTraceToString(e2));
+					}
+				}
+			}
+			
 			try {
 				if (r == null) {
 					Thread.sleep(timeout);	
@@ -78,7 +93,8 @@ public class ImageFromURL {
     } 
 	
 	public static void main(String[] argv) throws IOException, ParseException {
-		String ex = "https://api.iextrading.com/1.0/stock/five/article/6687001001067890";
+//		String ex = "https://api.iextrading.com/1.0/stock/five/article/6687001001067890";
+		String ex = "https://api.iextrading.com/1.0/stock/mmdmu/article/5616958891457413";
 		ImageFromURL ifu = new ImageFromURL();
 		
 		String r = ifu.getImage(ex);
