@@ -3,6 +3,8 @@ package com.spms.ticker.stats;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -14,6 +16,7 @@ import org.json.simple.parser.ParseException;
 
 import com.spms.Util;
 import com.spms.database.SPMSDB;
+import com.spms.ticker.live.TickerData;
 import com.spms.ticker.los.Symbol;
 import com.spms.ticker.los.SymbolDAO;
 import com.spms.ticker.tools.Requests;
@@ -177,8 +180,46 @@ public class StatsDAO {
 		}
 	}
 	
-	public static void main(String[] args) throws SQLException {
+	public Stats get(String ticker) throws SQLException {		
+		PreparedStatement stmt = conn.prepareStatement("Select [symbol],[marketcap],[beta],[week52high],[week52low],[week52change],[latestEPS],[latestEPSDate],[sharesOutstanding],[returnOnEquity],[peRatioHigh],[peRatioLow],[priceToSales],[priceToBook],[day200MovingAvg],[day50MovingAvg],[year5ChangePercent],[year2ChangePercent],[year1ChangePercent],[ytdChangePercent],[month6ChangePercent],[month3ChangePercent],[month1ChangePercent],[day5ChangePercent] from [dbo].[" + tableName + "] where symbol = '" + ticker + "';");
 		
+		ResultSet rs = stmt.executeQuery();		
+		Stats s = new Stats();
+		
+		while(rs.next()) {
+			s.symbol = rs.getString(1);
+			s.marketcap = rs.getString(2);
+			s.beta = rs.getString(3);
+			s.week52high = rs.getString(4);
+			s.week52low = rs.getString(5);
+			s.week52change = rs.getString(6);
+			s.latestEPS = rs.getString(7);
+			s.latestEPSDate = rs.getString(8);
+			s.sharesOutstanding = rs.getString(9);
+			s.returnOnEquity = rs.getString(10);
+			s.peRatioHigh = rs.getString(11);
+			s.peRatioLow = rs.getString(12);
+			s.priceToSales = rs.getString(13);
+			s.priceToBook = rs.getString(14);
+			s.day200MovingAvg = rs.getString(15);
+			s.day50MovingAvg = rs.getString(16);
+			s.year5ChangePercent = rs.getString(17);
+			s.year2ChangePercent = rs.getString(18);
+			s.year1ChangePercent = rs.getString(19);
+			s.ytdChangePercent = rs.getString(20);
+			s.month6ChangePercent = rs.getString(21);
+			s.month3ChangePercent = rs.getString(22);
+			s.month1ChangePercent = rs.getString(23);
+			s.day5ChangePercent = rs.getString(24);
+	    }
+		
+		return s;
+		
+	}
+	
+	public static void main(String[] args) throws SQLException, IOException, ParseException, java.text.ParseException {
+		StatsDAO sdao = new StatsDAO();
+		sdao.reload();
 	}
 	
 }

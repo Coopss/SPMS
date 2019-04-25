@@ -1,11 +1,13 @@
 package com.spms.news;
 
-import java.awt.List;
+import java.util.List;
+import java.util.Set;
 import java.net.MalformedURLException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,39 +28,51 @@ public class NewsController implements Controller {
 	private SymbolDAO dao;
 	private static final Logger log = LogManager.getLogger(NewsController.class);
 	
-	private static ArrayList<Symbol> allSyms;
+	private static Set<String> allSyms;
 	
 	public NewsController() throws SQLException {
 		tnd = new TickerNewsDAO();
 		dao = new SymbolDAO();
+		
+		allSyms = new HashSet<String>();
+		for (Symbol s : dao.getAll()) {
+			allSyms.add(s.Symbol.toUpperCase());
+		}
+		
 	}
 	
 	public static JSONArray getArticles(String ticker) throws MalformedURLException, ParseException {
 		return (JSONArray) Requests.get("/stock/" + ticker + "/news", Requests.ReturnType.array);
 	}
+
 	
-	public void addNews() throws MalformedURLException, ParseException, SQLException, java.text.ParseException {
-		for (Symbol sym : dao.getAll()) {
-			JSONArray symArticles = NewsController.getArticles(sym.Symbol);
-			if (symArticles != null)
-				for (int i = 0; i < symArticles.size(); i++) {
-					log.info(symArticles.get(i));
-					tnd.insertNews(sym, (JSONObject)symArticles.get(i));
-			}
-		}
-	}
-	
-	public static ArrayList<Symbol> getSyms() {
-		return allSyms;
+	public static boolean isValidSymbol(String sym) {
+		return allSyms.contains(sym.toUpperCase());
 	}
 	
 	public boolean reload() {
 		try {
 			tnd.createTickerNewsTable();
-			addNews();
+			tnd.createTickerNewsTableSym();
+			for (Symbol sym : dao.getAll()) {
+				try {
+					JSONArray symArticles = NewsController.getArticles(sym.Symbol);
+					if (symArticles != null)
+						for (Object obj : symArticles) {
+							JSONObject jobj = (JSONObject) obj;
+//							log.info(symArticles.get(i));
+							if (tnd.insertNews(sym, jobj)) {
+								log.info("Added " + jobj.get("url"));
+							} else {
+								log.info("Already have " + jobj.get("url"));
+							}
+					} 
+				} catch (Exception e) {
+					log.error(Util.stackTraceToString(e));
+				}
+			}
 		} catch (Exception e) {
 			log.error(Util.stackTraceToString(e));
-			return false;
 		}
 		
 		return true;
