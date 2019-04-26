@@ -31,7 +31,21 @@
                                 </li>
                                 <!-- Login link or username -->
                                 <li class="nav-item">
-                                        <p> <span id='display_name'><a class="nav-link" href="login.php">Log In</a></span> </p>
+
+                                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                                                <span class="" id='display_name'></span>
+                                        </a>
+                                        <ul id="login-dp" class="dropdown-menu dropdown-menu-right">
+                                                <li class="bg-mute">
+                                                	 <div class="row">
+                                                			<div class="col-lg-12 mx-right">
+                                                                                <a class="nav-link" href="login.php">Log In</a><br>
+                                                                                <a class="nav-link" href='javascript:logout()'>Log Out</a>
+                                                			</div>
+                                                	 </div>
+                                                </li>
+                                        </ul>
+
                                 </li>
 
                         </ul>
