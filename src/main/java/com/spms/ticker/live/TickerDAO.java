@@ -167,7 +167,7 @@ public class TickerDAO {
 		String now = SPMSDB.getMSSQLDatetime(Util.getDateWithoutTimeUsingCalendar());
 		List<TickerData> dat = new ArrayList<TickerData>();
 		
-		PreparedStatement stmt = conn.prepareStatement("SELECT [date],[marketAverage],[marketVolume],[marketNumberOfTrades] FROM [dbo].[" + tableName + "] where date > '" + now + "';");
+		PreparedStatement stmt = conn.prepareStatement("SELECT [date],[marketAverage],[marketVolume],[marketNumberOfTrades] FROM [dbo].[" + tableName + "] where [date] > '" + now + "' order by [date] asc;");
 		
 		ResultSet rs = stmt.executeQuery();		
 	    
