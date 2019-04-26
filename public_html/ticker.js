@@ -4,7 +4,7 @@
 function ticker() {
 	var symbol = getUrlParameter('s');
 	var feedback = "";
-	
+
 	if (!symbol) {
 		feedback = "No search query supplied, please use the search bar to find a stock symbol";
 		console.log(feedback);
@@ -23,55 +23,54 @@ function ticker() {
 	})
 	.done(function(data, textStatus, xhr) {
 		console.log('Ticker data retrieved: ' + data);
-		
+
 		var name = data.company;
 		var symbol = data.symbol;
 		var graphData = data.todayData;
 		var stats = data.statistics;
 		var about = data.about;
 		var articles = data.articles;
-		
+
 		//fill in company Name and About
 		$("#company_name").html(name);
 		$("#ticker_about").html(about);
-		
+
 		var i, j;
 		var new_table = "<table class='table stock_tables'>";
 		new_table += "<tr><th>Statistics</th></tr>";
-		
+
 		//dynamically generate tables based on server data
 		for (key in stats) {
 			new_table += "<tr>";
-			
 			new_table += "<td>" + key + "</td>";
 			new_table += "<td>" + stats[key] + "</td>";
-			
+
 			new_table += "</tr>"
 		}
 		new_table += "</table>"
-		
+
 		//insert the table into the page
 		$("#stats_go_here").html(new_table);
-		
-		
+
+
 		var new_article;
 		for (i = 0; i < articles.length; i++) {
 			new_article = $("#article_template").clone();
 			$(new_article).removeClass("d-none");
 			$(new_article).removeAttr("id");
-			
-			$(new_article).find(".artcile_img").html("<img src=" + articles[i].image + ">");
+
+			$(new_article).find(".artcile_img").html("<img height=50% width=50% src=" + articles[i].image + ">");
 			$(new_article).find(".article_headline").html(articles[i].headline);
 			$(new_article).find(".article_summary").html(articles[i].summary);
 			$(new_article).attr("href", articles[i].url);
 			$("#news_articles").append(new_article);
 		}
-		
+
 		$("#article_page_number").html("1");
-		
+
         $('#chart_placeholder').remove();
 		graph(graphData);
-		
+
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
 		var statusNum = xhr.status;
