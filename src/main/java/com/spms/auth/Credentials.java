@@ -6,6 +6,15 @@ public class Credentials implements Serializable {
 
     private String username;
     private String password;
+    
+    public Credentials() {
+    	
+    }
+    
+    public Credentials(String uname, String pwd) {
+    	this.username = uname;
+    	this.password = pwd;
+    }
 	
     // Setters and getters
     public String getUsername() {
