@@ -33,7 +33,7 @@
                                             <label for="password">Password</label>
                                             <input type="password" name="password" id='password'></input><br><br>
 
-                                            <button type="submit" name="submit">Login</button>
+                                            <button class="btn btn-primary" type="submit" name="submit">Login</button>
                                             <br>
                                             <a class="create_link" href="signup.php">Create Account</a>
                                         </form>

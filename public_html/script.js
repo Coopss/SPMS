@@ -1,6 +1,6 @@
 $(document).ready(function() {
-	
-	
+
+
 	if ($('.header_div').eq(0).children().length < 1) { //Load header+footer manually if PHP didn't do it.
 		$(".header_div").load("./header.php");
 		$(".footer_div").load("./footer.php");
@@ -14,7 +14,8 @@ $(document).ready(function() {
 });
 
 function set_user(username) {
-	$("#display_name").html(username + "<br><a href='javascript:logout()''>Log Out</a>");
+	$("#display_name").html(username);
+
 }
 
 function logout () {
@@ -122,7 +123,7 @@ function get_user() {
 		switch (statusNum) {
 			case 401:
 				feedback = "get_user: 401 (token not found, or invalid)";
-				
+
 				//redirect to login or signup
 				var cur_page = document.location.href.substr(document.location.href.lastIndexOf('/') + 1);
 				if (cur_page != 'login.php' && cur_page != 'signup.php') {
@@ -231,14 +232,14 @@ function search() {
 	})
 	.done(function(data, textStatus, xhr) {
 		console.log('Found search results: ' + data);
-		
+
 		$('#search_list').empty(); //clear previous entries
 		var option_block = '';
-		
+
 		for (var i = 0; i < data.length; i++) { //parse each line
 			var match = '';
 			var symbol = '';
-			
+
 			for (var j = 0; j < data[i].length; j++) { //parse data in each line
 				if (j == data[i].length - 1) {
 					match += data[i][j]; //special tratment for last data segment
@@ -247,13 +248,13 @@ function search() {
 				}
 			}
 			symbol = data[i][0];
-			
+
 			option_block += '<option value="' + match + '" >'; //build the entire block of options for this search
-			
+
 		}
 		$('#search_list').append(option_block);
 		$('#search_term').focus(); //forces refresh of list; add autoComplete="off" to input if it's not working
-		
+
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
 		var statusNum = xhr.status;
@@ -315,14 +316,14 @@ function getUrlParameter(sParam) {
 function articleGet(n_or_p) {
 	var symbol = getUrlParameter('s');
 	var cur_page = parseInt($("article_page_number").html());
-	
+
 	/* Calc next or previous page number */
 	if (n_or_p == 'p') {
 		cur_page --;
 	} else {
 		cur_page++;
 	}
-	
+
 	/* Wrap article pages, display new page number */
 	if (cur_page > 3) {
 		cur_page = 1;
@@ -330,11 +331,11 @@ function articleGet(n_or_p) {
 		cur_page = 3;
 	}
 	$("#article_page_number").html(cur_page);
-	
+
 	/* Clear previous articles */
 	$("#news_articles").find(".article_url").not("#article_template").remove();
-	
-	
+
+
 	$.ajax({
 		method: "GET",
 		crossDomain: true,
@@ -343,7 +344,7 @@ function articleGet(n_or_p) {
 	})
 	.done(function(data, textStatus, xhr) {
 		console.log('Article data retrieved: ' + data);
-		
+
 		var articles = data.articles;
 
 		var new_article;
@@ -351,16 +352,16 @@ function articleGet(n_or_p) {
 			new_article = $("#article_template").clone();
 			$(new_article).removeClass("d-none");
 			$(new_article).removeAttr("id");
-			
+
 			$(new_article).find(".artcile_img").html("<img src=" + articles[i].image + ">");
 			$(new_article).find(".article_headline").html(articles[i].headline);
 			$(new_article).find(".article_summary").html(articles[i].summary);
 			$(new_article).attr("href", articles[i].url);
 			$("#news_articles").append(new_article);
 		}
-		
+
 		$("#article_page_number").html("1");
-		
+
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
 		var statusNum = xhr.status;
