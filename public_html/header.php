@@ -39,7 +39,6 @@
                                                 <li class="bg-mute">
                                                 	 <div class="row">
                                                 			<div class="col-lg-12 mx-right">
-                                                                                <a class="nav-link" href="login.php">Log In</a><br>
                                                                                 <a class="nav-link" href='javascript:logout()'>Log Out</a>
                                                 			</div>
                                                 	 </div>
