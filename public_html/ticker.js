@@ -30,6 +30,7 @@ function ticker() {
 		var stats = data.statistics;
 		var about = data.about;
 		var articles = data.articles;
+		var close = data.yesterdayClose;
 
 		//fill in company Name and About
 		$("#company_name").html(name);
@@ -217,4 +218,135 @@ function graph(graphData) { //pass in data.todayData from AJAX request
             data: data,
             options: options
     });
+}
+
+//valid history params: 1w, 1m, 3m, 1y, 5y, max
+function getGraphGranular(history) {
+	var symbol = getUrlParameter('s');
+	var feedback = "";
+
+	if (!symbol) {
+		feedback = "No search query supplied, please use the search bar to find a stock symbol";
+		console.log(feedback);
+		//$('#stats_go_here').html(feedback);
+        $('#chart_placeholder').html(feedback);
+        //$('#company_name').html("No stock specified");
+        //$('#ticker_about').html("No stock specified");
+		return;
+	}
+	
+	switch (history) { //check validity
+		case '1w':
+		case '1m':
+		case '3m':
+		case '1y':
+		case '5y':
+		case 'max':
+			//valid
+			break;
+		default:
+			//TODO: Specifiy error
+			return;
+	}
+
+	$.ajax({
+		method: "GET",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol + '/history/' + history,
+	})
+	.done(function(data, textStatus, xhr) {
+		console.log('graph data retrieved: ' + data);
+
+		/*
+		var name = data.company;
+		var symbol = data.symbol;
+		var stats = data.statistics;
+		var about = data.about;
+		var articles = data.articles;
+		*/
+		var graphData = data.data;
+
+        $('#chart_placeholder').remove();
+		graph(graphData);
+
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var feedback = "";
+
+		switch (statusNum) {
+			case 200: //not sure why this is considered a fail...
+				feedback = "No results found for this ticker";
+				break;
+			case 401:
+				feedback = "search: 401 (token not found, or invalid)";
+				//TODO: redirect to sign on page?
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
+		console.log(feedback);
+        $('#chart_placeholder').html(feedback);
+	});
+}
+
+
+//date must be in yyyy-MM-dd format
+function getGraphDate(date) {
+	var symbol = getUrlParameter('s');
+	var feedback = "";
+
+	if (!symbol) {
+		feedback = "No search query supplied, please use the search bar to find a stock symbol";
+		console.log(feedback);
+		//$('#stats_go_here').html(feedback);
+        $('#chart_placeholder').html(feedback);
+        //$('#company_name').html("No stock specified");
+        //$('#ticker_about').html("No stock specified");
+		return;
+	}
+
+	$.ajax({
+		method: "GET",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol + '/' + date,
+	})
+	.done(function(data, textStatus, xhr) {
+		console.log('graph data retrieved: ' + data);
+
+		/*
+		var name = data.company;
+		var symbol = data.symbol;
+		var stats = data.statistics;
+		var about = data.about;
+		var articles = data.articles;
+		*/
+		var graphData = data.data;
+
+        $('#chart_placeholder').remove();
+		graph(graphData);
+
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var feedback = "";
+
+		switch (statusNum) {
+			case 200: //not sure why this is considered a fail...
+				feedback = "No results found for this ticker";
+				break;
+			case 401:
+				feedback = "search: 401 (token not found, or invalid)";
+				//TODO: redirect to sign on page?
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
+		console.log(feedback);
+        $('#chart_placeholder').html(feedback);
+	});
 }
