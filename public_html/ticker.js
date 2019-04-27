@@ -153,16 +153,48 @@ function generateLabels(type = 'day') {
 	return arr;
 }
 
+function setOpenPrice(tbl) {
+	var todayDate = moment().set({'hour': 9, 'minute': 30, 'second': 0, 'millisecond': 0}).valueOf();
+	for (var i = 0; i < tbl.length; i++) {
+		if (moment(tbl[i]['date']).valueOf() == todayDate) {
+			return Number(tbl[i]['marketAverage'])
+		}
+	}
+}
+
+function chooseColor(tbl, openPrice) {
+	var lastPrice, lastDate, date;
+	lastDate = moment().year(1902);
+
+	for (var i = 0; i < tbl.length; i++) {
+		date = moment(tbl[i]['date']);
+		if (date.valueOf() >= lastDate.valueOf()) {
+			lastDate = date;
+			lastPrice = Number(tbl[i]['marketAverage']);
+		}
+	}
+
+	if (openPrice >= lastPrice) {
+		return 'rgba(244, 85, 49, 0.5)'; //red
+	} else {
+		return 'rgba(33, 206, 153, 0.5)'; //green
+	}
+}
+
 function graph(graphData) { //pass in data.todayData from AJAX request
     var ctx = document.getElementById('myChart').getContext('2d');
+
     var tbl = graphData;
-    var labels = generateLabels(tbl);
+    var openPrice = setOpenPrice(tbl);
+    var graphColor = chooseColor(tbl, openPrice);
+    var labels = generateLabels();
 
     var data = {
             labels: labels,
             datasets: [{
                     data: generateData(tbl, labels),
-                    hidden: false
+                    hidden: false,
+		    backgroundColor: graphColor
             }]
     };
 
@@ -174,7 +206,8 @@ function graph(graphData) { //pass in data.todayData from AJAX request
             },
             elements: {
                     line: {
-                            tension: 0
+                            tension: 0,
+			    borderColor: graphColor
                     }
             }
     };
