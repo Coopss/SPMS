@@ -112,38 +112,56 @@ function getUrlParameter(sParam) {
 };
 
 
-function generateData(tbl) {
-        var arr = [];
+function generateData(tbl, labels) {
+	var arr = [];
+	var i, index;
 
-        for (var i = 0; i < tbl.length; i++) {
-                if (tbl[i]['date'].substr(14,2) % 1 == 0) {
-                        arr.push(tbl[i]['marketAverage']);
-                }
-        }
+	for (i = 0; i < tbl.length; i++) {
+		if ((index = labels.map(Number).indexOf(+moment(tbl[i]['date']))) != -1) {
+			arr[index] = Number(tbl[i]['marketAverage']);
+		} else {
+			arr[index] = null;
+		}
+	}
 
-        return arr;
+	return arr;
 }
 
-function generateLabels(tbl) {
-        var arr = [];
+//TODO: add parameter to change labels based on view (day, week, month, etc.)
+function generateLabels(type = 'day') {
+	var arr = [];
+	var currDate = moment();
+	var date, max, inc;
 
-        for (var i = 0; i < tbl.length; i++) {
-                if (tbl[i]['date'].substr(14,2) % 1 == 0) {
-                        arr.push(tbl[i]['date'].substr(11,5));
-                }
-        }
+	switch (type) {
+		case 'day':
+		default:
+			max = 420;
+			inc = 1;
+	}
+	for (var i = 0; i < max; i += inc) {
+		date = moment(currDate.format());
+		switch (type) {
+			case 'day':
+			default:
+				date.set({'hour': (i / 60) + 9, 'minute': i % 60, 'second': 0, 'millisecond': 0});
+				break;
+		}
+		arr.push(date);
+	}
 
-        return arr;
+	return arr;
 }
 
 function graph(graphData) { //pass in data.todayData from AJAX request
     var ctx = document.getElementById('myChart').getContext('2d');
     var tbl = graphData;
+    var labels = generateLabels(tbl);
 
     var data = {
-            labels: generateLabels(tbl),
+            labels: labels,
             datasets: [{
-                    data: generateData(tbl),
+                    data: generateData(tbl, labels),
                     hidden: false
             }]
     };
