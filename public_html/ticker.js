@@ -200,17 +200,27 @@ function graph(graphData) { //pass in data.todayData from AJAX request
     };
 
     var options = {
-            maintainAspectRatio: false,
-            spanGaps: false,
-            legend: {
-                    display: false
-            },
-            elements: {
-                    line: {
-                            tension: 0,
+	    maintainAspectRatio: false,
+	    spanGaps: false,
+	    legend: {
+		    display: false
+	    },
+	    elements: {
+		    line: {
+			    tension: 0,
 			    borderColor: graphColor
-                    }
-            }
+		    }
+	    },
+	    scales: {
+		    xAxes: [{
+			    type:'time',
+			    distribution: 'series',
+			    time: {
+				    unit: 'minute'
+			    },
+			    bounds: 'ticks'
+		    }]
+	    }
     };
 
     var chart = new Chart(ctx, {
@@ -234,7 +244,7 @@ function getGraphGranular(history) {
         //$('#ticker_about').html("No stock specified");
 		return;
 	}
-	
+
 	switch (history) { //check validity
 		case '1w':
 		case '1m':
