@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -23,6 +24,8 @@ import com.spms.Util;
 import com.spms.api.annotations.Secured;
 import com.spms.auth.AuthDAO;
 import com.spms.auth.AuthUtil;
+import com.spms.news.NewsArticle;
+import com.spms.portfolio.Portfolio;
 import com.spms.portfolio.PortfolioDAO;
 import com.spms.portfolio.PortfolioValue;
 import com.spms.portfolio.Transaction;
@@ -81,8 +84,41 @@ public class PortfolioService {
 	@GET
 	@Secured
     @Produces(MediaType.APPLICATION_JSON)
-	@Operation(summary = "Get a timeseries graph of the portfolio", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "JSON timeseries", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
+	@Operation(summary = "Get a bundle of all items needed for portfolio page", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "JSON timeseries", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
 	public Response getPortfolioSymbols() {
+		try {
+			Map<String, Object> response = new HashMap<String, Object>();
+			javax.servlet.http.Cookie[] cookies = servletRequest.getCookies();
+			String user = AuthUtil.getUsername(cookies, adao);
+			Gson gson = new Gson();
+			
+			Portfolio p = pdao.getUserPortfolio(user);
+			List<PortfolioValue> portfolioValue = pdao.getUserValueOverTime(user);
+			Float value = pdao.getUserPortfolio(user).getValue();
+			List<NewsArticle> news = pdao.getPortfolioArticles(p);
+			
+			response.put("username", user);
+			response.put("value", value);
+			response.put("timeseries", portfolioValue);
+			response.put("news", news);
+			response.put("portfolio", p.portfolio);
+			response.put("watchlist", p.watchlist);
+			
+			
+			return Response.ok(gson.toJson(response)).build();
+			
+		} catch (Exception e) {
+			log.error(Util.stackTraceToString(e));
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
+	@GET
+	@Secured
+	@Path("/timeseries")
+    @Produces(MediaType.APPLICATION_JSON)
+	@Operation(summary = "Get a timeseries graph of the portfolio", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "JSON timeseries", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
+	public Response getPortfolioTimeseries() {
 		try {
 			Map<String, Object> response = new HashMap<String, Object>();
 			javax.servlet.http.Cookie[] cookies = servletRequest.getCookies();
@@ -105,22 +141,64 @@ public class PortfolioService {
 		}
 	}
 	
-//	@GET
-//	@Secured
-//	@Path("/news")
-//	@Operation(summary = "Get relevent news for a user's portfolio", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
-//	public Response getPortfolioNews() {
-//		return Response.ok().build();
-//	}
-//	
-//	@GET
-//	@Secured
-//	@Path("/getWatchlist")
-//	@Operation(summary = "Get relevent news for a user's portfolio", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
-//	public Response getNews(@PathParam("symbol") String symbol) {
-//		return Response.ok().build();
-//	}
-//	
+	@POST
+	@Secured
+	@Path("/watchlist")
+	@Operation(summary = "Add ticker to watchlist", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "Success", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
+	public Response addToWatchList(@QueryParam("symbol") String symbol) {
+		try {
+			javax.servlet.http.Cookie[] cookies = servletRequest.getCookies();
+			String user = AuthUtil.getUsername(cookies, adao);
+			pdao.addToWatchlist(user, symbol);
+			
+		} catch (Exception e) {
+			log.error(Util.stackTraceToString(e));
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+		
+		return Response.ok().build();
+	}
+	
+	@DELETE
+	@Secured
+	@Path("/watchlist")
+	@Operation(summary = "Remove ticker from watchlist", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "Success", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
+	public Response removeFromWatchList(@QueryParam("symbol") String symbol) {
+		try {
+			javax.servlet.http.Cookie[] cookies = servletRequest.getCookies();
+			String user = AuthUtil.getUsername(cookies, adao);
+			pdao.removeFromWatchlist(user, symbol);
+			
+		} catch (Exception e) {
+			log.error(Util.stackTraceToString(e));
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+		
+		return Response.ok().build();
+	}
+
+	
+	@GET
+	@Secured
+	@Path("/watchlist")
+	@Operation(summary = "Get current watchlist", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "Success", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
+	public Response getWatchlist() {
+		try {
+			Map<String, Object> response = new HashMap<String, Object>();
+			javax.servlet.http.Cookie[] cookies = servletRequest.getCookies();
+			String user = AuthUtil.getUsername(cookies, adao);
+			Gson gson = new Gson();
+			
+			response.put("watchlist", pdao.getWatchList(user));	
+			return Response.ok(gson.toJson(response)).build();
+		} catch (Exception e) {
+			log.error(Util.stackTraceToString(e));
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+		
+		
+	}
+
 
 	
 }
