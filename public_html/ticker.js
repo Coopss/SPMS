@@ -113,11 +113,11 @@ function getUrlParameter(sParam) {
 };
 
 
-function generateData(tbl, labels, yesterdayClose) {
+function generateData(tbl, labels) {
 	var arr = [];
 	var i, index, last, lastDate, date;
 
-	last = yesterdayClose;
+	last = setOpenPrice(tbl);
 	lastDate = moment().year(1902);
 
 	for (i = 0; i < tbl.length; i++) {
@@ -134,7 +134,7 @@ function generateData(tbl, labels, yesterdayClose) {
 	for (i = 0; i < labels.length; i++) {
 		if (arr[i] != null) {
 			last = arr[i];
-		} else if ((Number(labels[i]) < Number(lastDate))) {
+		} else if (Number(labels[i]) < Number(lastDate)) {
 			arr[i] = last;
 		} else {
 			break;
@@ -148,27 +148,52 @@ function generateData(tbl, labels, yesterdayClose) {
 function generateLabels(history = '1d') {
 	var arr = [];
 	var currDate = moment().tz("America/New_York");
-	var date, max, inc;
+	var date, max;
 
 	switch (history) {
-		case '1w':
-			inc = 1;
-			max = 7;
-			break;
 		case '1d':
-		default:
-			inc = 1;
 			max = 420;
 			break;
+		case '1w':
+			currDate.subtract(7, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
+			max = 7;
+			break;
+		case '1m':
+			currDate.subtract(1, 'months');
+			max = currDate.daysInMonth();
+			break;
+		case '3m':
+			currDate.subtract(3, 'months');
+			max = currDate.diff(moment().tz("America/New_York"), 'days');
+			break;
+		case '1y':
+			currDate.subtract(1, 'years');
+			max = currDate.diff(moment().tz("America/New_York"), 'days');
+			break;
+		case '5y':
+		case 'max':
+			currDate.subtract(5, 'years');
+			max = currDate.diff(moment().tz("America/New_York"), 'days');
+			break;
+		default:
+			break;
 	}
-	for (var i = 0; i < max; i += inc) {
+	for (var i = 0; i < max; i++) {
 		date = moment(currDate.format());
 		switch (history) {
-			case '1w':
-
 			case '1d':
-			default:
 				date.set({'hour': (i / 60) + 9, 'minute': i % 60, 'second': 0, 'millisecond': 0});
+				break;
+			case '1w':
+			case '1m':
+			case '3m':
+			case '1y':
+			case '5y':
+			case 'max':
+				date.add(i, 'days');
+				break;
+			default:
+				// error
 				break;
 		}
 		arr.push(date);
@@ -190,9 +215,10 @@ function setOpenPrice(tbl) {
 	return Number(tbl[openIndex]['marketAverage']);
 }
 
-function chooseColor(tbl, openPrice) {
-	var lastPrice, lastDate, date;
+function chooseColor(tbl) {
+	var lastPrice, lastDate, date, openPrice;
 	lastDate = moment().year(1902);
+	openPrice = setOpenPrice(tbl);
 
 	for (var i = 0; i < tbl.length; i++) {
 		date = moment(tbl[i]['date']);
@@ -213,14 +239,13 @@ function graph(graphData) { //pass in data.todayData from AJAX request
     var ctx = document.getElementById('myChart').getContext('2d');
 
     var tbl = graphData;
-    var openPrice = setOpenPrice(tbl);
-    var graphColor = chooseColor(tbl, openPrice);
+    var graphColor = chooseColor(tbl);
     var labels = generateLabels();
 
     var data = {
             labels: labels,
             datasets: [{
-                    data: generateData(tbl, labels, openPrice),
+                    data: generateData(tbl, labels),
                     hidden: false,
 		    backgroundColor: graphColor,
 		    pointBorderColor: 'rgba(0, 0, 0, 0)',
