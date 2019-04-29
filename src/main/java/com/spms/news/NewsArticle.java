@@ -1,17 +1,19 @@
 package com.spms.news;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class NewsArticle {
-	Date date;
-	String symbol;
-	String headline;
-	String source;
-	String url;
-	String summary;
-	String image;
+	public Date date;
+	public String symbol;
+	public String headline;
+	public String source;
+	public String url;
+	public String summary;
+	public String image;
 	
-	NewsArticle(Date d, String sym, String h, String s, String u, String sum, String im) {
+	public NewsArticle() {}
+	
+	public NewsArticle(Date d, String sym, String h, String s, String u, String sum, String im) {
 		this.date = d;
 		this.symbol = sym;
 		this.headline = h;
