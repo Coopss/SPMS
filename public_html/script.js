@@ -312,6 +312,23 @@ function getUrlParameter(sParam) {
     }
 };
 
+function setupNews(articles) {
+	var new_article;
+	for (i = 0; i < articles.length; i++) {
+		new_article = $("#article_template").clone();
+		$(new_article).removeClass("d-none");
+		$(new_article).removeAttr("id");
+
+		$(new_article).find(".artcile_img").html("<img height=50% width=50% src=" + articles[i].image + ">");
+		$(new_article).find(".article_headline").html(articles[i].headline);
+		$(new_article).find(".article_summary").html(articles[i].summary);
+		$(new_article).attr("href", articles[i].url);
+		$("#news_articles").append(new_article);
+	}
+
+	$("#article_page_number").html("1");
+}
+
 
 function articleGet(n_or_p) {
 	var symbol = getUrlParameter('s');
@@ -384,16 +401,22 @@ function articleGet(n_or_p) {
 }
 
 
-function buyStock() {
-	var date = $("#buyDate");
-	var ammount = $("#buyAmmount");
-	var price = $("#buyPrice");
+function buyStock(action) {
+	var date = $("#datepicker").val();
+	var ammount;
+	//var price = $("#buyPrice");
 	
-	var symbol = $('#stockSymbol'); //only works after ticker data has loaded
+	if (action == 'sell') { //handle selling stocks
+		ammount = $("#sellcount").val() * -1;
+	} else {
+		ammount = $("#buycount").val();
+	}
+	
+	var symbol = $('#stockSymbol').html(); //only works after ticker data has loaded
 	
 	
 	$.ajax({
-		method: "GET",
+		method: "POST",
 		crossDomain: true,
 		xhrFields: { withCredentials: true },
 		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio/add/" + symbol,
@@ -404,7 +427,7 @@ function buyStock() {
 		}),
 	})
 	.done(function(data, textStatus, xhr) {
-		var feeback = "Stock shares successfully added to your portfolio";
+		var feeback = "Stock shares successfully added to or removed from your portfolio";
 		
 		console.log(feedback);
 		$('#buyFeedback').html(feedback);
@@ -425,9 +448,94 @@ function buyStock() {
 				feedback = "The server returned an undefined response: Status code " + statusNum;
 				break;
 		}
+		$('#buyFeedback').html(feedback)
 		console.log(feedback);
 	});
 	
+}
+ 
+ 
+//It was set up to use the /portfolio endpoint for some reason
+function dashboard() {
+	
+	
+	$.ajax({
+		method: "GET",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio",
+	})
+	.done(function(data, textStatus, xhr) {
+		console.log(JSON.stringify(data));
+		
+		var stock_table = data.portfolio;
+		var watch_table = data.watchlist;
+		var graphData = data.timesweries;
+		var total_value = data.value;
+		var articles = data.news;
+		
+		//Handle the stock table
+		var i;
+		var new_table = "<tr><th>Stock</th><th>Shares</th></tr>";
+		var url;
+		var link;
+
+		//dynamically generate tables based on server data
+		for (key in stock_table) {
+			url = 'http://spms.westus.cloudapp.azure.com/ticker.php?s=' + stock_table[key];
+			link = '<a href="' + url + '">';
+			
+			new_table += "<tr>";
+			new_table += "<td>" + key + "</td>";
+			new_table += link + "<td>" + stock_table[key] + "</td>" + "</a>";
+
+			new_table += "</tr>"
+		}
+		//new_table += "</table>"
+
+		//insert the rows into the table
+		$("#db_stock_table").html(new_table);
+		
+		
+		//Handle the wishlist table
+		var new_table = "<tr><th>Stock</th></tr>";
+		for (i = 0; i < watch_table.length; i++) {
+			new_table += "<tr>";
+			//new_table += "<td>" + key + "</td>";
+			new_table += "<td>" + watch_table[i] + "</td>";
+
+			new_table += "</tr>"
+		}
+		
+		$("#db_watch_table").html(new_table);
+		
+		setupNews(articles);
+		
+		/*
+		var feeback = "Stock shares successfully added to your portfolio";
+		
+		console.log(feedback);
+		$('#buyFeedback').html(feedback);
+		*/
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var feedback = "";
+
+		switch (statusNum) {
+			case 200: //not sure why this is considered a fail...
+				feedback = "Status code 200 returned as a failure";
+				break;
+			case 401:
+				feedback = "search: 401 (token not found, or invalid)";
+				//TODO: redirect to sign on page?
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
+		console.log(feedback);
+	});
 }
 
 

@@ -33,8 +33,8 @@
                         </div>
                         <div class="col-lg-3">
                                 <!-- List of Stocks -->
-                                <table class = "table">
-                                        <h4> Stocks </h4>
+                                <h4> Stocks </h4>
+                                <table class = "table" id='db_stock_table'>
                                    <thead>
                                       <tr>
                                          <th>Stock</th>
@@ -55,8 +55,8 @@
                                 </table>
 
                                 <!-- Watchlist -->
-                                <table class = "table">
-                                         <h4> Watch List </h4>
+                                <h4> Watch List </h4>
+                                <table class = "table" id='db_watch_table'>
                                    <thead>
                                       <tr>
                                          <th>Stock</th>
@@ -124,93 +124,51 @@
                           </div>
                         </div>
                 </div>
+                <br><br><br>
+                
+                
+                
+                                            <!-- NEWS ARTCILES -->
                 <div class="offset-lg-2">
-                        <div class="row">
-                                <div class="mx-auto col-lg-6">
-                                        <h3 class="text-center">Relevant articles</h3>
-                                </div>
-                                <div class="col-lg-2 col-md-2 col-sm-2">
-                                </div>
+                <div class="row">
+                <div class="mx-auto col-lg-6">
+                    <br><br><br><br>
+                        <h3 class="text-center">Relevant articles</h3>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                </div>
+                </div>
+                <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
+                        <a id="article_prev" onclick="articleGet('p')" href="#" class="bg-mute round arrow">Previous &laquo;</a>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6" id="news_articles">
+                    <div>
+                        Page <span id="article_page_number">0</span>
+                    </div>
+                    <br/>
+
+                        <!-- Article reference format, not displayed -->
+                        <a href="#" class="nounderline d-none article_url" id='article_template'>
+                        <div class="card mb-3" style="max-width: 100%;">
+                          <div class="row no-gutters hoverable">
+                            <div class="col-md-4 artcile_img">
+                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" height=50% width=50% class="hoverable card-img" alt="Image Unavailable">
+                            </div>
+                            <div class="col-md-8">
+                              <div class="card-body">
+                                <h5 class="card-title article_headline">Placeholder Headline</h5>
+                                <p class="card-text article_summary">Placeholder Summary, Placeholder Summary, Placeholder Summary, Placeholder Summary </p>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div class="row">
-                                <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
-                                        <a href="#" class="bg-mute round arrow">Previous &laquo;</a>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-
-                                        <!-- First Article -->
-                                        <a href="#" class="nounderline">
-                                        <div class="card mb-3" style="max-width: 100%;">
-                                          <div class="row no-gutters hoverable">
-                                            <div class="col-md-4">
-                                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="hoverable card-img" alt="Image Unavailable">
-                                            </div>
-                                            <div class="col-md-8">
-                                              <div class="card-body">
-                                                <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
-                                                <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        </a>
-
-                                        <!-- Second Article -->
-                                        <a href="#" class="nounderline">
-                                        <div class="card mb-3" style="max-width: 100%;">
-                                          <div class="row no-gutters hoverable">
-                                            <div class="col-md-4">
-                                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="hoverable card-img" alt="Image Unavailable">
-                                            </div>
-                                            <div class="col-md-8">
-                                              <div class="card-body">
-                                                <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
-                                                <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        </a>
-
-                                        <!-- Third Article -->
-                                        <a href="#" class="nounderline">
-                                        <div class="card mb-3" style="max-width: 100%;">
-                                          <div class="row no-gutters hoverable">
-                                            <div class="col-md-4">
-                                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="hoverable card-img" alt="Image Unavailable">
-                                            </div>
-                                            <div class="col-md-8">
-                                              <div class="card-body">
-                                                <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
-                                                <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        </a>
-
-                                        <!-- Fourth Article -->
-                                        <a href="#" class="nounderline">
-                                        <div class="card mb-3" style="max-width: 100%;">
-                                          <div class="row no-gutters hoverable">
-                                            <div class="col-md-4">
-                                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" class="hoverable card-img" alt="Image Unavailable">
-                                            </div>
-                                            <div class="col-md-8">
-                                              <div class="card-body">
-                                                <h5 class="card-title"> Tesla Can't Stop Dreaming Big</h5>
-                                                <p class="card-text">Elon Musk’s ambitions to turn Tesla into a dominant automobile player have become a liability instead of an asset.</p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        </a>
-
-                                </div>
-                                <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
-                                        <a href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
-                                </div>
-                        </div>
+                        </a>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
+                        <a id="article_next" onclick="articleGet('n')" href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
+                </div>
+                </div>
 
                 </div>
 
@@ -221,6 +179,11 @@
 </div>
 
 <script src='script.js'></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    dashboard();
+});
+</script>
 
 </body>
 </html>
