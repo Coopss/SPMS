@@ -26,3 +26,7 @@ html {
 .search_term {
   width: 100%;
 }
+
+.dropdown-menu {
+        padding: 0px!important;
+}

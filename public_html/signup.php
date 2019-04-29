@@ -29,7 +29,7 @@
                                             <img class="logo-margins" src="global_assets/img/footer_logo.png" alt="Logo" height=40px>
                                     </div>
                                     <div class="row justify-content-xl-center">
-                                            <form class="login_form" action="javascript:register()" method="post">
+                                            <form class="login_form login_background" action="javascript:register()" method="post">
                                                 <label for="user">Username</label>
                                                 <input type="text" name="username" id='username'></input><br/><br>
 
@@ -39,7 +39,7 @@
                                                 <label for="password_confirm">Confirm Password</label>
                                                 <input type="password" name="password_confirm" id='password_confirm'></input><br><br>
 
-                                                <button type="submit" name="submit">Create Account</button>
+                                                <button class="btn btn-primary" type="submit" name="submit">Create Account</button>
                                                 <br>
                                                 <a class="create_link" href="login.php">Back to login</a>
                                             </form>
