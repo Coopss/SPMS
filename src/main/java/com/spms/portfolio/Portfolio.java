@@ -3,15 +3,17 @@ package com.spms.portfolio;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.spms.ticker.live.TickerDAO;
 import com.spms.ticker.live.TickerData;
 
 public class Portfolio {
 
-	
+	public Set<String> watchlist;
 	public Float value = null;
 	public Map<String, Integer> portfolio;
 	private TickerDAO tdao;
@@ -21,6 +23,7 @@ public class Portfolio {
 	public Portfolio(List<Transaction> transactions, TickerDAO tdao) throws PortfolioConstraintException {
 		this.tdao = tdao;
 		this.portfolio = new HashMap<String, Integer>();
+		this.watchlist = new HashSet<String>();
 		this.transactions = transactions;
 		
 		for (Transaction t  : this.transactions) {

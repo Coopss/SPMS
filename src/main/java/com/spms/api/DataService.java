@@ -81,9 +81,16 @@ public class DataService {
 			Stats statistics = stdao.get(symbol);
 			List<NewsArticle> articles = ndao.getNews(symbol);
 			TickerData yesterdayClose = tdao.getYesterdayClose(symbol);
+			Float recentPrice = Float.parseFloat(tdao.getMostRecentPrice(symbol).marketAverage);
+			Float priceChange = recentPrice - Float.parseFloat(yesterdayClose.marketAverage);
+			Float percentChange = priceChange / Float.parseFloat(yesterdayClose.marketAverage);
+			
 			
 			response.put("company", s.Name);
 			response.put("symbol", s.Symbol);
+			response.put("currentPrice", recentPrice);
+			response.put("priceChange", priceChange);
+			response.put("percentChange", percentChange);
 			response.put("about", s.Description);
 			response.put("yesterdayClose", yesterdayClose);
 			response.put("todayData", todayData);
