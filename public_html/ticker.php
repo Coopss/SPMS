@@ -77,18 +77,22 @@
                                                             <form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Amount" id="buycount" style="width:100%"> </input>
                                                             </form>
-                                                            <form class="form-inline">
+                                                            <!-- form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Cost of all shares" id="buyprice" style="width:100%"> </input>
-                                                            </form>
+                                                            </form -->
                                                             <!-- p class="card-text">Here is where you buy a stock.</p -->
-                                                            <span id='buyFeedback'></span>
+                                                            <button type="button" name="buybutton" onclick="buyStock()">Buy</button>
+                                                            
                                                           </div>
                                                           <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
                                                             <h5 class="card-title">Sell</h5>
                                                             <form class="form-inline">
-                                                                    <input class="form-control" type="text" placeholder="Amount" id="buycount" style="width:100%"> </input>
+                                                                    <input class="form-control" type="text" placeholder="Amount" id="sellcount" style="width:100%"> </input>
                                                             </form>
-                                                            <p class="card-text">Here is where you sell a stock</p>
+                                                            
+                                                            <button type="button" name="sellbutton" onclick="buyStock('sell')">Sell</button>
+                                                            
+                                                            <!-- p class="card-text">Here is where you sell a stock</p -->
                                                           </div>
                                                           <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
                                                             <h5 class="card-title">Watchlist</h5>
@@ -97,6 +101,8 @@
                                                           </div>
 
                                                         </div>
+                                                        <span id='buyFeedback'></span>
+                                                        
                                                       </div>
                                                       <table class = "table stock_tables">
                                                               <!-- Portfolio stock details -->

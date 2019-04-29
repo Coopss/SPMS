@@ -85,6 +85,9 @@
 </div>
 
 <script src='script.js'></script>
+<script type="text/javascript">
+    //portfolio();
+</script>
 
 </body>
 </html>
