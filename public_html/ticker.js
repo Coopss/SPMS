@@ -147,7 +147,7 @@ function generateData(tbl, labels, yesterdayClose) {
 //TODO: add parameter to change labels based on view (day, week, month, etc.)
 function generateLabels(history = '1d') {
 	var arr = [];
-	var currDate = moment();
+	var currDate = moment().tz("America/New_York");
 	var date, max, inc;
 
 	switch (history) {
@@ -179,7 +179,7 @@ function generateLabels(history = '1d') {
 
 function setOpenPrice(tbl) {
 	var openIndex;
-	var earliestDate = moment().valueOf();
+	var earliestDate = moment().tz("America/New_York").valueOf();
 	for (var i = 0; i < tbl.length; i++) {
 		if (moment(tbl[i]['date']).valueOf() < earliestDate) {
 			openIndex = i;
