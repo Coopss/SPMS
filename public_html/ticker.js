@@ -33,7 +33,7 @@ function ticker() {
 		var close = data.yesterdayClose;
 
 		//fill in company Name and About
-		$("#company_name").html(name);
+		$("#company_name").html(name + ' (<span id="stockSymbol">' + symbol + '</span>)');
 		$("#ticker_about").html(about);
 
 		var i, j;
@@ -113,15 +113,31 @@ function getUrlParameter(sParam) {
 };
 
 
-function generateData(tbl, labels) {
+function generateData(tbl, labels, yesterdayClose) {
 	var arr = [];
-	var i, index;
+	var i, index, last, lastDate, date;
+
+	last = yesterdayClose;
+	lastDate = moment().year(1902);
 
 	for (i = 0; i < tbl.length; i++) {
+		date = moment(tbl[i]['date']);
+		if (Number(lastDate) < Number(date)) {
+			lastDate = date;
+		}
+
 		if ((index = labels.map(Number).indexOf(+moment(tbl[i]['date']))) != -1) {
 			arr[index] = Number(tbl[i]['marketAverage']);
+		}
+	}
+
+	for (i = 0; i < labels.length; i++) {
+		if (arr[i] != null) {
+			last = arr[i];
+		} else if ((Number(labels[i]) < Number(lastDate))) {
+			arr[i] = last;
 		} else {
-			arr[index] = null;
+			break;
 		}
 	}
 
@@ -129,21 +145,28 @@ function generateData(tbl, labels) {
 }
 
 //TODO: add parameter to change labels based on view (day, week, month, etc.)
-function generateLabels(type = 'day') {
+function generateLabels(history = '1d') {
 	var arr = [];
 	var currDate = moment();
 	var date, max, inc;
 
-	switch (type) {
-		case 'day':
-		default:
-			max = 420;
+	switch (history) {
+		case '1w':
 			inc = 1;
+			max = 7;
+			break;
+		case '1d':
+		default:
+			inc = 1;
+			max = 420;
+			break;
 	}
 	for (var i = 0; i < max; i += inc) {
 		date = moment(currDate.format());
-		switch (type) {
-			case 'day':
+		switch (history) {
+			case '1w':
+
+			case '1d':
 			default:
 				date.set({'hour': (i / 60) + 9, 'minute': i % 60, 'second': 0, 'millisecond': 0});
 				break;
@@ -155,12 +178,16 @@ function generateLabels(type = 'day') {
 }
 
 function setOpenPrice(tbl) {
-	var todayDate = moment().set({'hour': 9, 'minute': 30, 'second': 0, 'millisecond': 0}).valueOf();
+	var openIndex;
+	var earliestDate = moment().valueOf();
 	for (var i = 0; i < tbl.length; i++) {
-		if (moment(tbl[i]['date']).valueOf() == todayDate) {
-			return Number(tbl[i]['marketAverage'])
+		if (moment(tbl[i]['date']).valueOf() < earliestDate) {
+			openIndex = i;
+			earliestDate = moment(tbl[i]['date']).valueOf();
 		}
 	}
+
+	return Number(tbl[openIndex]['marketAverage']);
 }
 
 function chooseColor(tbl, openPrice) {
@@ -193,9 +220,12 @@ function graph(graphData) { //pass in data.todayData from AJAX request
     var data = {
             labels: labels,
             datasets: [{
-                    data: generateData(tbl, labels),
+                    data: generateData(tbl, labels, openPrice),
                     hidden: false,
-		    backgroundColor: graphColor
+		    backgroundColor: graphColor,
+		    pointBorderColor: 'rgba(0, 0, 0, 0)',
+		    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+		    pointHoverBackgroundColor: graphColor
             }]
     };
 
