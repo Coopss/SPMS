@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -120,4 +122,17 @@ public class AuthDAO {
 	    
 	    return null;
 	}
+	
+	public List<String> getAllUsers() throws SQLException {
+		List<String> users = new ArrayList<String>();
+		PreparedStatement stmt = conn.prepareStatement("select distinct([username]) from [" + authTableName + "]");
+		
+		ResultSet rs = stmt.executeQuery();		
+	    while(rs.next()) {
+	    	users.add(rs.getString(1));
+	    }
+	    
+	    return users;
+	}
+	
 }

@@ -106,6 +106,32 @@ public class TickerDAO {
 		return dateobj;
 	}
 	
+	public TickerData getMostRecentPrice(String tickerName) throws SQLException, ParseException {
+		String tableName = generateTickerTableName(tickerName);
+		
+		if (!SPMSDB.tableExists(conn, tableName)) {
+			return null;
+		}
+		
+		String today = SPMSDB.getMSSQLDatetime(Util.getDateWithoutTimeUsingCalendar());
+		TickerData td = new TickerData();
+		
+		PreparedStatement stmt = conn.prepareStatement("SELECT TOP (1) [date],[marketAverage],[marketVolume],[marketNumberOfTrades] from [dbo].[" + tableName + "] order by [date] desc");
+		
+		ResultSet rs = stmt.executeQuery();		
+	    
+		while(rs.next()) {
+			td.date = rs.getString(1);
+			td.marketAverage = rs.getString(2);
+			td.marketVolume = rs.getString(3);
+			td.marketNumberOfTrades = rs.getString(4);
+			break;
+	    }
+		
+		return td;
+	}
+	
+	
 	public TickerData getYesterdayClose(String tickerName) throws SQLException, ParseException {
 		String tableName = generateTickerTableName(tickerName);
 		
