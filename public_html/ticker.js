@@ -54,7 +54,7 @@ function ticker() {
 		$("#stats_go_here").html(new_table);
 
 		setupNews(articles);
-		
+
 		/*
 		var new_article;
 		for (i = 0; i < articles.length; i++) {
@@ -147,7 +147,6 @@ function generateData(tbl, labels) {
 	return arr;
 }
 
-//TODO: add parameter to change labels based on view (day, week, month, etc.)
 function generateLabels(history = '1d') {
 	var arr = [];
 	var currDate = moment().tz("America/New_York");

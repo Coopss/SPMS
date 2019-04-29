@@ -16,6 +16,7 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.25/moment-timezone-with-data-1970-2030.min.js"></script>
 
         <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
         <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
@@ -42,7 +43,7 @@
                                                 <div>
                                                     <span id="chart_placeholder">Generating graph, please wait...</span>
                                                     <canvas id="myChart" height="400"></canvas>
-                                                    
+
                                                     <a href="JavaScript:getGraphGranular('1w')">1w</a>
                                                     <a href="JavaScript:getGraphGranular('1m')">1m</a>
                                                     <a href="JavaScript:getGraphGranular('3m')">3m</a>
@@ -82,16 +83,16 @@
                                                             </form -->
                                                             <!-- p class="card-text">Here is where you buy a stock.</p -->
                                                             <button type="button" name="buybutton" onclick="buyStock()">Buy</button>
-                                                            
+
                                                           </div>
                                                           <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
                                                             <h5 class="card-title">Sell</h5>
                                                             <form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Amount" id="sellcount" style="width:100%"> </input>
                                                             </form>
-                                                            
+
                                                             <button type="button" name="sellbutton" onclick="buyStock('sell')">Sell</button>
-                                                            
+
                                                             <!-- p class="card-text">Here is where you sell a stock</p -->
                                                           </div>
                                                           <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
@@ -102,7 +103,7 @@
 
                                                         </div>
                                                         <span id='buyFeedback'></span>
-                                                        
+
                                                       </div>
                                                       <table class = "table stock_tables">
                                                               <!-- Portfolio stock details -->
