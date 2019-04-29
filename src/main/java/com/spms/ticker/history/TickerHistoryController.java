@@ -40,7 +40,7 @@ public class TickerHistoryController implements Controller {
 	}
 	
 	public static String buildExt(String ticker) {
-		return "/stock/" + ticker + "/chart/1w";
+		return "/stock/" + ticker + "/chart/1m";
 //		return "/stock/" + ticker + "/chart/5y";
 	}
 	

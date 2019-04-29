@@ -80,7 +80,8 @@
                                                             <form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Cost of all shares" id="buyprice" style="width:100%"> </input>
                                                             </form>
-                                                            <p class="card-text">Here is where you buy a stock.</p>
+                                                            <!-- p class="card-text">Here is where you buy a stock.</p -->
+                                                            <span id='buyFeedback'></span>
                                                           </div>
                                                           <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
                                                             <h5 class="card-title">Sell</h5>

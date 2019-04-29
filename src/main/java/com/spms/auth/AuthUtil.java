@@ -4,10 +4,21 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.ws.rs.core.Response;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.spms.Util;
+import com.spms.api.AuthenticationService;
+
 public class AuthUtil {
+	
+	private static final Logger log = LogManager.getLogger(AuthUtil.class);
 	
 	public static String generateSalt() {
 		return new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
@@ -44,5 +55,28 @@ public class AuthUtil {
 			throw new RuntimeException(e); 
 		} 
 	} 
+	
+	
+	public static String getUsername(javax.servlet.http.Cookie[] cookies, AuthDAO dao) {
+		String token;
+		String username = null;
+		for (javax.servlet.http.Cookie c : cookies) {
+			if (c.getName().equals("token")) {
+				token = c.getValue();
+				try {
+					username = dao.getUserForToken(token);
+					if (username == null) {
+						continue;
+					} else {
+						return username;
+					}
+				} catch (SQLException e) {
+					log.error(Util.stackTraceToString(e));
+					return null;
+				}
+			}
+		}
+		return null;
+	}
 
 }

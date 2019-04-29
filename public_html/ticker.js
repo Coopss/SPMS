@@ -33,7 +33,7 @@ function ticker() {
 		var close = data.yesterdayClose;
 
 		//fill in company Name and About
-		$("#company_name").html(name);
+		$("#company_name").html(name + ' (<span id="stockSymbol">' + symbol + '</span>)');
 		$("#ticker_about").html(about);
 
 		var i, j;

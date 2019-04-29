@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.spms.news.NewsJob;
+import com.spms.portfolio.PortfolioJob;
 import com.spms.ticker.history.TickerHistoryJob;
 import com.spms.ticker.live.TickerJob;
 import com.spms.ticker.stats.StatsJob;
@@ -32,6 +33,7 @@ public class BatchJobRunner extends HttpServlet {
 		enabled.put(BatchJobs.topMoversJob, false);
 		enabled.put(BatchJobs.newsJob, false);
 		enabled.put(BatchJobs.statsJob, true);
+		enabled.put(BatchJobs.portfolioJob, true);
 	}
 	
 	
@@ -46,6 +48,20 @@ public class BatchJobRunner extends HttpServlet {
 			} catch (Exception e) {
 				log.error(Util.stackTraceToString(e));
 				log.error("UNRECOVERABLE ERROR: Could not init TickerJob()");
+				System.exit(1);
+			}
+		}
+		
+		// portfolio value job (every 20 min)
+		if (enabled.get(BatchJobs.portfolioJob)) {		
+			Thread portfolioJob;
+			try {
+				portfolioJob = new Thread(new PortfolioJob());
+				portfolioJob.start();
+				batchJobThreads.add(portfolioJob);
+			} catch (Exception e) {
+				log.error(Util.stackTraceToString(e));
+				log.error("UNRECOVERABLE ERROR: Could not init PortfolioJob()");
 				System.exit(1);
 			}
 		}

@@ -1,4 +1,4 @@
-package com.spms.ticker.live;
+package com.spms.portfolio;
 
 import java.sql.SQLException;
 
@@ -8,24 +8,24 @@ import org.apache.logging.log4j.Logger;
 import com.spms.Util;
 
 
-public class TickerJob implements Runnable {
-	private static final Logger log = LogManager.getLogger(TickerJob.class);
+public class PortfolioJob implements Runnable {
+	private static final Logger log = LogManager.getLogger(PortfolioJob.class);
 	private static final Integer TIMEOUT = 1200000; // 20 min
 	
 	@Override
 	public void run() {
-		log.info("TickerJob started " + this);
+		log.info("PortfolioJob started " + this);
 		while (true) {
 			timeout(); 
-			TickerController tc;
+			PortfolioController pc;
 			try {
-				tc = new TickerController();
-				log.info("Started " + tc);
-				tc.reload();
-				log.info("Finished " + tc);
-				tc = null;
+				pc = new PortfolioController();
+				log.info("Started " + pc);
+				pc.reload();
+				log.info("Finished " + pc);
+				pc = null;
 			} catch (SQLException e) {
-				log.error("Failed to reload live data -- Critical");
+				log.error("Failed to reload portfolio data -- Critical");
 				log.error(Util.stackTraceToString(e));
 			}				
 		}
