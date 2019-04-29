@@ -178,12 +178,16 @@ function generateLabels(history = '1d') {
 }
 
 function setOpenPrice(tbl) {
-	var todayDate = moment().set({'hour': 9, 'minute': 30, 'second': 0, 'millisecond': 0}).valueOf();
+	var openIndex;
+	var earliestDate = moment().valueOf();
 	for (var i = 0; i < tbl.length; i++) {
-		if (moment(tbl[i]['date']).valueOf() == todayDate) {
-			return Number(tbl[i]['marketAverage'])
+		if (moment(tbl[i]['date']).valueOf() < earliestDate) {
+			openIndex = i;
+			earliestDate = moment(tbl[i]['date']).valueOf();
 		}
 	}
+
+	return Number(tbl[openIndex]['marketAverage']);
 }
 
 function chooseColor(tbl, openPrice) {
