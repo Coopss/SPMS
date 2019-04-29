@@ -53,7 +53,9 @@ function ticker() {
 		//insert the table into the page
 		$("#stats_go_here").html(new_table);
 
-
+		setupNews(articles);
+		
+		/*
 		var new_article;
 		for (i = 0; i < articles.length; i++) {
 			new_article = $("#article_template").clone();
@@ -68,6 +70,7 @@ function ticker() {
 		}
 
 		$("#article_page_number").html("1");
+		*/
 
         $('#chart_placeholder').remove();
 		graph(graphData);
