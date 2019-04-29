@@ -384,6 +384,53 @@ function articleGet(n_or_p) {
 }
 
 
+function buyStock() {
+	var date = $("#buyDate");
+	var ammount = $("#buyAmmount");
+	var price = $("#buyPrice");
+	
+	var symbol = $('#stockSymbol'); //only works after ticker data has loaded
+	
+	
+	$.ajax({
+		method: "GET",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio/add/" + symbol,
+		data: JSON.stringify({
+			"symbol": symbol,
+			"date": date,
+			"shares": ammount
+		}),
+	})
+	.done(function(data, textStatus, xhr) {
+		var feeback = "Stock shares successfully added to your portfolio";
+		
+		console.log(feedback);
+		$('#buyFeedback').html(feedback);
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var feedback = "";
+
+		switch (statusNum) {
+			case 200: //not sure why this is considered a fail...
+				feedback = "Status code 200 returned as a failure";
+				break;
+			case 401:
+				feedback = "search: 401 (token not found, or invalid)";
+				//TODO: redirect to sign on page?
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
+		console.log(feedback);
+	});
+	
+}
+
+
 
 
 
