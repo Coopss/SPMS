@@ -82,12 +82,24 @@ public class DataService {
 			Symbol s = sdao.get(symbol);
 			TickerController.reload(symbol, tdao);
 			List<TickerData> todayData = tdao.getTodayData(symbol);
+			Map<String, String> statsMap = new HashMap<String, String>();
 			Stats statistics = stdao.get(symbol);
 			List<NewsArticle> articles = ndao.getNews(symbol);
 			TickerData yesterdayClose = tdao.getYesterdayClose(symbol);
 			Float recentPrice = Float.parseFloat(tdao.getMostRecentPrice(symbol).marketAverage);
 			Float priceChange = recentPrice - Float.parseFloat(yesterdayClose.marketAverage);
 			Float percentChange = priceChange / Float.parseFloat(yesterdayClose.marketAverage);
+			
+			// add stats by kv
+			statsMap.put("Market Cap.", statistics.marketcap);
+			statsMap.put("Beta", statistics.beta);
+			statsMap.put("EPS", statistics.latestEPS);
+			statsMap.put("Return on Equity", statistics.returnOnEquity);
+			statsMap.put("Price to Earnings (PE)", statistics.peRatioHigh);
+			statsMap.put("Price to Sales (PS)", statistics.priceToSales);
+			statsMap.put("Price to Book (PB)", statistics.priceToBook);
+			statsMap.put("52 Week High", statistics.week52high);
+			statsMap.put("200 Day Moving Average", statistics.day200MovingAvg);
 			
 			
 			response.put("company", s.Name);
@@ -98,7 +110,7 @@ public class DataService {
 			response.put("about", s.Description);
 			response.put("yesterdayClose", yesterdayClose);
 			response.put("todayData", todayData);
-			response.put("statistics", statistics);
+			response.put("statistics", statsMap);
 			response.put("articles", articles);
 			
 			return Response.ok(gson.toJson(response)).build();

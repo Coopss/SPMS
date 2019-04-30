@@ -89,10 +89,7 @@
                         </div>
                 </div>
                 <div class="row">
-                    
-                    
-                    <!-- TOP MOVERS -->
-                <div class="offset-lg-2 col-lg-8">
+                <div class="offset-lg-2 offset-md-2 col-lg-8 col-md-8 col-sm-12 col-xs-12">
                         <h3 class="text-center">Top Movers</h3>
                         <div class="card-group" id='topMovers'>
                           
@@ -150,7 +147,7 @@
                         </div>
                         </a>
                 </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
+                <div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block my-auto">
                         <a id="article_next" onclick="articleGet('n')" href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
                 </div>
                 </div>
