@@ -30,7 +30,7 @@ function ticker() {
 		var stats = data.statistics;
 		var about = data.about;
 		var articles = data.articles;
-		
+
 		var current = data.currentPrice;
 		var priceChange = data.priceChange;
 		var percentChange = data.percentChange;
@@ -38,15 +38,15 @@ function ticker() {
 		//fill in company Name and About
 		$("#company_name").html(name + ' (<span id="stockSymbol">' + symbol + '</span>)');
 		$("#ticker_about").html(about);
-		
+
 		$('#currentPrice').html("$" + current);
 		$('#priceChange').html(priceChange);
 		$('#percentChange').html( "" + (percentChange * 100) + '%');
-		
+
 		if (percentChange >= 0) { //color
 			$('#priceColor').attr('style', 'color:green');
 			//$('#percentChange').attr('style', 'color:green');
-			
+
 		} else if (percentChange < 0) {
 			$('#priceColor').attr('style', 'color:red');
 			//$('#percentChange').attr('style', 'color:red');
@@ -132,28 +132,30 @@ function getUrlParameter(sParam) {
 };
 
 
-function generateData(tbl, labels) {
+function generateData(tbl, labels, hist = '1d') {
 	var arr = [];
-	var i, index, last, lastDate, date;
+	var i, index, last, lastDate, date, key;
 
-	last = setOpenPrice(tbl);
-	lastDate = moment().year(1902);
+	key = (hist == '1d') ? 'date' : 'Date';
+	key2 = (hist == '1d') ? 'marketAverage' : 'Close';
+	last = setOpenPrice(tbl, hist);
+	lastDate = moment.tz("America/New_York").year(1902);
 
 	for (i = 0; i < tbl.length; i++) {
-		date = moment(tbl[i]['date']);
+		date = moment.tz(tbl[i][key], "America/New_York");
 		if (Number(lastDate) < Number(date)) {
 			lastDate = date;
 		}
 
-		if ((index = labels.map(Number).indexOf(+moment(tbl[i]['date']))) != -1) {
-			arr[index] = Number(tbl[i]['marketAverage']);
+		if ((index = labels.map(Number).indexOf(+moment.tz(tbl[i][key], "America/New_York"))) != -1) {
+			arr[index] = Number(tbl[i][key2]);
 		}
 	}
 
 	for (i = 0; i < labels.length; i++) {
 		if (arr[i] != null) {
 			last = arr[i];
-		} else if (Number(labels[i]) < Number(lastDate)) {
+		} else if (Number(labels[i]) <= Number(lastDate)) {
 			arr[i] = last;
 		} else {
 			break;
@@ -163,12 +165,12 @@ function generateData(tbl, labels) {
 	return arr;
 }
 
-function generateLabels(history = '1d') {
+function generateLabels(hist = '1d') {
 	var arr = [];
-	var currDate = moment().tz("America/New_York");
+	var currDate = moment.tz("America/New_York");
 	var date, max;
 
-	switch (history) {
+	switch (hist) {
 		case '1d':
 			max = 420;
 			break;
@@ -177,28 +179,29 @@ function generateLabels(history = '1d') {
 			max = 7;
 			break;
 		case '1m':
-			currDate.subtract(1, 'months');
-			max = currDate.daysInMonth();
+			currDate.subtract(1, 'months').add(1, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
+			max = Math.abs(currDate.diff(moment.tz("America/New_York"), 'days'));
 			break;
 		case '3m':
-			currDate.subtract(3, 'months');
-			max = currDate.diff(moment().tz("America/New_York"), 'days');
+			currDate.subtract(3, 'months').add(1, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
+			max = Math.abs(currDate.diff(moment.tz("America/New_York"), 'days'));
 			break;
 		case '1y':
-			currDate.subtract(1, 'years');
-			max = currDate.diff(moment().tz("America/New_York"), 'days');
+			currDate.subtract(1, 'years').add(1, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
+			max = Math.abs(currDate.diff(moment.tz("America/New_York"), 'days'));
 			break;
 		case '5y':
 		case 'max':
-			currDate.subtract(5, 'years');
-			max = currDate.diff(moment().tz("America/New_York"), 'days');
+			currDate.subtract(5, 'years').add(1, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
+			max = Math.abs(currDate.diff(moment.tz("America/New_York"), 'days'));
 			break;
 		default:
 			break;
 	}
+
 	for (var i = 0; i < max; i++) {
-		date = moment(currDate.format());
-		switch (history) {
+		date = moment.tz(currDate.format(), "America/New_York");
+		switch (hist) {
 			case '1d':
 				date.set({'hour': (i / 60) + 9, 'minute': i % 60, 'second': 0, 'millisecond': 0});
 				break;
@@ -220,29 +223,36 @@ function generateLabels(history = '1d') {
 	return arr;
 }
 
-function setOpenPrice(tbl) {
-	var openIndex;
-	var earliestDate = moment().tz("America/New_York").valueOf();
+function setOpenPrice(tbl, hist = '1d') {
+	var openIndex, key, key2;
+	var earliestDate = moment.tz("America/New_York").valueOf();
+
+	key = (hist == '1d') ? 'date' : 'Date';
+	key2 = (hist == '1d') ? 'marketAverage' : 'Close';
+
 	for (var i = 0; i < tbl.length; i++) {
-		if (moment(tbl[i]['date']).valueOf() < earliestDate) {
+		if (moment.tz(tbl[i][key], "America/New_York").valueOf() < earliestDate) {
 			openIndex = i;
-			earliestDate = moment(tbl[i]['date']).valueOf();
+			earliestDate = moment.tz(tbl[i][key], "America/New_York").valueOf();
 		}
 	}
 
-	return Number(tbl[openIndex]['marketAverage']);
+	return Number(tbl[openIndex][key2]);
 }
 
-function chooseColor(tbl) {
-	var lastPrice, lastDate, date, openPrice;
-	lastDate = moment().year(1902);
-	openPrice = setOpenPrice(tbl);
+function chooseColor(tbl, hist = '1d') {
+	var lastPrice, lastDate, date, openPrice, key, key2;
+
+	key = (hist == '1d') ? 'date' : 'Date';
+	key2 = (hist == '1d') ? 'marketAverage' : 'Close';
+	lastDate = moment.tz("America/New_York").year(1902);
+	openPrice = setOpenPrice(tbl, hist);
 
 	for (var i = 0; i < tbl.length; i++) {
-		date = moment(tbl[i]['date']);
+		date = moment.tz(tbl[i][key], "America/New_York");
 		if (date.valueOf() >= lastDate.valueOf()) {
 			lastDate = date;
-			lastPrice = Number(tbl[i]['marketAverage']);
+			lastPrice = Number(tbl[i][key2]);
 		}
 	}
 
