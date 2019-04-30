@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,16 +13,19 @@ import org.apache.logging.log4j.Logger;
 
 import com.spms.database.SPMSDB;
 import com.spms.news.NewsArticle;
+import com.spms.ticker.live.TickerDAO;
 import com.spms.ticker.los.Symbol;
 import com.spms.ticker.los.SymbolDAO;
 
 public class TopMoversDAO {
 	private Connection conn;
+	private TickerDAO tdao;
 	protected static String tableName = "internal.tops";
 	private static final Logger log = LogManager.getLogger(TopMoversDAO.class);
 	
 	public TopMoversDAO() throws SQLException {
 		conn = SPMSDB.getConnection();
+		tdao = new TickerDAO();
 	}
 	
 	public boolean createTopMoversTable() throws SQLException {
@@ -84,14 +88,21 @@ public class TopMoversDAO {
         	return true;
 	}
 	
-	public ArrayList<TopMoversObject> getTopMovers() throws SQLException {
+	public ArrayList<TopMoversObject> getTopMovers() throws SQLException, ParseException {
 		ArrayList<TopMoversObject> tops = new ArrayList<TopMoversObject>();
-		String command = "SELECT TOP(5) * FROM [dbo].[" + tableName + "] WHERE [Change] IS NOT NULL AND [ChangePercent] IS NOT NULL ORDER BY [ChangePercent] DESC;";
+		String command = "SELECT TOP(10) * FROM [dbo].[" + tableName + "] WHERE [Change] IS NOT NULL AND [ChangePercent] IS NOT NULL ORDER BY [ChangePercent] DESC;";
 		PreparedStatement stmt = conn.prepareStatement(command);
 		ResultSet rs = stmt.executeQuery();
 
-		while (rs.next())
-			tops.add(new TopMoversObject(rs.getString("Symbol"), Float.toString(rs.getFloat("Change")), Float.toString(rs.getFloat("ChangePercent"))));
+		while (rs.next() && tops.size() < 5) {
+			TopMoversObject tmo = new TopMoversObject(rs.getString("Symbol"), Float.toString(rs.getFloat("Change")), Float.toString(rs.getFloat("ChangePercent")));
+			tmo.currentPrice = tdao.getMostRecentPrice(rs.getString("Symbol")).marketAverage;
+			if (tmo.currentPrice  == null) {
+				continue;
+			} else {
+				tops.add(tmo);
+			}
+		}	
 
 		return tops;
 	}

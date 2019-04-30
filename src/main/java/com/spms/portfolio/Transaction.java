@@ -45,12 +45,5 @@ public class Transaction {
 		this.date = date;
 		this.shares = shares;
 		this.sharePrice = sharePrice;
-	}
-	
-	
-	@Override
-	public String toString() {
-		return this.date + " " + this.user + " " + this.symbol + " " + this.shares.toString() + " " + this.sharePrice.toString();
-	}
-	
+	}	
 }
