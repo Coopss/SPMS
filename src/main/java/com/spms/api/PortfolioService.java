@@ -1,5 +1,7 @@
 package com.spms.api;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,7 @@ import com.spms.auth.AuthDAO;
 import com.spms.auth.AuthUtil;
 import com.spms.news.NewsArticle;
 import com.spms.portfolio.Portfolio;
+import com.spms.portfolio.PortfolioConstraintException;
 import com.spms.portfolio.PortfolioDAO;
 import com.spms.portfolio.PortfolioValue;
 import com.spms.portfolio.Transaction;
@@ -62,17 +65,27 @@ public class PortfolioService {
 	
 	@POST
 	@Secured
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/add/{symbol}")
-	@Operation(summary = "Add (or remove using negative shares) to add to portfolio", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "Success", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
+	@Operation(summary = "Add (or remove using negative shares) to add to portfolio", tags = {"Portfolio"}, description = "Date in format dd/MM/yyyy, shares must be an integer", responses = {@ApiResponse(description = "Success", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
 	public Response subscribe(@PathParam("symbol") String symbol, @QueryParam("date") String date, @QueryParam("shares") String shares) {
 		try {
 			javax.servlet.http.Cookie[] cookies = servletRequest.getCookies();
 			String user = AuthUtil.getUsername(cookies, adao);
-			TickerHistoryData thd = thdao.getTickerAtDate(symbol, date);
-			Transaction t = new Transaction(user, symbol, date, shares, thd.Close);
+			Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(date);  
+			TickerHistoryData thd = thdao.getTickerAtDate(symbol, date1);
+			Transaction t = new Transaction(user, symbol.toUpperCase(), date1, shares, thd.Close);
+			Portfolio p = pdao.getUserPortfolio(user);
+			// check validity of transaction
+			p.transactions.add(t);
+			p.checkValidity();
 			
 			pdao.addTransaction(t);
-			
+		} catch (PortfolioConstraintException e) {
+			Map<String, Object> response = new HashMap<String, Object>();
+			Gson gson = new Gson();
+			response.put("error", "not enough shares!");
+			return Response.status(Response.Status.BAD_REQUEST).entity(gson.toJson(response)).build();
 		} catch (Exception e) {
 			log.error(Util.stackTraceToString(e));
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();

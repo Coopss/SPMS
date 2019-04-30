@@ -51,13 +51,13 @@ public class PortfolioController implements Controller{
 	public static void main(String[] arg) throws SQLException, NumberFormatException, PortfolioConstraintException, ParseException {
 		PortfolioController pc = new PortfolioController();
 		
-//		pc.addTransaction(new Transaction("test", "aapl", "2019-04-24 11:37:00.000", "5", "75"));
+		pc.pdao.addTransaction(new Transaction("test123", "aapl", "2019-04-24 11:37:00.000", "5", "75"));
 //		pc.addTransaction(new Transaction("test", "aapl", "2019-04-24 11:42:00.000", "-3", "74.5"));
 //		pc.addTransaction(new Transaction("test", "tsla", "2019-04-24 11:40:00.000", "1", "234.12"));
 
-		pc.pdao.addToWatchlist("test", "EA");
-		pc.pdao.removeFromWatchlist("test", "EA");
-		pc.pdao.addToWatchlist("test", "TSLA");
+//		pc.pdao.addToWatchlist("test", "EA");
+//		pc.pdao.removeFromWatchlist("test", "EA");
+//		pc.pdao.addToWatchlist("test", "TSLA");
 //		pc.reload();
 
 	}
