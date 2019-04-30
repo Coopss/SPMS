@@ -424,6 +424,7 @@ function buyStock(action = 'buy') {
 		crossDomain: true,
 		xhrFields: { withCredentials: true },
 		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio/add",
+		contentType: "application/json",
 		data: JSON.stringify({
 			"symbol": symbol,
 			"date": date,
