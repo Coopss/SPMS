@@ -57,6 +57,8 @@
                                       </tr>
                                    </tbody> -->
                                </table>
+                               
+                               <h4 id='total_value'>Loading value...</h4>
 
                                 <!-- Watchlist -->
                                 <h4> Watch List </h4>
