@@ -26,3 +26,7 @@ table, td {
 .bar-right {
   border-right: 1px solid #333;
 }
+
+.chart-area {
+        height: 400px;
+}

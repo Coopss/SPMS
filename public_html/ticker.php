@@ -38,7 +38,7 @@
         <div class="">
                         <div class="row">
                                 <div class="offset-lg-2 col-lg-5 bar-right">
-                                    
+
                                         <h3 id="company_name">Loading stock name...</h3>
                                         <h5> <span id='currentPrice'>Loading Price...</span>,
                                                 <span id="priceColor">
@@ -46,8 +46,8 @@
                                                 (<span id="percentChange"></span>)
                                                 </span>
                                         </h5>
-                                                
-                                                <div>
+
+                                                <div class="chart-area">
                                                     <span id="chart_placeholder">Generating graph, please wait...</span>
                                                     <canvas id="myChart" height="400"></canvas>
 
