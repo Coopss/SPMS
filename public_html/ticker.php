@@ -16,6 +16,7 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.25/moment-timezone-with-data-1970-2030.min.js"></script>
 
         <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
         <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
@@ -37,8 +38,15 @@
         <div class="">
                         <div class="row">
                                 <div class="offset-lg-2 col-lg-5 bar-right">
+                                    
                                         <h3 id="company_name">Loading stock name...</h3>
-                                        <h6> $current price, (percent change) </h6>
+                                        <h5> <span id='currentPrice'>Loading Price...</span>,
+                                                <span id="priceColor">
+                                                <span id="priceChange"></span>
+                                                (<span id="percentChange"></span>)
+                                                </span>
+                                        </h5>
+                                                
                                                 <div>
                                                     <span id="chart_placeholder">Generating graph, please wait...</span>
                                                     <canvas id="myChart" height="400"></canvas>
@@ -68,35 +76,51 @@
                                                         <div class="tab-content" id="myTabContent">
                                                           <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
                                                             <h5 class="card-title">Buy</h5>
-                                                            <input id="datepicker" onkeydown="return false" placeholder="Date of Purchase" />
+                                                            <input id="buyDatePicker" onkeydown="return false" placeholder="Date of Purchase" />
                                                                     <script>
-                                                                    $('#datepicker').datepicker({
+                                                                    //Why does none of this do anything?
+                                                                    $('#buyDatePicker').datepicker({
                                                                         daysOfWeekDisabled: [0,6]
-                                                                        });
+                                                                    });
+                                                                    $("#buyDatePicker").datepicker("option", "dateFormat", "yy-mm-dd");
                                                                     </script>
                                                             <form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Amount" id="buycount" style="width:100%"> </input>
                                                             </form>
-                                                            <form class="form-inline">
+                                                            <!-- form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Cost of all shares" id="buyprice" style="width:100%"> </input>
-                                                            </form>
+                                                            </form -->
                                                             <!-- p class="card-text">Here is where you buy a stock.</p -->
-                                                            <span id='buyFeedback'></span>
+                                                            <button type="button" name="buybutton" onclick="buyStock()">Buy</button>
+
                                                           </div>
                                                           <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
                                                             <h5 class="card-title">Sell</h5>
+                                                            <input id="sellDatePicker" onkeydown="return false" placeholder="Date Sold" />
+                                                                    <script>
+                                                                    //Why does none of this do anything?
+                                                                    $('#sellDatePicker').datepicker({
+                                                                        daysOfWeekDisabled: [0,6]
+                                                                        });
+                                                                        $("#sellDatePicker").datepicker("option", "dateFormat", "yy-mm-dd");
+                                                                    </script>
                                                             <form class="form-inline">
-                                                                    <input class="form-control" type="text" placeholder="Amount" id="buycount" style="width:100%"> </input>
+                                                                    <input class="form-control" type="text" placeholder="Amount" id="sellcount" style="width:100%"> </input>
                                                             </form>
-                                                            <p class="card-text">Here is where you sell a stock</p>
+
+                                                            <button type="button" name="sellbutton" onclick="buyStock('sell')">Sell</button>
+
+                                                            <!-- p class="card-text">Here is where you sell a stock</p -->
                                                           </div>
                                                           <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
                                                             <h5 class="card-title">Watchlist</h5>
-                                                           <a href="#" class="btn btn-primary">Add</a>
+                                                           <a href="javascript:watch()" class="btn btn-primary">Add</a>
                                                             <p class="card-text">Add/Remove this stock from your watchlist</p>
                                                           </div>
 
                                                         </div>
+                                                        <span id='buyFeedback'></span>
+
                                                       </div>
                                                       <table class = "table stock_tables">
                                                               <!-- Portfolio stock details -->

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -108,8 +109,15 @@ public class TickerHistoryDAO {
 		
 	}
 	
+	public TickerHistoryData getTickerAtDate(String ticker, Date date) throws SQLException, ParseException {
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		Date javaDate = new Date();
+		String msSqlDate = sdf.format(javaDate).trim();
+		return getTickerAtDate(ticker, msSqlDate);
+	}
+	
 	public TickerHistoryData getTickerAtDate(String ticker, String date) throws SQLException, ParseException {
-		PreparedStatement stmt = conn.prepareStatement("SELECT TOP (1) [Date], [Open],[High],[Low],[Close],[Volume],[UnadjustedVolume],[ChangeOverTime],[Change],[Vwap],[ChangePercent] FROM [dbo].[ticker."+ticker.toUpperCase()+".history] WHERE [date] <= '" + SPMSDB.getMSSQLDatetime(date)+ "' ORDER BY [date] desc;");
+		PreparedStatement stmt = conn.prepareStatement("SELECT TOP (1) [Date], [Open],[High],[Low],[Close],[Volume],[UnadjustedVolume],[ChangeOverTime],[Change],[Vwap],[ChangePercent] FROM [dbo].[ticker." + ticker.toUpperCase() + ".history] WHERE [date] <= '" + SPMSDB.getMSSQLDatetime(date)+ "' ORDER BY [date] desc;");
 			
 			ResultSet rs = stmt.executeQuery();		
 			TickerHistoryData thd = new TickerHistoryData();

@@ -30,11 +30,27 @@ function ticker() {
 		var stats = data.statistics;
 		var about = data.about;
 		var articles = data.articles;
-		var close = data.yesterdayClose;
+
+		var current = data.currentPrice;
+		var priceChange = data.priceChange;
+		var percentChange = data.percentChange;
 
 		//fill in company Name and About
 		$("#company_name").html(name + ' (<span id="stockSymbol">' + symbol + '</span>)');
 		$("#ticker_about").html(about);
+
+		$('#currentPrice').html("$" + current);
+		$('#priceChange').html(priceChange);
+		$('#percentChange').html( "" + (percentChange * 100) + '%');
+
+		if (percentChange > 0) { //color
+			$('#priceColor').css('color', 'green');
+			//$('#percentChange').attr('style', 'color:green');
+
+		} else if (percentChange < 0) {
+			$('#priceColor').css('color', 'red');
+			//$('#percentChange').attr('style', 'color:red');
+		}
 
 		var i, j;
 		var new_table = "<table class='table stock_tables'>";
@@ -46,14 +62,16 @@ function ticker() {
 			new_table += "<td>" + key + "</td>";
 			new_table += "<td>" + stats[key] + "</td>";
 
-			new_table += "</tr>"
+			new_table += "</tr>";
 		}
-		new_table += "</table>"
+		new_table += "</table>";
 
 		//insert the table into the page
 		$("#stats_go_here").html(new_table);
 
+		setupNews(articles);
 
+		/*
 		var new_article;
 		for (i = 0; i < articles.length; i++) {
 			new_article = $("#article_template").clone();
@@ -68,9 +86,10 @@ function ticker() {
 		}
 
 		$("#article_page_number").html("1");
+		*/
 
         $('#chart_placeholder').remove();
-		graph(graphData);
+		graph(graphData); //defaults to 1d
 
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
@@ -113,39 +132,93 @@ function getUrlParameter(sParam) {
 };
 
 
-function generateData(tbl, labels) {
+function generateData(tbl, labels, hist = '1d') {
 	var arr = [];
-	var i, index;
+	var i, index, last, lastDate, date, key;
+
+	key = (hist == '1d') ? 'date' : 'Date';
+	key2 = (hist == '1d') ? 'marketAverage' : 'Close';
+	last = setOpenPrice(tbl, hist);
+	lastDate = moment.tz("America/New_York").year(1902);
 
 	for (i = 0; i < tbl.length; i++) {
-		if ((index = labels.map(Number).indexOf(+moment(tbl[i]['date']))) != -1) {
-			arr[index] = Number(tbl[i]['marketAverage']);
+		date = moment.tz(tbl[i][key], "America/New_York");
+		if (Number(lastDate) < Number(date)) {
+			lastDate = date;
+		}
+
+		if ((index = labels.map(Number).indexOf(+moment.tz(tbl[i][key], "America/New_York"))) != -1) {
+			arr[index] = Number(tbl[i][key2]);
+		}
+	}
+
+	for (i = 0; i < labels.length; i++) {
+		if (arr[i] != null) {
+			last = arr[i];
+		} else if (Number(labels[i]) <= Number(lastDate)) {
+			arr[i] = last;
 		} else {
-			arr[index] = null;
+			break;
 		}
 	}
 
 	return arr;
 }
 
-//TODO: add parameter to change labels based on view (day, week, month, etc.)
-function generateLabels(type = 'day') {
+function generateLabels(hist = '1d') {
 	var arr = [];
-	var currDate = moment();
-	var date, max, inc;
+	var date, max;
+	var currDate = moment.tz("America/New_York");
 
-	switch (type) {
-		case 'day':
-		default:
-			max = 420;
-			inc = 1;
+	if (currDate.hours < 9) {
+		currDate.subtract(1, 'days');
 	}
-	for (var i = 0; i < max; i += inc) {
-		date = moment(currDate.format());
-		switch (type) {
-			case 'day':
-			default:
+
+	switch (hist) {
+		case '1d':
+			max = 420;
+			break;
+		case '1w':
+			currDate.subtract(7, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
+			max = 7;
+			break;
+		case '1m':
+			currDate.subtract(1, 'months').add(1, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
+			max = Math.abs(currDate.diff(moment.tz("America/New_York"), 'days'));
+			break;
+		case '3m':
+			currDate.subtract(3, 'months').add(1, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
+			max = Math.abs(currDate.diff(moment.tz("America/New_York"), 'days'));
+			break;
+		case '1y':
+			currDate.subtract(1, 'years').add(1, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
+			max = Math.abs(currDate.diff(moment.tz("America/New_York"), 'days'));
+			break;
+		case '5y':
+		case 'max':
+			currDate.subtract(5, 'years').add(1, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
+			max = Math.abs(currDate.diff(moment.tz("America/New_York"), 'days'));
+			break;
+		default:
+			break;
+	}
+
+	for (var i = 0; i < max; i++) {
+		date = moment.tz(currDate.format(), "America/New_York");
+		switch (hist) {
+			case '1d':
 				date.set({'hour': (i / 60) + 9, 'minute': i % 60, 'second': 0, 'millisecond': 0});
+				break;
+			case '1w':
+			case '1m':
+			case '3m':
+			case '1y':
+			case '5y':
+			case 'max':
+				date.add(i, 'days');
+				break;
+			default:
+				// error
 				break;
 		}
 		arr.push(date);
@@ -154,24 +227,40 @@ function generateLabels(type = 'day') {
 	return arr;
 }
 
-function setOpenPrice(tbl) {
-	var todayDate = moment().set({'hour': 9, 'minute': 30, 'second': 0, 'millisecond': 0}).valueOf();
+function setOpenPrice(tbl, hist = '1d') {
+	if (tbl.length == 0) {
+		return 0;
+	}
+
+	var openIndex, key, key2;
+	var earliestDate = moment.tz("America/New_York").valueOf();
+
+	key = (hist == '1d') ? 'date' : 'Date';
+	key2 = (hist == '1d') ? 'marketAverage' : 'Close';
+
 	for (var i = 0; i < tbl.length; i++) {
-		if (moment(tbl[i]['date']).valueOf() == todayDate) {
-			return Number(tbl[i]['marketAverage'])
+		if (moment.tz(tbl[i][key], "America/New_York").valueOf() < earliestDate) {
+			openIndex = i;
+			earliestDate = moment.tz(tbl[i][key], "America/New_York").valueOf();
 		}
 	}
+
+	return Number(tbl[openIndex][key2]);
 }
 
-function chooseColor(tbl, openPrice) {
-	var lastPrice, lastDate, date;
-	lastDate = moment().year(1902);
+function chooseColor(tbl, hist = '1d') {
+	var lastPrice, lastDate, date, openPrice, key, key2;
+
+	key = (hist == '1d') ? 'date' : 'Date';
+	key2 = (hist == '1d') ? 'marketAverage' : 'Close';
+	lastDate = moment.tz("America/New_York").year(1902);
+	openPrice = setOpenPrice(tbl, hist);
 
 	for (var i = 0; i < tbl.length; i++) {
-		date = moment(tbl[i]['date']);
+		date = moment.tz(tbl[i][key], "America/New_York");
 		if (date.valueOf() >= lastDate.valueOf()) {
 			lastDate = date;
-			lastPrice = Number(tbl[i]['marketAverage']);
+			lastPrice = Number(tbl[i][key2]);
 		}
 	}
 
@@ -182,20 +271,23 @@ function chooseColor(tbl, openPrice) {
 	}
 }
 
-function graph(graphData) { //pass in data.todayData from AJAX request
+function graph(graphData, hist = '1d') { //pass in data.todayData from AJAX request
     var ctx = document.getElementById('myChart').getContext('2d');
 
     var tbl = graphData;
-    var openPrice = setOpenPrice(tbl);
-    var graphColor = chooseColor(tbl, openPrice);
-    var labels = generateLabels();
+    var graphColor = (tbl.length == 0) ? 'rgba(0,0,0,0.1)' : chooseColor(tbl, hist);
+    var labels = generateLabels(hist);
+    var xTimeUnit = (hist == '1d') ? 'minute' : 'day';
 
     var data = {
             labels: labels,
             datasets: [{
-                    data: generateData(tbl, labels),
+                    data: generateData(tbl, labels, hist),
                     hidden: false,
-		    backgroundColor: graphColor
+		    backgroundColor: graphColor,
+		    pointBorderColor: 'rgba(0, 0, 0, 0)',
+		    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+		    pointHoverBackgroundColor: graphColor
             }]
     };
 
@@ -216,9 +308,13 @@ function graph(graphData) { //pass in data.todayData from AJAX request
 			    type:'time',
 			    distribution: 'series',
 			    time: {
-				    unit: 'minute'
+				    unit: xTimeUnit,
+				    timezone: "America/New_York"
 			    },
-			    bounds: 'ticks'
+			    bounds: 'ticks',
+                            gridLines: {
+                                    color: 'rgba(0, 0, 0, 0.01)'
+                            }
 		    }]
 	    }
     };
@@ -276,9 +372,10 @@ function getGraphGranular(history) {
 		var articles = data.articles;
 		*/
 		var graphData = data.data;
+		var history = data.granularity;
 
         $('#chart_placeholder').remove();
-		graph(graphData);
+		graph(graphData, history);
 
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
