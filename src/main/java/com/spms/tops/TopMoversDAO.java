@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.spms.database.SPMSDB;
 import com.spms.news.NewsArticle;
 import com.spms.ticker.los.Symbol;
@@ -15,6 +18,7 @@ import com.spms.ticker.los.SymbolDAO;
 public class TopMoversDAO {
 	private Connection conn;
 	protected static String tableName = "internal.tops";
+	private static final Logger log = LogManager.getLogger(TopMoversDAO.class);
 	
 	public TopMoversDAO() throws SQLException {
 		conn = SPMSDB.getConnection();
@@ -45,21 +49,22 @@ public class TopMoversDAO {
 			return s;
 	}
 	
-	
 	public void insert(String sym, String change, String changePercent) throws SQLException {		
 		Statement stmt = conn.createStatement();
 		
+		// if ticker exists, update existing values
 		if (exists(sym)) {
 			updateTable(sym, change, changePercent);
+			log.info("Updated " + sym);
+		// if ticker does not exist, add it to the table
 		} else {
 			stmt.executeUpdate("INSERT INTO [" + tableName + "] (Symbol, Change, ChangePercent) VALUES ('" + sym + "'," + fixNull(change) + "," + fixNull(changePercent) + ");");
+			log.info("Added " + sym);
 		}
 	}
 	
 	private void updateTable(String sym, String change, String changePercent) throws SQLException {
 		Statement stmt = conn.createStatement();
-		
-		// if ticker does not exist, add it to the table
 		stmt.executeUpdate("UPDATE [" + tableName + "] SET Change=" + fixNull(change) + ", ChangePercent=" + fixNull(changePercent) + " WHERE Symbol=" + "'" + sym + "'" + ";");
 	}
 	
