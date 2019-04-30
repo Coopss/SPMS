@@ -39,7 +39,7 @@ function ticker() {
 		$("#company_name").html(name + ' (<span id="stockSymbol">' + symbol + '</span>)');
 		$("#ticker_about").html(about);
 		
-		$('#currentPrice').html(current);
+		$('#currentPrice').html("$" + current);
 		$('#priceChange').html(priceChange);
 		$('#percentChange').html( "" + (percentChange * 100) + '%');
 		
@@ -62,9 +62,9 @@ function ticker() {
 			new_table += "<td>" + key + "</td>";
 			new_table += "<td>" + stats[key] + "</td>";
 
-			new_table += "</tr>"
+			new_table += "</tr>";
 		}
-		new_table += "</table>"
+		new_table += "</table>";
 
 		//insert the table into the page
 		$("#stats_go_here").html(new_table);

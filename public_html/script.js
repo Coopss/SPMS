@@ -401,16 +401,20 @@ function articleGet(n_or_p) {
 }
 
 
-function buyStock(action) {
-	var date = $("#datepicker").val();
+function buyStock(action = 'buy') {
+	var date;
 	var ammount;
-	//var price = $("#buyPrice");
 	
 	if (action == 'sell') { //handle selling stocks
+		date = $("#sellDatePicker").datepicker({dateFormat: 'yy-mm-dd'}).val()
 		ammount = $("#sellcount").val() * -1;
 	} else {
+		date = $("#buyDatePicker").datepicker({dateFormat: 'yy-mm-dd'}).val()
 		ammount = $("#buycount").val();
 	}
+	
+	console.log(JSON.stringify(date));
+	//return;
 	
 	var symbol = $('#stockSymbol').html(); //only works after ticker data has loaded
 	
@@ -476,38 +480,41 @@ function dashboard() {
 		
 		//Handle the stock table
 		var i;
-		var new_table = "<tr><th>Stock</th><th>Shares</th></tr>";
+		var new_table = "<table class='table' id='db_stock_table'>";
+		new_table += "<tr><th>Stock</th><th>Shares</th></tr>";
 		var url;
 		var link;
 
 		//dynamically generate tables based on server data
 		for (key in stock_table) {
-			url = 'http://spms.westus.cloudapp.azure.com/ticker.php?s=' + stock_table[key];
-			link = '<a href="' + url + '">';
+			//url = 'http://spms.westus.cloudapp.azure.com/ticker.php?s=' + stock_table[key];
+			//link = '<a href="' + url + '">';
 			
 			new_table += "<tr>";
-			new_table += "<td>" + key + "</td>";
-			new_table += link + "<td>" + stock_table[key] + "</td>" + "</a>";
+			new_table += "<td>" + "<a href='http://spms.westus.cloudapp.azure.com/ticker.php?s=" + key + "'>" +  key + "</a>" + "</td>";
+			new_table += "<td>" +stock_table[key] + "</td>";
 
-			new_table += "</tr>"
+			new_table += "</tr>";
 		}
-		//new_table += "</table>"
+		new_table += "</table>";
 
 		//insert the rows into the table
-		$("#db_stock_table").html(new_table);
+		$("#db_stock_table").replaceWith(new_table);
 		
 		
 		//Handle the wishlist table
-		var new_table = "<tr><th>Stock</th></tr>";
+		new_table = "<table class='table' id='db_watch_table'>";
+		new_table += "<tr><th>Stock</th></tr>";
 		for (i = 0; i < watch_table.length; i++) {
 			new_table += "<tr>";
 			//new_table += "<td>" + key + "</td>";
-			new_table += "<td>" + watch_table[i] + "</td>";
+			new_table += "<td>" + "<a href='http://spms.westus.cloudapp.azure.com/ticker.php?s=" + watch_table[i] + "'>" + watch_table[i] + "</a>" + "</td>";
 
-			new_table += "</tr>"
+			new_table += "</tr>";
 		}
+		new_table += "</table>";
 		
-		$("#db_watch_table").html(new_table);
+		$("#db_watch_table").replaceWith(new_table);
 		
 		setupNews(articles);
 		
@@ -534,6 +541,47 @@ function dashboard() {
 				feedback = "The server returned an undefined response: Status code " + statusNum;
 				break;
 		}
+		console.log(feedback);
+	});
+}
+
+
+function watch() {
+	
+	var symbol = $('#stockSymbol').html(); //only works after ticker data has loaded
+	
+	$.ajax({
+		method: "POST",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio/watchlist",
+		data: JSON.stringify({
+			"symbol": symbol
+		}),
+	})
+	.done(function(data, textStatus, xhr) {
+		var feeback = "Stock successfully added to your watchlist";
+		
+		console.log(feedback);
+		$('#buyFeedback').html(feedback);
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var feedback = "";
+
+		switch (statusNum) {
+			case 200: //not sure why this is considered a fail...
+				feedback = "Status code 200 returned as a failure";
+				break;
+			case 401:
+				feedback = "search: 401 (token not found, or invalid)";
+				//TODO: redirect to sign on page?
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
+		$('#buyFeedback').html(feedback)
 		console.log(feedback);
 	});
 }

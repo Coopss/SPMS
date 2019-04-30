@@ -40,7 +40,7 @@
                                 <div class="offset-lg-2 col-lg-5 bar-right">
                                     
                                         <h3 id="company_name">Loading stock name...</h3>
-                                        <h5> $<span id='currentPrice'>Loading Price...</span>,
+                                        <h5> <span id='currentPrice'>Loading Price...</span>,
                                                 <span id="priceColor">
                                                 <span id="priceChange"></span>
                                                 (<span id="percentChange"></span>)
@@ -76,11 +76,13 @@
                                                         <div class="tab-content" id="myTabContent">
                                                           <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
                                                             <h5 class="card-title">Buy</h5>
-                                                            <input id="datepicker" onkeydown="return false" placeholder="Date of Purchase" />
+                                                            <input id="buyDatePicker" onkeydown="return false" placeholder="Date of Purchase" />
                                                                     <script>
-                                                                    $('#datepicker').datepicker({
+                                                                    //Why does none of this do anything?
+                                                                    $('#buyDatePicker').datepicker({
                                                                         daysOfWeekDisabled: [0,6]
-                                                                        });
+                                                                    });
+                                                                    $("#buyDatePicker").datepicker("option", "dateFormat", "yy-mm-dd");
                                                                     </script>
                                                             <form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Amount" id="buycount" style="width:100%"> </input>
@@ -94,6 +96,14 @@
                                                           </div>
                                                           <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
                                                             <h5 class="card-title">Sell</h5>
+                                                            <input id="sellDatePicker" onkeydown="return false" placeholder="Date Sold" />
+                                                                    <script>
+                                                                    //Why does none of this do anything?
+                                                                    $('#sellDatePicker').datepicker({
+                                                                        daysOfWeekDisabled: [0,6]
+                                                                        });
+                                                                        $("#sellDatePicker").datepicker("option", "dateFormat", "yy-mm-dd");
+                                                                    </script>
                                                             <form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Amount" id="sellcount" style="width:100%"> </input>
                                                             </form>
@@ -104,7 +114,7 @@
                                                           </div>
                                                           <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
                                                             <h5 class="card-title">Watchlist</h5>
-                                                           <a href="#" class="btn btn-primary">Add</a>
+                                                           <a href="javascript:watch()" class="btn btn-primary">Add</a>
                                                             <p class="card-text">Add/Remove this stock from your watchlist</p>
                                                           </div>
 
