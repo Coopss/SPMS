@@ -35,7 +35,9 @@
                                 <!-- List of Stocks -->
                                 <h4> Stocks </h4>
                                 <table class = "table" id='db_stock_table'>
-                                    Loading...
+                                    <tr>
+                                        <td>Loading...</td>
+                                    </tr>
                                    <!-- Dynamic loading implemented, don't need this stuff
                                    <thead>
                                       <tr>
@@ -59,7 +61,9 @@
                                 <!-- Watchlist -->
                                 <h4> Watch List </h4>
                                 <table class = "table" id='db_watch_table'>
-                                    Loading...
+                                    <tr>
+                                        <td>Loading...</td>
+                                    </tr>
                                    <!-- Dynamic loading implemented, don't need this stuff
                                    <thead>
                                       <tr>
