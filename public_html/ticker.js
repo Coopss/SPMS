@@ -73,7 +73,7 @@ function ticker() {
 		*/
 
         $('#chart_placeholder').remove();
-		graph(graphData);
+		graph(graphData); //defaults to 1d
 
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
@@ -237,12 +237,12 @@ function chooseColor(tbl) {
 	}
 }
 
-function graph(graphData) { //pass in data.todayData from AJAX request
+function graph(graphData, history = '1d') { //pass in data.todayData from AJAX request
     var ctx = document.getElementById('myChart').getContext('2d');
 
     var tbl = graphData;
     var graphColor = chooseColor(tbl);
-    var labels = generateLabels();
+    var labels = generateLabels(history);
 
     var data = {
             labels: labels,
@@ -333,9 +333,10 @@ function getGraphGranular(history) {
 		var articles = data.articles;
 		*/
 		var graphData = data.data;
+		var history = data.granularity;
 
         $('#chart_placeholder').remove();
-		graph(graphData);
+		graph(graphData, history);
 
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
