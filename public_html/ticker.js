@@ -224,6 +224,10 @@ function generateLabels(hist = '1d') {
 }
 
 function setOpenPrice(tbl, hist = '1d') {
+	if (tbl.length == 0) {
+		return 0;
+	}
+	
 	var openIndex, key, key2;
 	var earliestDate = moment.tz("America/New_York").valueOf();
 
@@ -267,7 +271,7 @@ function graph(graphData, hist = '1d') { //pass in data.todayData from AJAX requ
     var ctx = document.getElementById('myChart').getContext('2d');
 
     var tbl = graphData;
-    var graphColor = chooseColor(tbl, hist);
+    var graphColor = (tbl.length == 0) ? 'rgba(0,0,0,0.1)' : chooseColor(tbl, hist);
     var labels = generateLabels(hist);
     var xTimeUnit = (hist == '1d') ? 'minute' : 'day';
 
