@@ -41,10 +41,10 @@ public class TopMoversJob implements Runnable {
     }
     
     /**
-     * Get time until next 4 am 
+     * 20 minutes
      */
     public Long getTimeout() {
-        Calendar cal = Calendar.getInstance();
+       /* Calendar cal = Calendar.getInstance();
         if (cal.get(Calendar.HOUR_OF_DAY) >= 4) {
             cal.add(Calendar.DATE, 1);
         }
@@ -54,9 +54,9 @@ public class TopMoversJob implements Runnable {
         cal.set(Calendar.MILLISECOND,0);
 
         Date nextRuntime = cal.getTime();
-        Date now = new Date();
+        Date now = new Date();*/
         
-        return nextRuntime.getTime() - now.getTime();
+        return new Long(1200000);
     }
     
     public void timeout() {

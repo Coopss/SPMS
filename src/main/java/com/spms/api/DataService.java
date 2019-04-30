@@ -33,6 +33,9 @@ import com.spms.ticker.los.Symbol;
 import com.spms.ticker.los.SymbolDAO;
 import com.spms.ticker.stats.Stats;
 import com.spms.ticker.stats.StatsDAO;
+import com.spms.tops.TopMoversController;
+import com.spms.tops.TopMoversDAO;
+import com.spms.tops.TopMoversObject;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -70,7 +73,7 @@ public class DataService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Get overview (descriptive) details of a symbol", tags = {"Data"}, description = "", responses = {@ApiResponse(description = "", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
 	public Response getSymbolOverview(@PathParam("symbol") String symbol) {
-				
+
 		try {
 			Map<String, Object> response = new HashMap<String, Object>();
 			Gson gson = new Gson();
@@ -181,13 +184,19 @@ public class DataService {
 //	public Response getMetrics(@PathParam("symbol") String symbol) {
 //		return Response.ok().build();
 //	}
-//	
-//	@GET
+	
+	@GET
 //	@Secured
-//	@Path("/topmovers")
-//	@Operation(summary = "Get top movers of day", tags = {"Data"}, description = "", responses = {@ApiResponse(description = "", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
-//	public Response topMovers(@PathParam("granularity") String symbol) {
-//		return Response.ok().build();
-//	}
+	@Path("/topmovers")
+	@Operation(summary = "Get top movers of day", tags = {"Data"}, description = "", responses = {@ApiResponse(description = "", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
+	public Response topMovers() {
+		try {
+			Gson gson = new Gson();
+			return Response.ok(gson.toJson(TopMoversController.getTops())).build();
+		} catch (Exception e) {
+			log.error(Util.stackTraceToString(e));
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
 	
 }
