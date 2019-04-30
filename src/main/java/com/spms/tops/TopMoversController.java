@@ -3,12 +3,15 @@ package com.spms.tops;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import com.google.common.collect.Lists;
 import com.spms.Controller;
 import com.spms.Util;
 import com.spms.ticker.los.Symbol;
@@ -20,45 +23,53 @@ public class TopMoversController implements Controller {
 	private TopMoversDAO tmd;
 	private SymbolDAO dao;
 	private static final Logger log = LogManager.getLogger(TopMoversController.class);
-	private static ArrayList<TopMoversObject> topMovers;
+	private List<Symbol> los;
+	private static final Integer numWorkers = 16;
 	
 	TopMoversController() throws SQLException {
 		dao = new SymbolDAO();
 		tmd = new TopMoversDAO();
-	}
-	
-	public static void main(String[] args) throws SQLException {
-		TopMoversController tmc = new TopMoversController();
-		TopMoversDAO dao2 = new TopMoversDAO();
-		
-		for (TopMoversObject tbo : dao2.getTopMovers()) {
-			System.out.println(tbo.symbol);
-		}
-		
-		//tmc.reload();
+		los = dao.getAll();
 	}
 	
 	public boolean reload() {
-		try {
-			for (Symbol s : dao.getAll()) {
-				JSONObject chg = (JSONObject)Requests.get(getEndpoint(s.Symbol), Requests.ReturnType.object);
-				tmd.insert(s.Symbol, Util.objectToString(chg.get("change")), Util.objectToString(chg.get("changePercent")));
-				
+		List<Thread> workers = new ArrayList<Thread>();
+		
+		// create runners
+		for (List<Symbol> part : Lists.partition(los, Util.ceil(los.size()/ (Double.parseDouble(numWorkers.toString()))))) {
+			try {
+				Thread runner = new Thread(new TopMoversJobWorker(part));
+				workers.add(runner);
+				runner.start();
+			} catch (SQLException e) {
+				log.error("Failed to create runner to update tops -- critical");
+				log.error(Util.stackTraceToString(e));
+				return false;
 			}
-			topMovers = tmd.getTopMovers();
-		} catch (Exception e) {
-			log.error(Util.stackTraceToString(e));
-			return false;
 		}
 		
+		// rejoin all threads
+		for (Thread t : workers) {
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				log.error("Failed to stop a runner, possible memory leak");
+				log.error(Util.stackTraceToString(e));
+			}
+		}
+	
 		return true;
 	}
 	
-	private static String getEndpoint(String sym) {
+	public static String getEndpoint(String sym) {
 		return "/stock/" + sym.toLowerCase() + "/quote";
 	}
 	
-	public static ArrayList<TopMoversObject> getTops() {
-		return TopMoversController.topMovers;
+	
+	public static void main(String[] args) throws SQLException {
+		TopMoversController tmc = new TopMoversController();
+		tmc.reload();
 	}
+	
+	
 }
