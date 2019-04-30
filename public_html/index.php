@@ -79,7 +79,7 @@
                         </div>
                 </div>
                 <div class="row">
-                <div class="offset-lg-2 col-lg-8">
+                <div class="offset-lg-2 offset-md-2 col-lg-8 col-md-8 col-sm-12 col-xs-12">
                         <h3 class="text-center">Top Movers</h3>
                         <div class="card-group">
                           <div class="card card_mover bg-light border-dark">
@@ -124,18 +124,21 @@
                           </div>
                         </div>
                 </div>
+
+                <!-- Articles section -->
                 <div class="offset-lg-2">
                         <div class="row">
-                                <div class="mx-auto col-lg-6">
+                                <div class="mx-auto col-lg-6 col-md-6 col-sm-6 col-cs-6">
                                         <h3 class="text-center">Relevant articles</h3>
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-2">
                                 </div>
                         </div>
                         <div class="row">
-                                <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
-                                        <a href="#" class="bg-mute round arrow">Previous &laquo;</a>
-                                </div>
+
+                                        <div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block my-auto">
+                                                <a href="#" class="bg-mute round arrow">Previous &laquo;</a>
+                                        </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
 
                                         <!-- First Article -->
@@ -207,7 +210,7 @@
                                         </a>
 
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
+                                <div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block my-auto">
                                         <a href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
                                 </div>
                         </div>
