@@ -424,6 +424,7 @@ function buyStock(action = 'buy') {
 		crossDomain: true,
 		xhrFields: { withCredentials: true },
 		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio/add",
+		contentType: "application/json",
 		data: JSON.stringify({
 			"symbol": symbol,
 			"date": date,
@@ -543,6 +544,7 @@ function dashboard() {
 	
 	
 	
+	/* Get top mover data */
 	$.ajax({
 		method: "GET",
 		crossDomain: true,
@@ -568,7 +570,8 @@ function dashboard() {
 			$(template).find('a').attr('href', 'http://spms.westus.cloudapp.azure.com/ticker.php?s=' + symbol);
 			$(template).find('.mover_title').html(symbol);
 			$(template).find('.mover_change').html(parseFloat(change).toFixed(2));
-			$(template).find('.mover_percent').html('' + (parseFloat(percent).toFixed(4) * 100) + '%');
+			percent = parseFloat(percent) * 100;
+			$(template).find('.mover_percent').html('' + percent.toFixed(2) * 100) + '%');
 			
 			if (change > 0) {
 				$(template).find('.mover_color').css('color', 'green');
