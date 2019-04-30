@@ -30,11 +30,27 @@ function ticker() {
 		var stats = data.statistics;
 		var about = data.about;
 		var articles = data.articles;
-		var close = data.yesterdayClose;
+		
+		var current = data.currentPrice;
+		var priceChange = data.priceChange;
+		var percentChange = data.percentChange;
 
 		//fill in company Name and About
 		$("#company_name").html(name + ' (<span id="stockSymbol">' + symbol + '</span>)');
 		$("#ticker_about").html(about);
+		
+		$('#currentPrice').html(current);
+		$('#priceChange').html(priceChange);
+		$('#percentChange').html( "" + (percentChange * 100) + '%');
+		
+		if (percentChange >= 0) { //color
+			$('#priceColor').attr('style', 'color:green');
+			//$('#percentChange').attr('style', 'color:green');
+			
+		} else if (percentChange < 0) {
+			$('#priceColor').attr('style', 'color:red');
+			//$('#percentChange').attr('style', 'color:red');
+		}
 
 		var i, j;
 		var new_table = "<table class='table stock_tables'>";
