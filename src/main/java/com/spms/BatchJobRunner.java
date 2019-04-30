@@ -30,8 +30,8 @@ public class BatchJobRunner extends HttpServlet {
 		
 		enabled.put(BatchJobs.tickerJob, true);
 		enabled.put(BatchJobs.tickerHistoryJob, true);
-		enabled.put(BatchJobs.topMoversJob, false);
-		enabled.put(BatchJobs.newsJob, false);
+		enabled.put(BatchJobs.topMoversJob, true);
+		enabled.put(BatchJobs.newsJob, true);
 		enabled.put(BatchJobs.statsJob, true);
 		enabled.put(BatchJobs.portfolioJob, true);
 	}
@@ -81,7 +81,7 @@ public class BatchJobRunner extends HttpServlet {
 			}
 		}
 			
-		// top movers (4 am daily)
+		// top movers (20 min)
 		if (enabled.get(BatchJobs.topMoversJob)) {	
 			Thread topMoversJob;
 			try {
