@@ -404,7 +404,7 @@ function articleGet(n_or_p) {
 function buyStock(action = 'buy') {
 	var date;
 	var ammount;
-	
+
 	if (action == 'sell') { //handle selling stocks
 		date = $("#sellDatePicker").datepicker({dateFormat: 'yy-mm-dd'}).val()
 		ammount = $("#sellcount").val() * -1;
@@ -412,13 +412,13 @@ function buyStock(action = 'buy') {
 		date = $("#buyDatePicker").datepicker({dateFormat: 'yy-mm-dd'}).val()
 		ammount = $("#buycount").val();
 	}
-	
+
 	console.log(JSON.stringify(date));
 	//return;
-	
+
 	var symbol = $('#stockSymbol').html(); //only works after ticker data has loaded
-	
-	
+
+
 	$.ajax({
 		method: "POST",
 		crossDomain: true,
@@ -433,7 +433,7 @@ function buyStock(action = 'buy') {
 	})
 	.done(function(data, textStatus, xhr) {
 		var feeback = "Stock shares successfully added to or removed from your portfolio";
-		
+
 		console.log(feedback);
 		$('#buyFeedback').html(feedback);
 	})
@@ -456,13 +456,13 @@ function buyStock(action = 'buy') {
 		$('#buyFeedback').html(feedback)
 		console.log(feedback);
 	});
-	
+
 }
- 
- 
+
+
 //It was set up to use the /portfolio endpoint for some reason
 function dashboard() {
-	
+
 	/* Get all the personalized portfolio data */
 	$.ajax({
 		method: "GET",
@@ -472,13 +472,13 @@ function dashboard() {
 	})
 	.done(function(data, textStatus, xhr) {
 		//console.log(JSON.stringify(data));
-		
+
 		var stock_table = data.portfolio;
 		var watch_table = data.watchlist;
 		var graphData = data.timesweries;
 		var total_value = data.value;
 		var articles = data.news;
-		
+
 		//Handle the stock table
 		var i;
 		var new_table = "<table class='table' id='db_stock_table'>";
@@ -496,10 +496,10 @@ function dashboard() {
 
 		//insert the rows into the table
 		$("#db_stock_table").replaceWith(new_table);
-		
+
 		$('#total_value').html('$' + total_value.toFixed(2)); //round to 2 decimals
-		
-		
+
+
 		//Handle the watchlist table
 		new_table = "<table class='table' id='db_watch_table'>";
 		new_table += "<tr><th>Stock</th></tr>";
@@ -507,18 +507,18 @@ function dashboard() {
 			new_table += "<tr>";
 			//new_table += "<td>" + key + "</td>";
 			new_table += "<td>" + "<a href='http://spms.westus.cloudapp.azure.com/ticker.php?s=" + watch_table[i] + "'>" + watch_table[i] + "</a>" + "</td>";
-			
+
 			new_table += "</tr>";
 		}
 		new_table += "</table>";
-		
+
 		$("#db_watch_table").replaceWith(new_table);
-		
+
 		setupNews(articles);
-		
+
 		/*
 		var feeback = "Stock shares successfully added to your portfolio";
-		
+
 		console.log(feedback);
 		$('#buyFeedback').html(feedback);
 		*/
@@ -541,9 +541,9 @@ function dashboard() {
 		}
 		console.log(feedback);
 	});
-	
-	
-	
+
+
+
 	/* Get top mover data */
 	$.ajax({
 		method: "GET",
@@ -555,35 +555,35 @@ function dashboard() {
 		var symbol;
 		var change;
 		var percent;
-		
+
 		var template;
-		
+
 		for (i = 0; i < data.length; i++) {
 			template = $("#topMoverTemplate").clone();
 			$(template).removeClass("d-none");
 			$(template).removeAttr("id");
-			
+
 			symbol = data[i].symbol;
 			change = data[i].change;
 			percent = data[i].changePercent;
-			
+
 			$(template).find('a').attr('href', 'http://spms.westus.cloudapp.azure.com/ticker.php?s=' + symbol);
 			$(template).find('.mover_title').html(symbol);
 			$(template).find('.mover_change').html(parseFloat(change).toFixed(2));
 			percent = parseFloat(percent) * 100;
-			$(template).find('.mover_percent').html('' + percent.toFixed(2) * 100) + '%');
-			
+			$(template).find('.mover_percent').html('' + percent.toFixed(2) * 100 + '%');
+
 			if (change > 0) {
 				$(template).find('.mover_color').css('color', 'green');
 			} else if (change < 0) {
 				$(template).find('.mover_color').css('color', 'red');
 			}
-			
+
 			$('#topMovers').append(template);
 		}
-		
+
 		//$("#db_watch_table").replaceWith(new_table);
-		
+
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
 		var statusNum = xhr.status;
@@ -607,9 +607,9 @@ function dashboard() {
 
 
 function watch() {
-	
+
 	var symbol = $('#stockSymbol').html(); //only works after ticker data has loaded
-	
+
 	$.ajax({
 		method: "POST",
 		crossDomain: true,
@@ -621,7 +621,7 @@ function watch() {
 	})
 	.done(function(data, textStatus, xhr) {
 		var feeback = "Stock successfully added to (or removed from) your watchlist";
-		
+
 		console.log(feedback);
 		$('#buyFeedback').html(feedback);
 	})
