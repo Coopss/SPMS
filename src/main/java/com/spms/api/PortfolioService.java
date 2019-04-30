@@ -1,6 +1,7 @@
 package com.spms.api;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -99,6 +100,7 @@ public class PortfolioService {
 
 	@GET
 	@Secured
+//	@Path("/dashboard")
     @Produces(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Get a bundle of all items needed for portfolio page", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "JSON timeseries", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
 	public Response getPortfolioSymbols() {
@@ -193,7 +195,6 @@ public class PortfolioService {
 		return Response.ok().build();
 	}
 
-	
 	@GET
 	@Secured
 	@Path("/watchlist")
@@ -215,6 +216,46 @@ public class PortfolioService {
 		
 	}
 
+	@GET
+	@Secured
+	@Path("/transactions")
+    @Produces(MediaType.APPLICATION_JSON)
+	@Operation(summary = "Get list of all transactions as a table", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
+	public Response getTransactions() {
+		try {
+//			Map<String, Object> response = new HashMap<String, Object>();
+			javax.servlet.http.Cookie[] cookies = servletRequest.getCookies();
+			String user = AuthUtil.getUsername(cookies, adao);
+			ArrayList<ArrayList<String>> response = new ArrayList<ArrayList<String>>();
+			Gson gson = new Gson();
+			
+			Portfolio p = pdao.getUserPortfolio(user);
+			
+			// add header row
+			ArrayList<String> header = new ArrayList<String>();
+			header.add("Date");
+			header.add("Symbol");
+			header.add("Shares");
+			header.add("Price");
+			header.add("Transaction Value");
+			response.add(header);
+			
+			for (Transaction t : p.transactions) {
+				ArrayList<String> row = new ArrayList<String>();
+				row.add(t.date);
+				row.add(t.symbol);
+				row.add(t.shares.toString());
+				row.add(t.sharePrice.toString());
+				row.add(((Float) (t.shares * t.sharePrice)).toString());
+				response.add(row);
+			}
 
+			return Response.ok(gson.toJson(response)).build();
+			
+		} catch (Exception e) {
+			log.error(Util.stackTraceToString(e));
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
 	
 }
