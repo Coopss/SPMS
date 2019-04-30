@@ -423,7 +423,7 @@ function buyStock(action = 'buy') {
 		method: "POST",
 		crossDomain: true,
 		xhrFields: { withCredentials: true },
-		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio/add/" + symbol,
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio/add",
 		data: JSON.stringify({
 			"symbol": symbol,
 			"date": date,
@@ -462,7 +462,7 @@ function buyStock(action = 'buy') {
 //It was set up to use the /portfolio endpoint for some reason
 function dashboard() {
 	
-	
+	/* Get all the personalized portfolio data */
 	$.ajax({
 		method: "GET",
 		crossDomain: true,
@@ -470,7 +470,7 @@ function dashboard() {
 		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio",
 	})
 	.done(function(data, textStatus, xhr) {
-		console.log(JSON.stringify(data));
+		//console.log(JSON.stringify(data));
 		
 		var stock_table = data.portfolio;
 		var watch_table = data.watchlist;
@@ -521,6 +521,66 @@ function dashboard() {
 		console.log(feedback);
 		$('#buyFeedback').html(feedback);
 		*/
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var feedback = "";
+
+		switch (statusNum) {
+			case 200: //not sure why this is considered a fail...
+				feedback = "Status code 200 returned as a failure";
+				break;
+			case 401:
+				feedback = "search: 401 (token not found, or invalid)";
+				//TODO: redirect to sign on page?
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
+		console.log(feedback);
+	});
+	
+	
+	
+	$.ajax({
+		method: "GET",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/topmovers",
+	})
+	.done(function(data, textStatus, xhr) {
+		var symbol;
+		var change;
+		var percent;
+		
+		var template;
+		
+		for (i = 0; i < data.length; i++) {
+			template = $("#topMoverTemplate").clone();
+			$(template).removeClass("d-none");
+			$(template).removeAttr("id");
+			
+			symbol = data[i].symbol;
+			change = data[i].change;
+			percent = data[i].changePercent;
+			
+			$(template).find('a').attr('href', 'http://spms.westus.cloudapp.azure.com/ticker.php?s=' + symbol);
+			$(template).find('.mover_title').html(symbol);
+			$(template).find('.mover_change').html(parseFloat(change).toFixed(2));
+			$(template).find('.mover_percent').html('' + (parseFloat(percent).toFixed(4) * 100) + '%');
+			
+			if (change > 0) {
+				$(template).find('.mover_color').css('color', 'green');
+			} else if (change < 0) {
+				$(template).find('.mover_color').css('color', 'red');
+			}
+			
+			$('#topMovers').append(template);
+		}
+		
+		//$("#db_watch_table").replaceWith(new_table);
+		
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
 		var statusNum = xhr.status;

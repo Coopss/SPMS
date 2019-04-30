@@ -89,50 +89,25 @@
                         </div>
                 </div>
                 <div class="row">
+                    
+                    
+                    <!-- TOP MOVERS -->
                 <div class="offset-lg-2 col-lg-8">
                         <h3 class="text-center">Top Movers</h3>
-                        <div class="card-group">
-                          <div class="card card_mover bg-light border-dark">
-                            <a href="#" class="nounderline">
-                                    <div class="card-body">
-                                      <h5 class="card-title">Stock 1</h5>
-                                      <p>% change</p>
-                                    </div>
-                            </a>
-                          </div>
-                          <div class="card card_mover bg-light border-dark">
-                            <a href="#" class="nounderline">
-                                    <div class="card-body">
-                                      <h5 class="card-title">Stock 2</h5>
-                                      <p>% change</p>
-                                    </div>
-                            </a>
-                          </div>
-                          <div class="card card_mover bg-light border-dark">
-                            <a href="#" class="nounderline">
-                                    <div class="card-body">
-                                      <h5 class="card-title">Stock 3</h5>
-                                      <p>% change</p>
-                                    </div>
-                            </a>
-                          </div>
-                          <div class="card card_mover bg-light border-dark">
-                            <a href="#" class="nounderline">
-                                    <div class="card-body">
-                                      <h5 class="card-title">Stock 4</h5>
-                                      <p>% change</p>
-                                    </div>
-                            </a>
-                          </div>
-                          <div class="card card_mover bg-light border-dark">
-                            <a href="#" class="nounderline">
-                                    <div class="card-body">
-                                      <h5 class="card-title">Stock 5</h5>
-                                      <p>% change</p>
-                                    </div>
-                            </a>
-                          </div>
+                        <div class="card-group" id='topMovers'>
+                          
                         </div>
+                        
+                        <!--  NOTE: this normally goes inside the above card-group, but moving it here to make the display work -->
+                        <div class="card card_mover bg-light border-dark d-none" id='topMoverTemplate'>
+                          <a href="#" class="nounderline">
+                                  <div class="card-body">
+                                    <h5 class="card-title mover_title">Stock 1</h5>
+                                    <p class='mover_color'> <span class='mover_change'></span>, (<span class="mover_percent"></span>)</p>
+                                  </div>
+                          </a>
+                        </div>
+                        
                 </div>
                 <br><br><br>
                 
