@@ -1,35 +1,26 @@
 package com.spms.tops;
 
-import java.net.MalformedURLException;
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 
 import com.spms.Util;
-import com.spms.news.TickerNewsDAO;
-import com.spms.ticker.los.Symbol;
-import com.spms.ticker.los.SymbolDAO;
-import com.spms.ticker.tools.Requests;
 
 public class TopMoversJob implements Runnable {
     private static final Logger log = LogManager.getLogger(TopMoversJob.class);
+    private static final Long timeout = (long) 1200000; //timeout
     
     @Override
     public void run() {
     	log.info("TopMoversJob started " + this);
         while (true) {
-            timeout();
-            
-            log.info("Started " + this);
+        	timeout();
             TopMoversController controller;
             try {
                 controller = new TopMoversController();
+                log.info("Started " + controller);
                 controller.reload();
+                log.info("Finished " + controller);
                 controller = null;
                 
             } catch (Exception e) {
@@ -39,24 +30,9 @@ public class TopMoversJob implements Runnable {
         }
         
     }
-    
-    /**
-     * 20 minutes
-     */
-    public Long getTimeout() {
-       /* Calendar cal = Calendar.getInstance();
-        if (cal.get(Calendar.HOUR_OF_DAY) >= 4) {
-            cal.add(Calendar.DATE, 1);
-        }
-        cal.set(Calendar.HOUR_OF_DAY,4);
-        cal.set(Calendar.MINUTE,0);
-        cal.set(Calendar.SECOND,0);
-        cal.set(Calendar.MILLISECOND,0);
-
-        Date nextRuntime = cal.getTime();
-        Date now = new Date();*/
-        
-        return new Long(1200000);
+   
+    public Long getTimeout() {       
+        return timeout;
     }
     
     public void timeout() {
