@@ -267,13 +267,14 @@ function graph(graphData, history = '1d') { //pass in data.todayData from AJAX r
     var ctx = document.getElementById('myChart').getContext('2d');
 
     var tbl = graphData;
-    var graphColor = chooseColor(tbl);
+    var graphColor = chooseColor(tbl, history);
     var labels = generateLabels(history);
+    var xTimeUnit = (hist == '1d') ? 'minute' : 'day';
 
     var data = {
             labels: labels,
             datasets: [{
-                    data: generateData(tbl, labels),
+                    data: generateData(tbl, labels, history),
                     hidden: false,
 		    backgroundColor: graphColor,
 		    pointBorderColor: 'rgba(0, 0, 0, 0)',
@@ -299,9 +300,13 @@ function graph(graphData, history = '1d') { //pass in data.todayData from AJAX r
 			    type:'time',
 			    distribution: 'series',
 			    time: {
-				    unit: 'minute'
+				    unit: xTimeUnit,
+				    timezone: "America/New_York"
 			    },
-			    bounds: 'ticks'
+			    bounds: 'ticks',
+                            gridLines: {
+                                    color: 'rgba(0, 0, 0, 0.01)'
+                            }
 		    }]
 	    }
     };
