@@ -10,11 +10,11 @@ public class Transaction {
 	
 	private final Logger log = LogManager.getLogger(PortfolioController.class);
 	
-	String user;
-	String symbol;
-	String date;
-	Integer shares;
-	Float sharePrice;
+	public transient String user;
+	public transient String symbol;
+	public transient String date;
+	public transient Integer shares;
+	public transient Float sharePrice;
 	
 	public Transaction() {
 		
@@ -45,12 +45,5 @@ public class Transaction {
 		this.date = date;
 		this.shares = shares;
 		this.sharePrice = sharePrice;
-	}
-	
-	
-	@Override
-	public String toString() {
-		return this.date + " " + this.user + " " + this.symbol + " " + this.shares.toString() + " " + this.sharePrice.toString();
-	}
-	
+	}	
 }
