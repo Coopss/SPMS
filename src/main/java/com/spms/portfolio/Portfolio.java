@@ -27,7 +27,6 @@ public class Portfolio {
 	
 	public Portfolio(List<Transaction> transactions, TickerDAO tdao) throws PortfolioConstraintException {
 		this.tdao = tdao;
-		this.portfolio = new HashMap<String, Integer>();
 		this.watchlist = new HashSet<String>();
 		this.transactions = transactions;
 		
@@ -38,7 +37,10 @@ public class Portfolio {
 	}
 	
 	public Boolean checkValidity() throws PortfolioConstraintException {
+		this.portfolio = new HashMap<String, Integer>();
 		for (Transaction t  : this.transactions) {
+			log.info(t.shares);
+			log.info(this.portfolio);
 			if (!portfolio.containsKey(t.symbol)) {
 				portfolio.put(t.symbol, t.shares);
 			} else {
@@ -46,9 +48,13 @@ public class Portfolio {
 			}
 		}	
 		
+		
+		
 		for (String sym : this.portfolio.keySet()) {
 			if (portfolio.get(sym) < 0) {
 				throw new PortfolioConstraintException();
+			} else if (portfolio.get(sym) == 0){
+				portfolio.remove(sym);
 			}
 		}
 		
