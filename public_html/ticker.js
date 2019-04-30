@@ -30,11 +30,27 @@ function ticker() {
 		var stats = data.statistics;
 		var about = data.about;
 		var articles = data.articles;
-		var close = data.yesterdayClose;
+		
+		var current = data.currentPrice;
+		var priceChange = data.priceChange;
+		var percentChange = data.percentChange;
 
 		//fill in company Name and About
 		$("#company_name").html(name + ' (<span id="stockSymbol">' + symbol + '</span>)');
 		$("#ticker_about").html(about);
+		
+		$('#currentPrice').html("$" + current);
+		$('#priceChange').html(priceChange);
+		$('#percentChange').html( "" + (percentChange * 100) + '%');
+		
+		if (percentChange >= 0) { //color
+			$('#priceColor').attr('style', 'color:green');
+			//$('#percentChange').attr('style', 'color:green');
+			
+		} else if (percentChange < 0) {
+			$('#priceColor').attr('style', 'color:red');
+			//$('#percentChange').attr('style', 'color:red');
+		}
 
 		var i, j;
 		var new_table = "<table class='table stock_tables'>";
@@ -46,9 +62,9 @@ function ticker() {
 			new_table += "<td>" + key + "</td>";
 			new_table += "<td>" + stats[key] + "</td>";
 
-			new_table += "</tr>"
+			new_table += "</tr>";
 		}
-		new_table += "</table>"
+		new_table += "</table>";
 
 		//insert the table into the page
 		$("#stats_go_here").html(new_table);
@@ -73,7 +89,7 @@ function ticker() {
 		*/
 
         $('#chart_placeholder').remove();
-		graph(graphData);
+		graph(graphData); //defaults to 1d
 
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
@@ -237,12 +253,12 @@ function chooseColor(tbl) {
 	}
 }
 
-function graph(graphData) { //pass in data.todayData from AJAX request
+function graph(graphData, history = '1d') { //pass in data.todayData from AJAX request
     var ctx = document.getElementById('myChart').getContext('2d');
 
     var tbl = graphData;
     var graphColor = chooseColor(tbl);
-    var labels = generateLabels();
+    var labels = generateLabels(history);
 
     var data = {
             labels: labels,
@@ -333,9 +349,10 @@ function getGraphGranular(history) {
 		var articles = data.articles;
 		*/
 		var graphData = data.data;
+		var history = data.granularity;
 
         $('#chart_placeholder').remove();
-		graph(graphData);
+		graph(graphData, history);
 
 	})
 	.fail(function (xhr, textStatus, errorThrown) {

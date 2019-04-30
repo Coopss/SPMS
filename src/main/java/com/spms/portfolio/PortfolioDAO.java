@@ -174,6 +174,11 @@ public class PortfolioDAO {
 		ticker.addAll(p.portfolio.keySet());
 		ticker.addAll(p.watchlist);
 		
+		// return empty if nothing found
+		if (ticker.isEmpty()) {
+			return new ArrayList<NewsArticle>();
+		}
+		
 		for (String sym : ticker) {
 			cmd.append("[internal.news.symbols].Symbol = '" + sym + "' OR ");
 		}
