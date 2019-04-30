@@ -1,5 +1,6 @@
 package com.spms.ticker.live;
 
+import java.net.MalformedURLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +9,7 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -193,7 +195,7 @@ public class TickerDAO {
 		String now = SPMSDB.getMSSQLDatetime(Util.getDateWithoutTimeUsingCalendar());
 		List<TickerData> dat = new ArrayList<TickerData>();
 		
-		PreparedStatement stmt = conn.prepareStatement("SELECT [date],[marketAverage],[marketVolume],[marketNumberOfTrades] FROM [dbo].[" + tableName + "] where [date] > '" + now + "' order by [date] asc;");
+		PreparedStatement stmt = conn.prepareStatement("SELECT [date],[marketAverage],[marketVolume],[marketNumberOfTrades] FROM [dbo].[" + tableName + "] where [date] > (SELECT TOP(1) CONVERT(date, [date]) FROM [" + tableName + "] order by [date] desc) order by [date] asc;");
 		
 		ResultSet rs = stmt.executeQuery();		
 	    
@@ -209,6 +211,5 @@ public class TickerDAO {
 		
 		return dat;
 		
-	}
-	
+	}	
 }
