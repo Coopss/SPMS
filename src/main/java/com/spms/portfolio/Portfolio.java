@@ -15,8 +15,6 @@ import com.spms.api.PortfolioService;
 import com.spms.ticker.live.TickerDAO;
 import com.spms.ticker.live.TickerData;
 
-import jdk.internal.jline.internal.Log;
-
 public class Portfolio {
 
 	public Set<String> watchlist;
