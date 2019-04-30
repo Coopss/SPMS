@@ -167,8 +167,12 @@ function generateData(tbl, labels, hist = '1d') {
 
 function generateLabels(hist = '1d') {
 	var arr = [];
-	var currDate = moment.tz("America/New_York");
 	var date, max;
+	var currDate = moment.tz("America/New_York");
+
+	if (currDate.hours < 9) {
+		currDate.subtract(1, 'days');
+	}
 
 	switch (hist) {
 		case '1d':
@@ -227,7 +231,7 @@ function setOpenPrice(tbl, hist = '1d') {
 	if (tbl.length == 0) {
 		return 0;
 	}
-	
+
 	var openIndex, key, key2;
 	var earliestDate = moment.tz("America/New_York").valueOf();
 
