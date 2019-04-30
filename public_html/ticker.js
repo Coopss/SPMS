@@ -42,7 +42,7 @@ function ticker() {
 		$('#currentPrice').html("$" + current);
 		$('#priceChange').html(priceChange);
 		$('#percentChange').html( "" + (percentChange * 100) + '%');
-		
+
 		if (percentChange > 0) { //color
 			$('#priceColor').css('color', 'green');
 			//$('#percentChange').attr('style', 'color:green');
@@ -263,18 +263,18 @@ function chooseColor(tbl, hist = '1d') {
 	}
 }
 
-function graph(graphData, history = '1d') { //pass in data.todayData from AJAX request
+function graph(graphData, hist = '1d') { //pass in data.todayData from AJAX request
     var ctx = document.getElementById('myChart').getContext('2d');
 
     var tbl = graphData;
-    var graphColor = chooseColor(tbl, history);
-    var labels = generateLabels(history);
+    var graphColor = chooseColor(tbl, hist);
+    var labels = generateLabels(hist);
     var xTimeUnit = (hist == '1d') ? 'minute' : 'day';
 
     var data = {
             labels: labels,
             datasets: [{
-                    data: generateData(tbl, labels, history),
+                    data: generateData(tbl, labels, hist),
                     hidden: false,
 		    backgroundColor: graphColor,
 		    pointBorderColor: 'rgba(0, 0, 0, 0)',
