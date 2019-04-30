@@ -43,12 +43,12 @@ function ticker() {
 		$('#priceChange').html(priceChange);
 		$('#percentChange').html( "" + (percentChange * 100) + '%');
 		
-		if (percentChange >= 0) { //color
-			$('#priceColor').attr('style', 'color:green');
+		if (percentChange > 0) { //color
+			$('#priceColor').css('color', 'green');
 			//$('#percentChange').attr('style', 'color:green');
 			
 		} else if (percentChange < 0) {
-			$('#priceColor').attr('style', 'color:red');
+			$('#priceColor').css('color', 'red');
 			//$('#percentChange').attr('style', 'color:red');
 		}
 

@@ -482,14 +482,9 @@ function dashboard() {
 		var i;
 		var new_table = "<table class='table' id='db_stock_table'>";
 		new_table += "<tr><th>Stock</th><th>Shares</th></tr>";
-		var url;
-		var link;
 
 		//dynamically generate tables based on server data
 		for (key in stock_table) {
-			//url = 'http://spms.westus.cloudapp.azure.com/ticker.php?s=' + stock_table[key];
-			//link = '<a href="' + url + '">';
-			
 			new_table += "<tr>";
 			new_table += "<td>" + "<a href='http://spms.westus.cloudapp.azure.com/ticker.php?s=" + key + "'>" +  key + "</a>" + "</td>";
 			new_table += "<td>" +stock_table[key] + "</td>";
@@ -501,15 +496,17 @@ function dashboard() {
 		//insert the rows into the table
 		$("#db_stock_table").replaceWith(new_table);
 		
+		$('#total_value').html('$' + total_value.toFixed(2)); //round to 2 decimals
 		
-		//Handle the wishlist table
+		
+		//Handle the watchlist table
 		new_table = "<table class='table' id='db_watch_table'>";
 		new_table += "<tr><th>Stock</th></tr>";
 		for (i = 0; i < watch_table.length; i++) {
 			new_table += "<tr>";
 			//new_table += "<td>" + key + "</td>";
 			new_table += "<td>" + "<a href='http://spms.westus.cloudapp.azure.com/ticker.php?s=" + watch_table[i] + "'>" + watch_table[i] + "</a>" + "</td>";
-
+			
 			new_table += "</tr>";
 		}
 		new_table += "</table>";
@@ -560,7 +557,7 @@ function watch() {
 		}),
 	})
 	.done(function(data, textStatus, xhr) {
-		var feeback = "Stock successfully added to your watchlist";
+		var feeback = "Stock successfully added to (or removed from) your watchlist";
 		
 		console.log(feedback);
 		$('#buyFeedback').html(feedback);
