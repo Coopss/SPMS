@@ -28,6 +28,7 @@
 <div class="">
                 <div class="row">
                         <div class="offset-lg-2 col-lg-5 bar-right">
+                                <h4 id='total_value'>Loading value...</h4>
                                 <h3>Summary</h3>
                                 <img src="global_assets/img/graph.png" class="img-fluid">
                         </div>
@@ -57,8 +58,6 @@
                                       </tr>
                                    </tbody> -->
                                </table>
-                               
-                               <h4 id='total_value'>Loading value...</h4>
 
                                 <!-- Watchlist -->
                                 <h4> Watch List </h4>
@@ -89,15 +88,12 @@
                         </div>
                 </div>
                 <div class="row">
-                    
-                    
-                    <!-- TOP MOVERS -->
-                <div class="offset-lg-2 col-lg-8">
+                <div class="offset-lg-2 offset-md-2 col-lg-8 col-md-8 col-sm-12 col-xs-12">
                         <h3 class="text-center">Top Movers</h3>
                         <div class="card-group" id='topMovers'>
-                          
+
                         </div>
-                        
+
                         <!--  NOTE: this normally goes inside the above card-group, but moving it here to make the display work -->
                         <div class="card card_mover bg-light border-dark d-none" id='topMoverTemplate'>
                           <a href="#" class="nounderline">
@@ -107,12 +103,12 @@
                                   </div>
                           </a>
                         </div>
-                        
+
                 </div>
                 <br><br><br>
-                
-                
-                
+
+
+
                                             <!-- NEWS ARTCILES -->
                 <div class="offset-lg-2">
                 <div class="row">
@@ -150,7 +146,7 @@
                         </div>
                         </a>
                 </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
+                <div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block my-auto">
                         <a id="article_next" onclick="articleGet('n')" href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
                 </div>
                 </div>

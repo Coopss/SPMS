@@ -166,8 +166,8 @@
                                         </div>
                                 </div>
                                 <div class="row">
-                                        <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
-                                                <a id="article_prev" onclick="articleGet('p')" href="#" class="bg-mute round arrow">Previous &laquo;</a>
+                                        <div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block my-auto">
+                                                <a href="#" class="bg-mute round arrow">Previous &laquo;</a>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6" id="news_articles">
                                             <div>
@@ -192,8 +192,8 @@
                                                 </div>
                                                 </a>
                                         </div>
-                                        <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
-                                                <a id="article_next" onclick="articleGet('n')" href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
+                                        <div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block my-auto">
+                                                <a href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
                                         </div>
                                 </div>
 

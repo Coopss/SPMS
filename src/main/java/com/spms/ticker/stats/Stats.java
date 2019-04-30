@@ -1,53 +1,53 @@
 package com.spms.ticker.stats;
 
 public class Stats {
-	String companyName;
-	String marketcap;	//number	is not calculated in real time.
-	String beta;	//number	
-	String week52high;	//number	
-	String week52low;	//number	
-	String week52change;	//number	
-	String shortInterest;	//number	
-	String shortDate;	//string	
-	String dividendRate;	//number	
-	String dividendYield;	//number	
-	String exDividendDate;	//string	
-	String latestEPS;	//number	(Most recent quarter)
-	String latestEPSDate;	//string	
-	String sharesOutstanding;	//number	
-	String Float;	//number	
-	String returnOnEquity;	//number	(Trailing twelve months)
-	String consensusEPS;	//number	(Most recent quarter)
-	String numberOfEstimates;	//number	(Most recent quarter)
-	String symbol;	//string	
-	String EBITDA;	//number	(Trailing twelve months)
-	String revenue;	//number	(Trailing twelve months)
-	String grossProfit;	//number	(Trailing twelve months)
-	String cash;	//number	reers to total cash. (Trailing twelve months)
-	String debt;	//number	refers to total debt. (Trailing twelve months)
-	String ttmEPS;	//number	(Trailing twelve months)
-	String revenuePerShare;	//number	(Trailing twelve months)
-	String revenuePerEmployee;	//number	(Trailing twelve months)
-	String peRatioHigh;	//number	
-	String peRatioLow;	//number	
-	String EPSSurpriseDollar;	//number	refers to the difference between actual EPS and consensus EPS in dollars.
-	String EPSSurprisePercent;	//number	refers to the percent difference between actual EPS and consensus EPS.
-	String returnOnAssets;	//number	(Trailing twelve months)
-	String returnOnCapital;	//number	(Trailing twelve months)
-	String profitMargin;	//number	
-	String priceToSales;	//number	
-	String priceToBook;	//number	
-	String day200MovingAvg;	//number	
-	String day50MovingAvg;	//number	
-	String institutionPercent;	//number	represents top 15 institutions
-	String insiderPercent;	//number	
-	String shortRatio;	//number	
-	String year5ChangePercent;	//number	
-	String year2ChangePercent;	//number	
-	String year1ChangePercent;	//number	
-	String ytdChangePercent;	//number	
-	String month6ChangePercent;	//number	
-	String month3ChangePercent;	//number	
-	String month1ChangePercent;	//number	
-	String day5ChangePercent;	//number	
+	public String companyName;
+	public String marketcap;	//number	is not calculated in real time.
+	public String beta;	//number	
+	public String week52high;	//number	
+	public String week52low;	//number	
+	public String week52change;	//number	
+	public String shortInterest;	//number	
+	public String shortDate;	//public String	
+	public String dividendRate;	//number	
+	public String dividendYield;	//number	
+	public String exDividendDate;	//public String	
+	public String latestEPS;	//number	(Most recent quarter)
+	public String latestEPSDate;	//public String	
+	public String sharesOutstanding;	//number	
+	public String Float;	//number	
+	public String returnOnEquity;	//number	(Trailing twelve months)
+	public String consensusEPS;	//number	(Most recent quarter)
+	public String numberOfEstimates;	//number	(Most recent quarter)
+	public String symbol;	//public String	
+	public String EBITDA;	//number	(Trailing twelve months)
+	public String revenue;	//number	(Trailing twelve months)
+	public String grossProfit;	//number	(Trailing twelve months)
+	public String cash;	//number	reers to total cash. (Trailing twelve months)
+	public String debt;	//number	refers to total debt. (Trailing twelve months)
+	public String ttmEPS;	//number	(Trailing twelve months)
+	public String revenuePerShare;	//number	(Trailing twelve months)
+	public String revenuePerEmployee;	//number	(Trailing twelve months)
+	public String peRatioHigh;	//number	
+	public String peRatioLow;	//number	
+	public String EPSSurpriseDollar;	//number	refers to the difference between actual EPS and consensus EPS in dollars.
+	public String EPSSurprisePercent;	//number	refers to the percent difference between actual EPS and consensus EPS.
+	public String returnOnAssets;	//number	(Trailing twelve months)
+	public String returnOnCapital;	//number	(Trailing twelve months)
+	public String profitMargin;	//number	
+	public String priceToSales;	//number	
+	public String priceToBook;	//number	
+	public String day200MovingAvg;	//number	
+	public String day50MovingAvg;	//number	
+	public String institutionPercent;	//number	represents top 15 institutions
+	public String insiderPercent;	//number	
+	public String shortRatio;	//number	
+	public String year5ChangePercent;	//number	
+	public String year2ChangePercent;	//number	
+	public String year1ChangePercent;	//number	
+	public String ytdChangePercent;	//number	
+	public String month6ChangePercent;	//number	
+	public String month3ChangePercent;	//number	
+	public String month1ChangePercent;	//number	
+	public String day5ChangePercent;	//number	
 }
