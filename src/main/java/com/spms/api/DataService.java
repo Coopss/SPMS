@@ -33,6 +33,8 @@ import com.spms.ticker.los.Symbol;
 import com.spms.ticker.los.SymbolDAO;
 import com.spms.ticker.stats.Stats;
 import com.spms.ticker.stats.StatsDAO;
+import com.spms.tops.TopMoversController;
+import com.spms.tops.TopMoversDAO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -45,6 +47,7 @@ public class DataService {
 	private static SymbolDAO sdao;
 	private static TickerNewsDAO ndao;
 	private static StatsDAO stdao;
+	private static TopMoversDAO tmdao;
 	
 	static {
       	// Get authdao object
@@ -54,6 +57,7 @@ public class DataService {
         	sdao = new SymbolDAO();
         	ndao = new TickerNewsDAO();
         	stdao = new StatsDAO();
+        	tmdao = new TopMoversDAO();
         	
         } catch (Exception e) {
         	e.printStackTrace();
@@ -70,7 +74,7 @@ public class DataService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Get overview (descriptive) details of a symbol", tags = {"Data"}, description = "", responses = {@ApiResponse(description = "", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
 	public Response getSymbolOverview(@PathParam("symbol") String symbol) {
-				
+
 		try {
 			Map<String, Object> response = new HashMap<String, Object>();
 			Gson gson = new Gson();
@@ -166,28 +170,18 @@ public class DataService {
 
 	}
 	
-//	@GET
-//	@Secured
-//	@Path("/{symbol}/news")
-//	@Operation(summary = "Get relevent news for a symbol", tags = {"Data"}, description = "", responses = {@ApiResponse(description = "", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
-//	public Response getNews(@PathParam("symbol") String symbol) {
-//		return Response.ok().build();
-//	}
-//	
-//	@GET
-//	@Secured
-//	@Path("/{symbol}/metrics")
-//	@Operation(summary = "Get performance metrics for a symbol", tags = {"Data"}, description = "", responses = {@ApiResponse(description = "", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
-//	public Response getMetrics(@PathParam("symbol") String symbol) {
-//		return Response.ok().build();
-//	}
-//	
-//	@GET
-//	@Secured
-//	@Path("/topmovers")
-//	@Operation(summary = "Get top movers of day", tags = {"Data"}, description = "", responses = {@ApiResponse(description = "", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
-//	public Response topMovers(@PathParam("granularity") String symbol) {
-//		return Response.ok().build();
-//	}
+	@GET
+	@Path("/topmovers")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Operation(summary = "Get top movers of day", tags = {"Data"}, description = "", responses = {@ApiResponse(description = "", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
+	public Response topMovers() {
+		try {
+			Gson gson = new Gson();
+			return Response.ok(gson.toJson(tmdao.getTopMovers())).build();
+		} catch (Exception e) {
+			log.error(Util.stackTraceToString(e));
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
 	
 }

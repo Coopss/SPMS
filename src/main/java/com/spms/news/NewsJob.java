@@ -19,16 +19,12 @@ import com.spms.tops.TopMoversController;
 
 public class NewsJob implements Runnable {
 	private static final Logger log = LogManager.getLogger(NewsJob.class);
+	private static final Long timeout = (long) 900000; // 15 min
 	
-	public NewsJob() { 
-
-	}
+	public NewsJob() {}
 	
-    /**
-     * Get time until next 4 am 
-     */
     public Long getTimeout() {        
-        return new Long(900000);
+        return timeout;
     }
     
     public void timeout() {
@@ -42,15 +38,15 @@ public class NewsJob implements Runnable {
 	
 	@Override
 	public void run() {
+		NewsController controller;
 		log.info("NewsJob started " + this);
         while (true) {
             try {
                 timeout();
-                
-                log.info("Started " + this);
-                NewsController controller;
                 controller = new NewsController();
+                log.info("Started " + controller);
                 controller.reload();
+                log.info("Finished " + controller);
                 controller = null;
                 
             } catch (Exception e) {
