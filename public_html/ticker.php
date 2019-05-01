@@ -51,13 +51,13 @@
                                                     <span id="chart_placeholder">Generating graph, please wait...</span>
                                                     <canvas id="myChart" height="400"></canvas>
                                                 </div>
-                                                <a href="JavaScript:getGraphGranular('1w')">1w</a>
-                                                <a href="JavaScript:getGraphGranular('1m')">1m</a>
-                                                <a href="JavaScript:getGraphGranular('3m')">3m</a>
-                                                <a href="JavaScript:getGraphGranular('1y')">1y</a>
-                                                <a href="JavaScript:getGraphGranular('5y')">5y</a>
-                                                <a href="JavaScript:getGraphGranular('max')">max</a>
-                                                
+                                                <a class="btn btn-primary" href="JavaScript:getGraphGranular('1w')">1w</a>
+                                                <a class="btn btn-primary" href="JavaScript:getGraphGranular('1m')">1m</a>
+                                                <a class="btn btn-primary" href="JavaScript:getGraphGranular('3m')">3m</a>
+                                                <a class="btn btn-primary" href="JavaScript:getGraphGranular('1y')">1y</a>
+                                                <a class="btn btn-primary" href="JavaScript:getGraphGranular('5y')">5y</a>
+                                                <a class="btn btn-primary" href="JavaScript:getGraphGranular('max')">max</a>
+
                                                 <div class="card mt-3 tab-card">
                                                         <div class="card-header tab-card-header">
                                                           <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
@@ -80,7 +80,7 @@
                                                             <script>
                                                                 $('#buyDatePicker').datepicker();
                                                             </script>
-                                                            
+
                                                             <form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Amount" id="buycount" style="width:100%"> </input>
                                                             </form>
@@ -94,11 +94,11 @@
                                                             <script>
                                                                 $('#sellDatePicker').datepicker();
                                                             </script>
-                                                            
+
                                                             <form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Amount" id="sellcount" style="width:100%"> </input>
                                                             </form>
-                                                            
+
                                                             <button type="button" name="sellbutton" onclick="buyStock('sell')">Sell</button>
 
                                                             <!-- p class="card-text">Here is where you sell a stock</p -->
@@ -114,7 +114,7 @@
 
                                                       </div>
                                                       <br><br>
-                                                      
+
                                         <h3 class="text-center">About</h3>
                                         <p id="ticker_about">Loading stock info...</p>
                                 </div>
@@ -147,17 +147,17 @@
                                                 Page <span id="article_page_number">0</span>
                                             </div>
                                             <br/>
-                                            
+
                                             <span id="news1">
-                                                
+
                                             </span>
-                                            
+
                                             <span id="news2" class="d-none">
-                                                
+
                                             </span>
-                                            
+
                                             <span id="news3" class="d-none">
-                                                
+
                                             </span>
 
                                                 <!-- Article reference format, not displayed -->

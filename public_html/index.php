@@ -64,7 +64,7 @@
                           <a href="#" class="nounderline">
                                   <div class="card-body">
                                     <h5 class="card-title mover_title">Stock 1</h5>
-                                    
+
                                     <!-- span class="mover_price"></span --> <span class='mover_color'> <span class='mover_change'></span> (<span class="mover_percent"></span>)</span>
                                   </div>
                           </a>
@@ -87,7 +87,7 @@
                 </div>
                 <div class="row">
                 <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
-                        <a id="article_prev" href="javascript:articleGet('p')" class="bg-mute round arrow">Previous &laquo;</a>
+                        <a id="article_prev" href="javascript:articleGet('p')" class="btn btn-primary">Previous</a>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6" id="news_articles">
                     <div>
@@ -96,23 +96,23 @@
                     <br/>
 
                     <span id="news1">
-                        
+
                     </span>
-                    
+
                     <span id="news2" class="d-none">
-                        
+
                     </span>
-                    
+
                     <span id="news3" class="d-none">
-                        
+
                     </span>
 
                         <!-- Article reference format, not displayed -->
                         <a href="#" class="nounderline d-none article_url" id='article_template'>
-                        <div class="card mb-3" style="max-width: 100%;">
+                        <div class="card mb-3" style="max-width: 100%">
                           <div class="row no-gutters hoverable">
                             <div class="col-md-4 artcile_img">
-                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" height=50% width=50% class="hoverable card-img" alt="Image Unavailable">
+                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" height=auto width=50% class="hoverable card-img" alt="Image Unavailable">
                             </div>
                             <div class="col-md-8">
                               <div class="card-body">
@@ -125,7 +125,7 @@
                         </a>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block my-auto">
-                        <a id="article_next" href="javascript:articleGet('n')" class="bg-mute round float-right arrow"> Next &raquo;</a>
+                        <a id="article_next" href="javascript:articleGet('n')" class="btn btn-primary"> Next</a>
                 </div>
                 </div>
 

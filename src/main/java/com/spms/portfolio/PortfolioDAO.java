@@ -107,7 +107,7 @@ public class PortfolioDAO {
 	public List<Transaction> getAllUsersTransactions(String user) throws NumberFormatException, SQLException {
 		List<Transaction> data = new ArrayList<Transaction>();
 		
-		PreparedStatement stmt = conn.prepareStatement("select [username], [symbol], [date], [shares], [sharePrice] from [" + transactionTableName + "] where username = '" + user + "' order by [date] asc");
+		PreparedStatement stmt = conn.prepareStatement("select [username], [symbol], [date], [shares], [sharePrice] from [" + transactionTableName + "] where username = '" + user + "' order by [date] desc");
 		ResultSet rs = stmt.executeQuery();		
 	    while(rs.next()) {
 	    	Transaction row = new Transaction();
