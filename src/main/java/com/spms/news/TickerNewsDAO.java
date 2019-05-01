@@ -156,7 +156,19 @@ public class TickerNewsDAO {
 
 		return newsArticles;
 	}
-
+		  
+	public ArrayList<NewsArticle> getRecent() throws SQLException {
+		ArrayList<NewsArticle> newsArticles = new ArrayList<NewsArticle>();
+		String command = "SELECT DISTINCT TOP(12) * FROM dbo.[" + tableName + "] ORDER BY [Date] DESC;";
+		PreparedStatement stmt = conn.prepareStatement(command);
+		ResultSet rs = stmt.executeQuery();
+	
+		while (rs.next())
+			newsArticles.add(new NewsArticle(rs.getDate("Date"), null, rs.getString("Headline"), rs.getString("Source"), rs.getString("URL"), rs.getString("Summary"), rs.getString("Image")));
+	
+		return newsArticles;
+	}
+	
 	private static String objectToString(Object o) {
 		if (o == null)
 			return "";

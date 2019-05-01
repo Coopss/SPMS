@@ -39,24 +39,6 @@
                                     <tr>
                                         <td>Loading...</td>
                                     </tr>
-                                   <!-- Dynamic loading implemented, don't need this stuff
-                                   <thead>
-                                      <tr>
-                                         <th>Stock</th>
-                                         <th>Shares</th>
-                                         <th>Graph</th>
-                                         <th>Price</th>
-                                      </tr>
-                                   </thead>
-
-                                   <tbody>
-                                      <tr>
-                                         <td>AMD</td>
-                                         <td>2</td>
-                                         <td>Graph</td>
-                                         <td>Price</td>
-                                      </tr>
-                                   </tbody> -->
                                </table>
 
                                 <!-- Watchlist -->
@@ -65,23 +47,6 @@
                                     <tr>
                                         <td>Loading...</td>
                                     </tr>
-                                   <!-- Dynamic loading implemented, don't need this stuff
-                                   <thead>
-                                      <tr>
-                                         <th>Stock</th>
-                                         <th>Graph</th>
-                                         <th>Price</th>
-                                      </tr>
-                                   </thead>
-
-                                   <tbody>
-                                      <tr>
-                                         <td>SNE</td>
-                                         <td>Graph</td>
-                                         <td>Price</td>
-                                      </tr>
-                                  </tbody> -->
-
                                 </table>
                         </div>
                         <div class="col-lg-2">
@@ -99,7 +64,8 @@
                           <a href="#" class="nounderline">
                                   <div class="card-body">
                                     <h5 class="card-title mover_title">Stock 1</h5>
-                                    <p class='mover_color'> <span class='mover_change'></span>, (<span class="mover_percent"></span>)</p>
+                                    
+                                    <span class="mover_price"></span> <span class='mover_color'> <span class='mover_change'></span>, (<span class="mover_percent"></span>)</span>
                                   </div>
                           </a>
                         </div>
@@ -121,13 +87,25 @@
                 </div>
                 <div class="row">
                 <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
-                        <a id="article_prev" onclick="articleGet('p')" href="#" class="bg-mute round arrow">Previous &laquo;</a>
+                        <a id="article_prev" href="javascript:articleGet('p')" class="bg-mute round arrow">Previous &laquo;</a>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6" id="news_articles">
                     <div>
                         Page <span id="article_page_number">0</span>
                     </div>
                     <br/>
+
+                    <span id="news1">
+                        
+                    </span>
+                    
+                    <span id="news2" class="d-none">
+                        
+                    </span>
+                    
+                    <span id="news3" class="d-none">
+                        
+                    </span>
 
                         <!-- Article reference format, not displayed -->
                         <a href="#" class="nounderline d-none article_url" id='article_template'>
@@ -147,7 +125,7 @@
                         </a>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block my-auto">
-                        <a id="article_next" onclick="articleGet('n')" href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
+                        <a id="article_next" href="javascript:articleGet('n')" class="bg-mute round float-right arrow"> Next &raquo;</a>
                 </div>
                 </div>
 
