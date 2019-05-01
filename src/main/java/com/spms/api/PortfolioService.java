@@ -189,12 +189,13 @@ public class PortfolioService {
 	@DELETE
 	@Secured
 	@Path("/watchlist")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Remove ticker from watchlist", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "Success", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
-	public Response removeFromWatchList(@QueryParam("symbol") String symbol) {
+	public Response removeFromWatchList(WatchlistSymbol ws) {
 		try {
 			javax.servlet.http.Cookie[] cookies = servletRequest.getCookies();
 			String user = AuthUtil.getUsername(cookies, adao);
-			pdao.removeFromWatchlist(user, symbol);
+			pdao.removeFromWatchlist(user, ws.getSymbol());
 			
 		} catch (Exception e) {
 			log.error(Util.stackTraceToString(e));
