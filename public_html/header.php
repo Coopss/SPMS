@@ -8,15 +8,13 @@
         </button>
         <div class="collapse navbar-collapse row" id="navbarsExample04">
                 <!-- Text box for search -->
-                <div class="float-left search_term" width="100%">
-                        <form class="form-inline">
-                                <input class="form-control" type="text" placeholder="Search" list="search_list" id="search_term" onInput="JavaScript:search()" style="width:100%;" autoComplete="off"></input>
-                                <datalist id="search_list">
-                                        <!-- option value="HTML">
-                                        <option value="CSS"  -->
-                                </datalist>
-                        </form>
-                </div>
+                <form class="form-inline">
+                        <input class="form-control" type="text" placeholder="Search" list="search_list" id="search_term" onInput="JavaScript:search()" style="width:100%;" autoComplete="off"></input>
+                        <datalist id="search_list">
+                                <!-- option value="HTML">
+                                <option value="CSS"  -->
+                        </datalist>
+                </form>
                 <!-- Page links -->
                 <ul class="z-back navbar-nav float-right">
                         <li class="nav-item">
