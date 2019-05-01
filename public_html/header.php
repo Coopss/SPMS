@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark nav-background bg-mute">
+<nav class="navbar navbar-expand-md navbar-dark nav-background bg-mute navbar-fixed-top">
         <!-- Logo -->
         <a class="navbar-brand header-logo mr-3" href="index.php">
                 <img src="global_assets/img/logo.png" alt="Logo" height="40px"></img>
@@ -6,7 +6,7 @@
         <button class="navbar-toggler collapsed align-right" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse row" id="navbarsExample04">
+        <div class="collapse navbar-collapse row ml-3" id="navbarsExample04">
                 <!-- Text box for search -->
                 <form class="form-inline mr-auto">
                         <input class="form-control" type="text" placeholder="Search" list="search_list" id="search_term" onInput="JavaScript:search()" style="width:33vw;" autoComplete="off"></input>
