@@ -293,6 +293,7 @@ function graph(graphData, hist = '1d') { //pass in data.todayData from AJAX requ
 
     var options = {
 	    maintainAspectRatio: false,
+	    responsive: true,
 	    spanGaps: false,
 	    legend: {
 		    display: false
