@@ -506,7 +506,7 @@ function dashboard() {
 
 		setupNews(articles);
 		
-		graph(graphData, '1d', true);
+		graph(graphData, 'dash', true);
 
 		/*
 		var feedback = "Stock shares successfully added to your portfolio";
