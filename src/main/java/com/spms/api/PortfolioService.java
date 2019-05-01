@@ -170,6 +170,7 @@ public class PortfolioService {
 	@POST
 	@Secured
 	@Path("/watchlist")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Add ticker to watchlist", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "Success", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
 	public Response addToWatchList(WatchlistSymbol ws) {
 		try {
