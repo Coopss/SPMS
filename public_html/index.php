@@ -8,7 +8,7 @@
 
         <title>Stock Overflow</title>
         <link rel="icon" href="./global_assets/img/favicon.png" type="image/png">
-        
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.25/moment-timezone-with-data-1970-2030.min.js"></script>
@@ -133,7 +133,7 @@
                         </a>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block my-auto">
-                        <a id="article_next" href="javascript:articleGet('n')" class="btn btn-primary"> Next</a>
+                        <a id="article_next" href="javascript:articleGet('n')" class="float-right btn btn-primary"> Next</a>
                 </div>
                 </div>
 

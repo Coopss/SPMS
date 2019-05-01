@@ -135,18 +135,18 @@
                                         <div class="mx-auto col-lg-6">
                                             <br><br><br><br>
                                                 <h3 class="text-center">Relevant articles</h3>
+                                                <div class="text-center">
+                                                    Page <span id="article_page_number">0</span>
+                                                </div>
                                         </div>
                                         <div class="col-lg-2 col-md-2 col-sm-2">
                                         </div>
                                 </div>
                                 <div class="row">
-                                        <div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block my-auto">
-                                                <a href="javascript:articleGet('p')" class="bg-mute round arrow">Previous &laquo;</a>
+                                        <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
+                                                <a id="article_prev" href="javascript:articleGet('p')" class="btn btn-primary">Previous</a>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6" id="news_articles">
-                                            <div>
-                                                Page <span id="article_page_number">0</span>
-                                            </div>
                                             <br/>
 
                                             <span id="news1">
@@ -179,7 +179,7 @@
                                                 </a>
                                         </div>
                                         <div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block my-auto">
-                                                <a href="javascript:articleGet('n')" class="bg-mute round float-right arrow"> Next &raquo;</a>
+                                                <a id="article_next" href="javascript:articleGet('n')" class="float-right btn btn-primary"> Next</a>
                                         </div>
                                 </div>
 
