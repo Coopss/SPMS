@@ -29,6 +29,7 @@ import com.spms.api.annotations.Secured;
 import com.spms.auth.AuthDAO;
 import com.spms.auth.AuthUtil;
 import com.spms.news.NewsArticle;
+import com.spms.news.TickerNewsDAO;
 import com.spms.portfolio.Portfolio;
 import com.spms.portfolio.PortfolioConstraintException;
 import com.spms.portfolio.PortfolioDAO;
@@ -46,18 +47,20 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 public class PortfolioService {
 	
 	private static final Logger log = LogManager.getLogger(PortfolioService.class);
-	private static AuthDAO adao;
-	private static PortfolioDAO pdao;
-	private static TickerDAO tdao;
-	private static TickerHistoryDAO thdao;
+	private AuthDAO adao;
+	private PortfolioDAO pdao;
+	private TickerDAO tdao;
+	private TickerHistoryDAO thdao;
+	private TickerNewsDAO tndao;
 	
-	static {
+	{
       	// Get authdao object
         try {
         	pdao = new PortfolioDAO();
         	adao = new AuthDAO();
         	tdao = new TickerDAO();
         	thdao = new TickerHistoryDAO();
+        	tndao = new TickerNewsDAO();
         } catch (Exception e) {
         	e.printStackTrace();
         }        
@@ -114,6 +117,10 @@ public class PortfolioService {
 			List<PortfolioValue> portfolioValue = pdao.getUserValueOverTime(user);
 			Float value = pdao.getUserPortfolio(user).getValue();
 			List<NewsArticle> news = pdao.getPortfolioArticles(p);
+			
+			if (news.size() == 0) {
+				news = tndao.getRecent();
+			}
 			
 			response.put("username", user);
 			response.put("value", value);
