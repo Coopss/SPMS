@@ -198,7 +198,7 @@ function graph(graphData, hist = '1d', dash, yesterdayClose) { //pass in data.to
         var tmp = $('#myChart').clone();
 		$('#myChart').remove();
 		$('#chart-area').append(tmp);
-		
+
 		var ctx = document.getElementById('myChart').getContext('2d');
 
         var tbl = graphData;
@@ -215,13 +215,6 @@ function graph(graphData, hist = '1d', dash, yesterdayClose) { //pass in data.to
         var currDate = moment();
         if (hist == '1d') {
                 currDate = moment(tbl[0][key[0]]);
-                yesterdayClose['date'] = currDate.clone().set({
-                        'hours': 9,
-                        'minutes': 0,
-                        'seconds': 0,
-                        'milliseconds': 0
-                });
-                tbl.push(yesterdayClose);
         }
         var graphColor = (tbl.length == 0) ? 'rgba(0,0,0,0.1)' : chooseColor(tbl, key, currDate);
         var labels = generateLabels(tbl, key);
@@ -233,7 +226,7 @@ function graph(graphData, hist = '1d', dash, yesterdayClose) { //pass in data.to
 			xTimeUnit = 'minute';
                         xMin = currDate.clone().set({
                                 'hours': 9,
-                                'minutes': 0,
+                                'minutes': 30,
                                 'seconds': 0,
                                 'milliseconds': 0
                         });
