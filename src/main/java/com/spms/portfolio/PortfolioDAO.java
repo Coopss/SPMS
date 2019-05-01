@@ -223,12 +223,11 @@ public class PortfolioDAO {
 	public Boolean removeFromWatchlist(String user, String symbol) throws SQLException {
 		HashSet<String> watchlist = getWatchList(user);
 		
-		if (watchlist.contains(symbol.toUpperCase())) {
+		if (!watchlist.contains(symbol.toUpperCase())) {
 			return false;
 		}
 		
 		Statement stmt = conn.createStatement();
-		
 		stmt.executeUpdate("DELETE FROM [dbo].[internal.watchlist] WHERE [username] = '" + user + "' AND [symbol] = '" + symbol.toUpperCase() + "';");
 		
 		return true;
