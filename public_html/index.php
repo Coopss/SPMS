@@ -65,7 +65,7 @@
                                   <div class="card-body">
                                     <h5 class="card-title mover_title">Stock 1</h5>
                                     
-                                    <span class="mover_price"></span> <span class='mover_color'> <span class='mover_change'></span>, (<span class="mover_percent"></span>)</span>
+                                    <!-- span class="mover_price"></span --> <span class='mover_color'> <span class='mover_change'></span> (<span class="mover_percent"></span>)</span>
                                   </div>
                           </a>
                         </div>
