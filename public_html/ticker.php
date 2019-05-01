@@ -47,17 +47,17 @@
                                                 </span>
                                         </h5>
 
-                                                <div class="chart-area">
+                                                <div class="chart-area" style="max-height:450px">
                                                     <span id="chart_placeholder">Generating graph, please wait...</span>
                                                     <canvas id="myChart" height="400"></canvas>
-
-                                                    <a href="JavaScript:getGraphGranular('1w')">1w</a>
-                                                    <a href="JavaScript:getGraphGranular('1m')">1m</a>
-                                                    <a href="JavaScript:getGraphGranular('3m')">3m</a>
-                                                    <a href="JavaScript:getGraphGranular('1y')">1y</a>
-                                                    <a href="JavaScript:getGraphGranular('5y')">5y</a>
-                                                    <a href="JavaScript:getGraphGranular('max')">max</a>
                                                 </div>
+                                                <a href="JavaScript:getGraphGranular('1w')">1w</a>
+                                                <a href="JavaScript:getGraphGranular('1m')">1m</a>
+                                                <a href="JavaScript:getGraphGranular('3m')">3m</a>
+                                                <a href="JavaScript:getGraphGranular('1y')">1y</a>
+                                                <a href="JavaScript:getGraphGranular('5y')">5y</a>
+                                                <a href="JavaScript:getGraphGranular('max')">max</a>
+                                                
                                                 <div class="card mt-3 tab-card">
                                                         <div class="card-header tab-card-header">
                                                           <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
@@ -79,10 +79,12 @@
                                                             <input id="buyDatePicker" onkeydown="return false" placeholder="Date of Purchase" />
                                                                     <script>
                                                                     //Why does none of this do anything?
+                                                                    /*
                                                                     $('#buyDatePicker').datepicker({
                                                                         daysOfWeekDisabled: [0,6]
                                                                     });
                                                                     $("#buyDatePicker").datepicker("option", "dateFormat", "yy-mm-dd");
+                                                                    */
                                                                     </script>
                                                             <form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Amount" id="buycount" style="width:100%"> </input>
@@ -99,10 +101,12 @@
                                                             <input id="sellDatePicker" onkeydown="return false" placeholder="Date Sold" />
                                                                     <script>
                                                                     //Why does none of this do anything?
+                                                                    /*
                                                                     $('#sellDatePicker').datepicker({
                                                                         daysOfWeekDisabled: [0,6]
                                                                         });
-                                                                        $("#sellDatePicker").datepicker("option", "dateFormat", "yy-mm-dd");
+                                                                    $("#sellDatePicker").datepicker("option", "dateFormat", "yy-mm-dd");
+                                                                    */
                                                                     </script>
                                                             <form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Amount" id="sellcount" style="width:100%"> </input>
@@ -167,13 +171,25 @@
                                 </div>
                                 <div class="row">
                                         <div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block my-auto">
-                                                <a href="#" class="bg-mute round arrow">Previous &laquo;</a>
+                                                <a href="javascript:articleGet('p')" class="bg-mute round arrow">Previous &laquo;</a>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6" id="news_articles">
                                             <div>
                                                 Page <span id="article_page_number">0</span>
                                             </div>
                                             <br/>
+                                            
+                                            <span id="news1">
+                                                
+                                            </span>
+                                            
+                                            <span id="news2" class="d-none">
+                                                
+                                            </span>
+                                            
+                                            <span id="news3" class="d-none">
+                                                
+                                            </span>
 
                                                 <!-- Article reference format, not displayed -->
                                                 <a href="#" class="nounderline d-none article_url" id='article_template'>
@@ -193,7 +209,7 @@
                                                 </a>
                                         </div>
                                         <div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block my-auto">
-                                                <a href="#" class="bg-mute round float-right arrow"> Next &raquo;</a>
+                                                <a href="javascript:articleGet('n')" class="bg-mute round float-right arrow"> Next &raquo;</a>
                                         </div>
                                 </div>
 

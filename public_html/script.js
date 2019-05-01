@@ -314,7 +314,12 @@ function getUrlParameter(sParam) {
 
 function setupNews(articles) {
 	var new_article;
-	for (i = 0; i < articles.length; i++) {
+	var len = articles.length;
+	if (len > 12) { //limit to 12 articles
+		len = 12;
+	}
+	
+	for (i = 0; i < len; i++) {
 		new_article = $("#article_template").clone();
 		$(new_article).removeClass("d-none");
 		$(new_article).removeAttr("id");
@@ -323,7 +328,17 @@ function setupNews(articles) {
 		$(new_article).find(".article_headline").html(articles[i].headline);
 		$(new_article).find(".article_summary").html(articles[i].summary);
 		$(new_article).attr("href", articles[i].url);
-		$("#news_articles").append(new_article);
+		
+		//divide into up to 3 pages
+		if (i < 4) {
+			$("#news1").append(new_article);
+		} else if (i < 8) {
+			$("#news2").append(new_article);
+		} else if (i < 12) {
+			$("#news3").append(new_article);
+		}
+		
+		//$("#news_articles").append(new_article);
 	}
 
 	$("#article_page_number").html("1");
@@ -332,7 +347,9 @@ function setupNews(articles) {
 
 function articleGet(n_or_p) {
 	var symbol = getUrlParameter('s');
-	var cur_page = parseInt($("article_page_number").html());
+	var cur_page = $("#article_page_number").html();
+	cur_page = parseInt(cur_page);
+	//console.log('current page: ' + cur_page)
 
 	/* Calc next or previous page number */
 	if (n_or_p == 'p') {
@@ -348,56 +365,28 @@ function articleGet(n_or_p) {
 		cur_page = 3;
 	}
 	$("#article_page_number").html(cur_page);
+	//console.log('new page: ' + cur_page)
+	
+	switch (cur_page) { //show only the currect page
+		case 2:
+			$("#news1").addClass('d-none');
+			$("#news3").addClass('d-none');
+			$("#news2").removeClass('d-none');
+			break;
+		case 3:
+			$("#news1").addClass('d-none');
+			$("#news2").addClass('d-none');
+			$("#news3").removeClass('d-none');
+			break;
+		case 1:
+		default:
+			$("#news2").addClass('d-none');
+			$("#news3").addClass('d-none');
+			$("#news1").removeClass('d-none');
+	}
 
 	/* Clear previous articles */
-	$("#news_articles").find(".article_url").not("#article_template").remove();
-
-
-	$.ajax({
-		method: "GET",
-		crossDomain: true,
-		xhrFields: { withCredentials: true },
-		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol + "/news/" + cur_page,
-	})
-	.done(function(data, textStatus, xhr) {
-		console.log('Article data retrieved: ' + data);
-
-		var articles = data.articles;
-
-		var new_article;
-		for (i = 0; i < articles.length; i++) {
-			new_article = $("#article_template").clone();
-			$(new_article).removeClass("d-none");
-			$(new_article).removeAttr("id");
-
-			$(new_article).find(".artcile_img").html("<img src=" + articles[i].image + ">");
-			$(new_article).find(".article_headline").html(articles[i].headline);
-			$(new_article).find(".article_summary").html(articles[i].summary);
-			$(new_article).attr("href", articles[i].url);
-			$("#news_articles").append(new_article);
-		}
-
-		$("#article_page_number").html("1");
-
-	})
-	.fail(function (xhr, textStatus, errorThrown) {
-		var statusNum = xhr.status;
-		var feedback = "";
-
-		switch (statusNum) {
-			case 200: //not sure why this is considered a fail...
-				feedback = "No results found for this ticker";
-				break;
-			case 401:
-				feedback = "search: 401 (token not found, or invalid)";
-				//TODO: redirect to sign on page?
-				break;
-			default:
-				feedback = "The server returned an undefined response: Status code " + statusNum;
-				break;
-		}
-		console.log(feedback);
-	});
+	//$("#news_articles").find(".article_url").not("#article_template").remove();
 }
 
 
@@ -571,7 +560,7 @@ function dashboard() {
 			$(template).find('.mover_title').html(symbol);
 			$(template).find('.mover_change').html(parseFloat(change).toFixed(2));
 			percent = parseFloat(percent) * 100;
-			$(template).find('.mover_percent').html('' + percent.toFixed(2) * 100 + '%');
+			$(template).find('.mover_percent').html('' + percent.toFixed(2) + '%');
 
 			if (change > 0) {
 				$(template).find('.mover_color').css('color', 'green');
