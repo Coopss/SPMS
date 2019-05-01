@@ -32,7 +32,7 @@
                                             <a class="logo-margins" href="index.php">
                                                 <img src="global_assets/img/logo.png" alt="Logo" height=40px>
                                             </a>
-                                            <img class="logo-margins" src="global_assets/img/footer_logo.png" alt="Logo" height=40px>
+                                            <img class="logo-margins" c alt="Logo" height=40px>
                                         </header>
                                         <div class="form-vertical">
                                             <div>
@@ -68,7 +68,7 @@
                                         <footer class="login-btn-area">
                                             <div>
                                                 <button type="submit" name="submit" class="btn btn-primary login-btn">
-                                                    <span class="login-btn-text">Login</span>
+                                                    <span class="login-btn-text">Register</span>
                                                 </button>
                                             </div>
                                         </footer>
