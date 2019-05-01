@@ -496,8 +496,8 @@ function dashboard() {
 			new_table += "<tr>";
 			//new_table += "<td>" + key + "</td>";
 			new_table += "<td>" + "<a href='http://spms.westus.cloudapp.azure.com/ticker.php?s=" + watch_table[i] + "'>" + watch_table[i] + "</a>" + "</td>";
-			new_table += "<td>" + '<button type="button" name="remove" onclick="remove(' + "'" + watch_table[i] + "'" + ')">Remove</button>' + "</td>";
-			
+			new_table += "<td>" + '<button class="btn btn-primary" type="button" name="remove" onclick="remove(' + "'" + watch_table[i] + "'" + ')">Remove</button>' + "</td>";
+
 			new_table += "</tr>";
 		}
 		new_table += "</table>";
@@ -505,7 +505,7 @@ function dashboard() {
 		$("#db_watch_table").replaceWith(new_table);
 
 		setupNews(articles);
-		
+
 		graph(graphData, 'dash', true);
 		$('#chart_placeholder').remove();
 
