@@ -39,6 +39,7 @@
                                     <canvas id="myChart" height="400"></canvas>
                                 </div>
                         </div>
+                        
                         <div class="col-lg-3">
                                 <!-- List of Stocks -->
                                 <h4> Stocks </h4>
@@ -59,6 +60,8 @@
                         <div class="col-lg-2">
                         </div>
                 </div>
+                <br><br>
+                
                 <div class="row">
                 <div class="offset-lg-2 offset-md-2 col-lg-8 col-md-8 col-sm-12 col-xs-12">
                         <h3 class="text-center">Recent Top Movers</h3>
