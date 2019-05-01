@@ -36,6 +36,7 @@ import com.spms.portfolio.PortfolioDAO;
 import com.spms.portfolio.PortfolioValue;
 import com.spms.portfolio.PurchaseModel;
 import com.spms.portfolio.Transaction;
+import com.spms.portfolio.WatchlistSymbol;
 import com.spms.ticker.history.TickerHistoryDAO;
 import com.spms.ticker.history.TickerHistoryData;
 import com.spms.ticker.live.TickerDAO;
@@ -170,11 +171,11 @@ public class PortfolioService {
 	@Secured
 	@Path("/watchlist")
 	@Operation(summary = "Add ticker to watchlist", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "Success", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
-	public Response addToWatchList(@QueryParam("symbol") String symbol) {
+	public Response addToWatchList(WatchlistSymbol ws) {
 		try {
 			javax.servlet.http.Cookie[] cookies = servletRequest.getCookies();
 			String user = AuthUtil.getUsername(cookies, adao);
-			pdao.addToWatchlist(user, symbol);
+			pdao.addToWatchlist(user, ws.getSymbol());
 			
 		} catch (Exception e) {
 			log.error(Util.stackTraceToString(e));
