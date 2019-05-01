@@ -324,7 +324,7 @@ function setupNews(articles) {
 		$(new_article).removeClass("d-none");
 		$(new_article).removeAttr("id");
 
-		$(new_article).find(".artcile_img").html("<img height=50% width=50% src=" + articles[i].image + ">");
+		$(new_article).find(".artcile_img").html("<img height=auto width=50% src=" + articles[i].image + ">");
 		$(new_article).find(".article_headline").html(articles[i].headline);
 		$(new_article).find(".article_summary").html(articles[i].summary);
 		$(new_article).attr("href", articles[i].url);
