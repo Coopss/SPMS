@@ -464,7 +464,7 @@ function dashboard() {
 
 		var stock_table = data.portfolio;
 		var watch_table = data.watchlist;
-		var graphData = data.timesweries;
+		var graphData = data.timeseries;
 		var total_value = data.value;
 		var articles = data.news;
 
@@ -507,6 +507,7 @@ function dashboard() {
 		setupNews(articles);
 		
 		graph(graphData, 'dash', true);
+		$('#chart_placeholder').remove();
 
 		/*
 		var feedback = "Stock shares successfully added to your portfolio";
@@ -658,17 +659,18 @@ function remove(symbol) {
 		method: "DELETE",
 		crossDomain: true,
 		xhrFields: { withCredentials: true },
-		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio/watchlist?symbol=" + symbol,
-		/*contentType: 'application/json',
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio/watchlist",
+		contentType: 'application/json',
 		data: JSON.stringify({
 			"symbol": symbol
-		}),*/
+		}),
 	})
 	.done(function(data, textStatus, xhr) {
 		var feedback = "Stock successfully removed from your watchlist";
 
 		console.log(feedback);
 		$('#buyFeedback').html(feedback);
+		location.reload();
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
 		var statusNum = xhr.status;

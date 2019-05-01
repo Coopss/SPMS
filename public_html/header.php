@@ -6,7 +6,7 @@
         <button class="navbar-toggler collapsed align-right" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse row ml-5" id="navbarsExample04">
+        <div class="collapse navbar-collapse row ml-5 pl-5" id="navbarsExample04">
                 <!-- Text box for search -->
                 <form class="form-inline mr-auto">
                         <input class="form-control" type="text" placeholder="Search" list="search_list" id="search_term" onInput="JavaScript:search()" style="width:33vw;" autoComplete="off"></input>

@@ -48,13 +48,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 public class PortfolioService {
 	
 	private static final Logger log = LogManager.getLogger(PortfolioService.class);
-	private AuthDAO adao;
-	private PortfolioDAO pdao;
-	private TickerDAO tdao;
-	private TickerHistoryDAO thdao;
-	private TickerNewsDAO tndao;
+	private static AuthDAO adao;
+	private static PortfolioDAO pdao;
+	private static TickerDAO tdao;
+	private static TickerHistoryDAO thdao;
+	private static TickerNewsDAO tndao;
 	
-	{
+	static {
       	// Get authdao object
         try {
         	pdao = new PortfolioDAO();
@@ -208,6 +208,7 @@ public class PortfolioService {
 	@GET
 	@Secured
 	@Path("/watchlist")
+	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Get current watchlist", tags = {"Portfolio"}, description = "", responses = {@ApiResponse(description = "Success", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
 	public Response getWatchlist() {
 		try {
