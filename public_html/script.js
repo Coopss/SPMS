@@ -714,7 +714,6 @@ function portfolio() {
 					new_table += "<th>" + data[i][j] + "</th>";
 				} else {
 						new_table += "<td>" + data[i][j] + "</td>";
-					}
 				}
 
 			}
