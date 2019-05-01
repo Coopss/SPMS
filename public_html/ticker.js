@@ -259,7 +259,7 @@ function graph(graphData, hist = '1d', dash, yesterdayClose) { //pass in data.to
 		case 'dash':
 			xTimeUnit = 'hour';
 			xMin = moment(tbl[tbl.length - 1][key[0]]);
-			xMax = mement(tbl[0][key[0]]);
+			xMax = moment(tbl[0][key[0]]);
 			break;
                 default:
                         break;
