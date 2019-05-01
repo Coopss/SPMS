@@ -506,7 +506,7 @@ function dashboard() {
 		setupNews(articles);
 
 		/*
-		var feeback = "Stock shares successfully added to your portfolio";
+		var feedback = "Stock shares successfully added to your portfolio";
 
 		console.log(feedback);
 		$('#buyFeedback').html(feedback);
@@ -613,12 +613,13 @@ function watch() {
 		crossDomain: true,
 		xhrFields: { withCredentials: true },
 		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio/watchlist",
+		contentType: 'application/json',
 		data: JSON.stringify({
 			"symbol": symbol
 		}),
 	})
 	.done(function(data, textStatus, xhr) {
-		var feeback = "Stock successfully added to (or removed from) your watchlist";
+		var feedback = "Stock successfully added to (or removed from) your watchlist";
 
 		console.log(feedback);
 		$('#buyFeedback').html(feedback);
