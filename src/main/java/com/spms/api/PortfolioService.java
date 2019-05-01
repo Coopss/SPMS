@@ -89,6 +89,7 @@ public class PortfolioService {
 			p.checkValidity();
 			
 			pdao.addTransaction(t);
+			pdao.reloadPortfolio(user);
 		} catch (PortfolioConstraintException e) {
 			Map<String, Object> response = new HashMap<String, Object>();
 			Gson gson = new Gson();
