@@ -47,17 +47,17 @@
                                                 </span>
                                         </h5>
 
-                                                <div class="chart-area">
+                                                <div class="chart-area" style="max-height:450px">
                                                     <span id="chart_placeholder">Generating graph, please wait...</span>
                                                     <canvas id="myChart" height="400"></canvas>
-
-                                                    <a href="JavaScript:getGraphGranular('1w')">1w</a>
-                                                    <a href="JavaScript:getGraphGranular('1m')">1m</a>
-                                                    <a href="JavaScript:getGraphGranular('3m')">3m</a>
-                                                    <a href="JavaScript:getGraphGranular('1y')">1y</a>
-                                                    <a href="JavaScript:getGraphGranular('5y')">5y</a>
-                                                    <a href="JavaScript:getGraphGranular('max')">max</a>
                                                 </div>
+                                                <a href="JavaScript:getGraphGranular('1w')">1w</a>
+                                                <a href="JavaScript:getGraphGranular('1m')">1m</a>
+                                                <a href="JavaScript:getGraphGranular('3m')">3m</a>
+                                                <a href="JavaScript:getGraphGranular('1y')">1y</a>
+                                                <a href="JavaScript:getGraphGranular('5y')">5y</a>
+                                                <a href="JavaScript:getGraphGranular('max')">max</a>
+                                                
                                                 <div class="card mt-3 tab-card">
                                                         <div class="card-header tab-card-header">
                                                           <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
