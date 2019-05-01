@@ -54,7 +54,7 @@
                 </div>
                 <div class="row">
                 <div class="offset-lg-2 offset-md-2 col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                        <h3 class="text-center">Top Movers</h3>
+                        <h3 class="text-center">Recent Top Movers</h3>
                         <div class="card-group" id='topMovers'>
 
                         </div>
@@ -65,7 +65,7 @@
                                   <div class="card-body">
                                     <h5 class="card-title mover_title">Stock 1</h5>
                                     
-                                    <span class="mover_price"></span> <span class='mover_color'> <span class='mover_change'></span>, (<span class="mover_percent"></span>)</span>
+                                    <!-- span class="mover_price"></span --> <span class='mover_color'> <span class='mover_change'></span> (<span class="mover_percent"></span>)</span>
                                   </div>
                           </a>
                         </div>

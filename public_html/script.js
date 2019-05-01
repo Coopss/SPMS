@@ -421,7 +421,7 @@ function buyStock(action = 'buy') {
 		}),
 	})
 	.done(function(data, textStatus, xhr) {
-		var feeback = "Stock shares successfully added to or removed from your portfolio";
+		var feedback = "Stock shares successfully added to or removed from your portfolio";
 
 		console.log(feedback);
 		$('#buyFeedback').html(feedback);
@@ -559,8 +559,8 @@ function dashboard() {
 			percent = data[i].changePercent;
 
 			$(template).find('a').attr('href', 'http://spms.westus.cloudapp.azure.com/ticker.php?s=' + symbol);
-			$(template).find('.mover_title').html(symbol);
-			$(template).find('.mover_price').html('$' + parseFloat(price).toFixed(2) + ' | ');
+			$(template).find('.mover_title').html(symbol + " | $" + parseFloat(price).toFixed(2));
+			//$(template).find('.mover_price').html('$' + parseFloat(price).toFixed(2) + ' | ');
 			
 			if (change > 0) {
 				$(template).find('.mover_change').html('+' + parseFloat(change).toFixed(2));

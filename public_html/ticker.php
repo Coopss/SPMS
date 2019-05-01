@@ -77,7 +77,10 @@
                                                           <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
                                                             <h5 class="card-title">Buy</h5>
                                                             <input id="buyDatePicker" onkeydown="return false" placeholder="Date of Purchase" />
-
+                                                            <script>
+                                                                $('#buyDatePicker').datepicker();
+                                                            </script>
+                                                            
                                                             <form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Amount" id="buycount" style="width:100%"> </input>
                                                             </form>
@@ -88,11 +91,14 @@
                                                           <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
                                                             <h5 class="card-title">Sell</h5>
                                                             <input id="sellDatePicker" onkeydown="return false" placeholder="Date Sold" />
-
+                                                            <script>
+                                                                $('#sellDatePicker').datepicker();
+                                                            </script>
+                                                            
                                                             <form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Amount" id="sellcount" style="width:100%"> </input>
                                                             </form>
-
+                                                            
                                                             <button type="button" name="sellbutton" onclick="buyStock('sell')">Sell</button>
 
                                                             <!-- p class="card-text">Here is where you sell a stock</p -->
