@@ -195,7 +195,11 @@ function chooseColor(tbl, key, currDate) {
 }
 
 function graph(graphData, hist = '1d', dash, yesterdayClose) { //pass in data.todayData from AJAX request
-        var ctx = document.getElementById('myChart').getContext('2d');
+        var tmp = $('#myChart').clone();
+		$('#myChart').remove();
+		$('#chart-area').append(tmp);
+		
+		var ctx = document.getElementById('myChart').getContext('2d');
 
         var tbl = graphData;
         var key = [];
