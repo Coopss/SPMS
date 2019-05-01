@@ -27,6 +27,7 @@ function ticker() {
 		var name = data.company;
 		var symbol = data.symbol;
 		var graphData = data.todayData;
+		var yesterday = data.yesterdayClose;
 		var stats = data.statistics;
 		var about = data.about;
 		var articles = data.articles;
@@ -89,7 +90,7 @@ function ticker() {
 		*/
 
         $('#chart_placeholder').remove();
-		graph(graphData, '1d', false); //defaults to 1d
+		graph(graphData, '1d', false, yesterday); //defaults to 1d
 
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
@@ -315,7 +316,11 @@ function getGraphGranular(history) {
 		return;
 	}
 
+	var is_day = false;
 	switch (history) { //check validity
+		case '1d':
+			is_day = true;
+			break
 		case '1w':
 		case '1m':
 		case '3m':
@@ -327,6 +332,49 @@ function getGraphGranular(history) {
 		default:
 			//TODO: Specifiy error
 			return;
+	}
+	
+	if (is_day) { //unique call for 1d data
+		$.ajax({
+			method: "GET",
+			crossDomain: true,
+			xhrFields: { withCredentials: true },
+			url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol,
+		})
+		.done(function(data, textStatus, xhr) {
+			console.log('Ticker data retrieved: ' + data);
+
+			var name = data.company;
+			var symbol = data.symbol;
+			var graphData = data.todayData;
+			var yesterday = data.yesterdayClose;
+			
+	        //$('#chart_placeholder').remove();
+			graph(graphData, '1d', false, yesterday); //defaults to 1d
+
+		})
+		.fail(function (xhr, textStatus, errorThrown) {
+			var statusNum = xhr.status;
+			var feedback = "";
+
+			switch (statusNum) {
+				case 200: //not sure why this is considered a fail...
+					feedback = "No results found for this ticker";
+					break;
+				case 401:
+					feedback = "search: 401 (token not found, or invalid)";
+					//TODO: redirect to sign on page?
+					break;
+				default:
+					feedback = "The server returned an undefined response: Status code " + statusNum;
+					break;
+			}
+			console.log(feedback);
+			$('#stats_go_here').html(feedback);
+	        $('#chart_placeholder').html(feedback);
+		});
+		
+		return;
 	}
 
 	$.ajax({

@@ -51,6 +51,7 @@
                                                     <span id="chart_placeholder">Generating graph, please wait...</span>
                                                     <canvas id="myChart" height="400"></canvas>
                                                 </div>
+                                                <a class="btn btn-primary" href="JavaScript:getGraphGranular('1d')">1d</a>
                                                 <a class="btn btn-primary" href="JavaScript:getGraphGranular('1w')">1w</a>
                                                 <a class="btn btn-primary" href="JavaScript:getGraphGranular('1m')">1m</a>
                                                 <a class="btn btn-primary" href="JavaScript:getGraphGranular('3m')">3m</a>
