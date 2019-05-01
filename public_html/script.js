@@ -318,17 +318,17 @@ function setupNews(articles) {
 	if (len > 12) { //limit to 12 articles
 		len = 12;
 	}
-	
+
 	for (i = 0; i < len; i++) {
 		new_article = $("#article_template").clone();
 		$(new_article).removeClass("d-none");
 		$(new_article).removeAttr("id");
 
-		$(new_article).find(".artcile_img").html("<img height=50% width=50% src=" + articles[i].image + ">");
+		$(new_article).find(".artcile_img").html("<img height=auto width=50% src=" + articles[i].image + ">");
 		$(new_article).find(".article_headline").html(articles[i].headline);
 		$(new_article).find(".article_summary").html(articles[i].summary);
 		$(new_article).attr("href", articles[i].url);
-		
+
 		//divide into up to 3 pages
 		if (i < 4) {
 			$("#news1").append(new_article);
@@ -337,7 +337,7 @@ function setupNews(articles) {
 		} else if (i < 12) {
 			$("#news3").append(new_article);
 		}
-		
+
 		//$("#news_articles").append(new_article);
 	}
 
@@ -366,7 +366,7 @@ function articleGet(n_or_p) {
 	}
 	$("#article_page_number").html(cur_page);
 	//console.log('new page: ' + cur_page)
-	
+
 	switch (cur_page) { //show only the currect page
 		case 2:
 			$("#news1").addClass('d-none');
@@ -496,7 +496,7 @@ function dashboard() {
 			new_table += "<tr>";
 			//new_table += "<td>" + key + "</td>";
 			new_table += "<td>" + "<a href='http://spms.westus.cloudapp.azure.com/ticker.php?s=" + watch_table[i] + "'>" + watch_table[i] + "</a>" + "</td>";
-			new_table += "<td>" + '<button type="button" name="remove" onclick="remove(' + watch_table[i] + ')">Remove</button>' + "</td>";
+			new_table += "<td>" + '<button type="button" name="remove" onclick="remove(' + "'" + watch_table[i] + "'" + ')">Remove</button>' + "</td>";
 			
 			new_table += "</tr>";
 		}
@@ -505,6 +505,8 @@ function dashboard() {
 		$("#db_watch_table").replaceWith(new_table);
 
 		setupNews(articles);
+		
+		graph(graphData, 'dash', true);
 
 		/*
 		var feedback = "Stock shares successfully added to your portfolio";
@@ -562,13 +564,13 @@ function dashboard() {
 			$(template).find('a').attr('href', 'http://spms.westus.cloudapp.azure.com/ticker.php?s=' + symbol);
 			$(template).find('.mover_title').html(symbol + " | $" + parseFloat(price).toFixed(2));
 			//$(template).find('.mover_price').html('$' + parseFloat(price).toFixed(2) + ' | ');
-			
+
 			if (change > 0) {
 				$(template).find('.mover_change').html('+' + parseFloat(change).toFixed(2));
 			} else { //number should auto-append a minus sign
 				$(template).find('.mover_change').html(parseFloat(change).toFixed(2));
 			}
-			
+
 			percent = parseFloat(percent) * 100;
 			$(template).find('.mover_percent').html('' + percent.toFixed(2) + '%');
 
@@ -691,8 +693,8 @@ function remove(symbol) {
 
 
 function portfolio() {
-	
-	
+
+
 	$.ajax({
 		method: "GET",
 		crossDomain: true,
@@ -701,21 +703,21 @@ function portfolio() {
 	})
 	.done(function(data, textStatus, xhr) {
 		var new_table = '';
-		
+
 		for (var i = 0; i < data.length; i++) {
 			new_table += "<tr>";
-			
+
 			for (var j = 0; j < data[i].length; j++) {
 				if (i == 0) {
 					new_table += "<th>" + data[i][j] + "</th>";
 				} else {
 					new_table += "<td>" + data[i][j] + "</td>";
 				}
-				
+
 			}
 			new_table += "</tr>";
 		}
-		
+
 		$("#portfolio_table").html(new_table);
 
 	})

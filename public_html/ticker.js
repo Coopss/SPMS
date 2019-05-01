@@ -27,6 +27,7 @@ function ticker() {
 		var name = data.company;
 		var symbol = data.symbol;
 		var graphData = data.todayData;
+		var yesterday = data.yesterdayClose;
 		var stats = data.statistics;
 		var about = data.about;
 		var articles = data.articles;
@@ -89,7 +90,7 @@ function ticker() {
 		*/
 
         $('#chart_placeholder').remove();
-		graph(graphData); //defaults to 1d
+		graph(graphData, '1d', false, yesterday); //defaults to 1d
 
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
@@ -117,230 +118,187 @@ function ticker() {
 
 //taken from best answer here: https://stackoverflow.com/questions/19491336/get-url-parameter-jquery-or-how-to-get-query-string-values-in-js
 function getUrlParameter(sParam) {
-    var sPageURL = window.location.search.substring(1),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName,
-        i;
+        var sPageURL = window.location.search.substring(1),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
 
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
+        for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
 
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                if (sParameterName[0] === sParam) {
+                        return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                }
         }
-    }
 };
 
 
-function generateData(tbl, labels, hist = '1d') {
-	var arr = [];
-	var i, index, last, lastDate, date, key;
+function generateData(tbl, labels, key) {
+        var arr = [];
+        var i, index, date;
 
-	key = (hist == '1d') ? 'date' : 'Date';
-	key2 = (hist == '1d') ? 'marketAverage' : 'Close';
-	last = setOpenPrice(tbl, hist);
-	lastDate = moment().year(1902);
+        for (i = 0; i < tbl.length; i++) {
+                date = moment(tbl[i][key[0]]);
 
-	for (i = 0; i < tbl.length; i++) {
-		date = moment(tbl[i][key]);
-		if (Number(lastDate) < Number(date)) {
-			lastDate = date;
-		}
+                if ((index = labels.map(Number).indexOf(+moment(tbl[i][key[0]]))) != -1) {
+                        arr[index] = Number(tbl[i][key[1]]);
+                }
+        }
 
-		if ((index = labels.map(Number).indexOf(+moment())) != -1) {
-			arr[index] = Number(tbl[i][key2]);
-		}
-	}
-
-	for (i = 0; i < labels.length; i++) {
-		if (arr[i] != null) {
-			last = arr[i];
-		} else if (Number(labels[i]) <= Number(lastDate)) {
-			arr[i] = last;
-		} else {
-			break;
-		}
-	}
-
-	return arr;
+        return arr;
 }
 
-function generateLabels(hist = '1d') {
-	var arr = [];
-	var date, max;
-	var currDate = moment();
+function generateLabels(tbl, key) {
+        var arr = [];
 
-	if (currDate.hours < 9) {
-		currDate.subtract(1, 'days');
-	}
+        for (var i = 0; i < tbl.length; i++) {
+                arr.push(moment(tbl[i][key[0]]));
+        }
 
-	switch (hist) {
-		case '1d':
-			max = 420;
-			break;
-		case '1w':
-			currDate.subtract(7, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
-			max = 7;
-			break;
-		case '1m':
-			currDate.subtract(1, 'months').add(1, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
-			max = Math.abs(currDate.diff(moment(), 'days'));
-			break;
-		case '3m':
-			currDate.subtract(3, 'months').add(1, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
-			max = Math.abs(currDate.diff(moment(), 'days'));
-			break;
-		case '1y':
-			currDate.subtract(1, 'years').add(1, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
-			max = Math.abs(currDate.diff(moment(), 'days'));
-			break;
-		case '5y':
-		case 'max':
-			currDate.subtract(5, 'years').add(1, 'days').set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
-			max = Math.abs(currDate.diff(moment(), 'days'));
-			break;
-		default:
-			break;
-	}
-
-	for (var i = 0; i < max; i++) {
-		date = moment(currDate.format());
-		switch (hist) {
-			case '1d':
-				date.set({'hour': (i / 60) + 9, 'minute': i % 60, 'second': 0, 'millisecond': 0});
-				break;
-			case '1w':
-			case '1m':
-			case '3m':
-			case '1y':
-			case '5y':
-			case 'max':
-				date.add(i, 'days');
-				break;
-			default:
-				// error
-				break;
-		}
-		arr.push(date);
-	}
-
-	return arr;
+        return arr;
 }
 
-function setOpenPrice(tbl, hist = '1d') {
-	if (tbl.length == 0) {
-		return 0;
-	}
+function setOpenPrice(tbl, key) {
+        var openIndex = 0;
+        var earliestDate = moment().valueOf();
 
-	var openIndex, key, key2;
-	var earliestDate = moment().valueOf();
+        for (var i = 0; i < tbl.length; i++) {
+                if (moment(tbl[i][key[0]]).valueOf() < earliestDate) {
+                        openIndex = i;
+                        earliestDate = moment(tbl[i][key[0]]).valueOf();
+                }
+        }
 
-	key = (hist == '1d') ? 'date' : 'Date';
-	key2 = (hist == '1d') ? 'marketAverage' : 'Close';
-
-	for (var i = 0; i < tbl.length; i++) {
-		if (moment(tbl[i][key]).valueOf() < earliestDate) {
-			openIndex = i;
-			earliestDate = moment(tbl[i][key]).valueOf();
-		}
-	}
-
-	return Number(tbl[openIndex][key2]);
+        return Number(tbl[openIndex][key[1]]);
 }
 
-function chooseColor(tbl, hist = '1d') {
-	var lastPrice, lastDate, date, openPrice, key, key2;
+function chooseColor(tbl, key, currDate) {
+        var lastPrice, lastDate, date, openPrice;
+        lastDate = currDate.clone().year(1902);
+        openPrice = setOpenPrice(tbl, key);
 
-	key = (hist == '1d') ? 'date' : 'Date';
-	key2 = (hist == '1d') ? 'marketAverage' : 'Close';
-	lastDate = moment().year(1902);
-	openPrice = setOpenPrice(tbl, hist);
+        for (var i = 0; i < tbl.length; i++) {
+                date = moment(tbl[i][key[0]]);
+                if (date.valueOf() >= lastDate.valueOf()) {
+                        lastDate = date;
+                        lastPrice = Number(tbl[i][key[1]]);
+                }
+        }
 
-	for (var i = 0; i < tbl.length; i++) {
-		date = moment(tbl[i][key]);
-		if (date.valueOf() >= lastDate.valueOf()) {
-			lastDate = date;
-			lastPrice = Number(tbl[i][key2]);
-		}
-	}
-
-	if (openPrice >= lastPrice) {
-		return 'rgba(244, 85, 49, 0.5)'; //red
-	} else {
-		return 'rgba(33, 206, 153, 0.5)'; //green
-	}
+        if (openPrice >= lastPrice) {
+                return 'rgba(244, 85, 49, 0.5)'; //red
+        } else {
+                return 'rgba(33, 206, 153, 0.5)'; //green
+        }
 }
 
-function graph(graphData, hist = '1d') { //pass in data.todayData from AJAX request
-    var ctx = document.getElementById('myChart');
+function graph(graphData, hist = '1d', dash) { //pass in data.todayData from AJAX request
+        var ctx = document.getElementById('myChart').getContext('2d');
 
-    var tbl = graphData;
-    var graphColor = (tbl.length == 0) ? 'rgba(0,0,0,0.1)' : chooseColor(tbl, hist);
-    var labels = generateLabels(hist);
-    var xTimeUnit;
-    switch (history) {
-    	case '1d':
-    		xTimeUnit = 'minute';
-    		break;
-	case '1w':
-	case '1m':
-	case '3m':
-		xTimeUnit = 'day';
-		break;
-	case '1y':
-	case '5y':
-	case 'max':
-		xTimeUnit = 'month';
-    	default:
-    		xTimeUnit = 'minute';
-    }
+        var tbl = graphData;
+        var key = [];
+        key[0] = (hist == '1d') ? 'date' : 'Date';
+        if (dash) {
+                key[1] = 'value'
+        } else if (hist == '1d') {
+                key[1] = 'marketAverage';
+        } else {
+                key[1] = 'Close';
+        }
+        var currDate = moment();
+        var graphColor = (tbl.length == 0) ? 'rgba(0,0,0,0.1)' : chooseColor(tbl, key, currDate);
+        var labels = generateLabels(tbl, key);
+        var xTimeUnit = (hist == '1d') ? 'minute' : 'day';
+        var xMin = currDate.clone();
+        var xMax = currDate.clone().subtract(1, 'days');
+        switch (hist) {
+                case '1d':
+                        xMin = currDate.clone().set({
+                                'hours': 9,
+                                'minutes': 0,
+                                'seconds': 0,
+                                'milliseconds': 0
+                        });
+                        xMax = currDate.clone().set({
+                                'hours': 16,
+                                'minutes': 0,
+                                'seconds': 0,
+                                'milliseconds': 0
+                        });
+                        break;
+                case '1w':
+                        xMin = currDate.clone().subtract(7, 'days');
+                        break;
+                case '1m':
+                        xMin = currDate.clone().subtract(1, 'months');
+                        break;
+                case '3m':
+                        xMin = currDate.clone().subtract(3, 'months');
+                        break;
+                case '1y':
+                        xMin = currDate.clone().subtract(1, 'years');
+                        break;
+                case '5y':
+                case 'max':
+                        xMin = currDate.clone().subtract(5, 'years');
+                        break;
+                default:
+                        break;
+        }
 
-    var data = {
-            labels: labels,
-            datasets: [{
-                    data: generateData(tbl, labels, hist),
-                    hidden: false,
-		    backgroundColor: graphColor,
-		    pointBorderColor: 'rgba(0, 0, 0, 0)',
-		    pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-		    pointHoverBackgroundColor: graphColor
-            }]
-    };
+        var data = {
+                labels: labels,
+                datasets: [{
+                        data: generateData(tbl, labels, key),
+                        hidden: false,
+                        backgroundColor: graphColor,
+                        pointBorderColor: 'rgba(0, 0, 0, 0)',
+                        pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+                        pointHoverBackgroundColor: graphColor
+                }]
+        };
 
-    var options = {
-	    maintainAspectRatio: false,
-	    responsive: true,
-	    spanGaps: false,
-	    legend: {
-		    display: false
-	    },
-	    elements: {
-		    line: {
-			    tension: 0,
-			    borderColor: graphColor
-		    }
-	    },
-	    scales: {
-		    xAxes: [{
-			    type:'time',
-			    distribution: 'series',
-			    time: {
-				    unit: xTimeUnit,
-				    timezone: "America/New_York"
-			    },
-			    bounds: 'ticks',
-                            gridLines: {
-                                    color: 'rgba(0, 0, 0, 0.01)'
-                            }
-		    }]
-	    }
-    };
+        var options = {
+                maintainAspectRatio: false,
+                spanGaps: false,
+                legend: {
+                        display: false
+                },
+                elements: {
+                        line: {
+                                tension: 0,
+                                borderColor: graphColor
+                        }
+                },
+                scales: {
+                        xAxes: [{
+                                type: 'time',
+                                distribution: 'series',
+                                time: {
+                                        unit: xTimeUnit,
+                                        min: xMin,
+                                        max: xMax
+                                },
+                                bounds: 'ticks',
+                                gridLines: {
+                                        color: 'rgba(0, 0, 0, 0.01)'
+                                },
+                                ticks: {
+                                        autoSkip: true
+                                }
+                        }]
+                },
+                tooltips: {
+                        intersect: false,
+                        mode: 'x',
+                }
+        };
 
-    var chart = new Chart(ctx, {
-            type: 'line',
-            data: data,
-            options: options
-    });
+        var chart = new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: options
+        });
 }
 
 //valid history params: 1w, 1m, 3m, 1y, 5y, max
@@ -358,7 +316,11 @@ function getGraphGranular(history) {
 		return;
 	}
 
+	var is_day = false;
 	switch (history) { //check validity
+		case '1d':
+			is_day = true;
+			break
 		case '1w':
 		case '1m':
 		case '3m':
@@ -370,6 +332,49 @@ function getGraphGranular(history) {
 		default:
 			//TODO: Specifiy error
 			return;
+	}
+	
+	if (is_day) { //unique call for 1d data
+		$.ajax({
+			method: "GET",
+			crossDomain: true,
+			xhrFields: { withCredentials: true },
+			url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol,
+		})
+		.done(function(data, textStatus, xhr) {
+			console.log('Ticker data retrieved: ' + data);
+
+			var name = data.company;
+			var symbol = data.symbol;
+			var graphData = data.todayData;
+			var yesterday = data.yesterdayClose;
+			
+	        //$('#chart_placeholder').remove();
+			graph(graphData, '1d', false, yesterday); //defaults to 1d
+
+		})
+		.fail(function (xhr, textStatus, errorThrown) {
+			var statusNum = xhr.status;
+			var feedback = "";
+
+			switch (statusNum) {
+				case 200: //not sure why this is considered a fail...
+					feedback = "No results found for this ticker";
+					break;
+				case 401:
+					feedback = "search: 401 (token not found, or invalid)";
+					//TODO: redirect to sign on page?
+					break;
+				default:
+					feedback = "The server returned an undefined response: Status code " + statusNum;
+					break;
+			}
+			console.log(feedback);
+			$('#stats_go_here').html(feedback);
+	        $('#chart_placeholder').html(feedback);
+		});
+		
+		return;
 	}
 
 	$.ajax({
@@ -392,7 +397,7 @@ function getGraphGranular(history) {
 		var history = data.granularity;
 
         $('#chart_placeholder').remove();
-		graph(graphData, history);
+		graph(graphData, history, false);
 
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
@@ -418,6 +423,7 @@ function getGraphGranular(history) {
 
 
 //date must be in yyyy-MM-dd format
+//don't actually use this
 function getGraphDate(date) {
 	var symbol = getUrlParameter('s');
 	var feedback = "";
@@ -451,7 +457,7 @@ function getGraphDate(date) {
 		var graphData = data.data;
 
         $('#chart_placeholder').remove();
-		graph(graphData);
+		graph(graphData, '1d', false);
 
 	})
 	.fail(function (xhr, textStatus, errorThrown) {

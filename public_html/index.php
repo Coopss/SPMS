@@ -30,7 +30,10 @@
                         <div class="offset-lg-2 col-lg-5 bar-right">
                                 <h4 id='total_value'>Loading value...</h4>
                                 <h3>Summary</h3>
-                                <img src="global_assets/img/graph.png" class="img-fluid">
+                                <div class="chart-area" style="max-height:450px">
+                                    <span id="chart_placeholder">Generating graph, please wait...</span>
+                                    <canvas id="myChart" height="400"></canvas>
+                                </div>
                         </div>
                         <div class="col-lg-3">
                                 <!-- List of Stocks -->
@@ -55,16 +58,16 @@
                 <div class="row">
                 <div class="offset-lg-2 offset-md-2 col-lg-8 col-md-8 col-sm-12 col-xs-12">
                         <h3 class="text-center">Recent Top Movers</h3>
-                        <div class="card-group" id='topMovers'>
+                        <div class="card-deck" id='topMovers'>
 
                         </div>
 
                         <!--  NOTE: this normally goes inside the above card-group, but moving it here to make the display work -->
-                        <div class="card card_mover bg-light border-dark d-none" id='topMoverTemplate'>
+                        <div class="card card_mover bg-card border-dark d-none" id='topMoverTemplate'>
                           <a href="#" class="nounderline">
                                   <div class="card-body">
                                     <h5 class="card-title mover_title">Stock 1</h5>
-                                    
+
                                     <!-- span class="mover_price"></span --> <span class='mover_color'> <span class='mover_change'></span> (<span class="mover_percent"></span>)</span>
                                   </div>
                           </a>
@@ -81,38 +84,39 @@
                 <div class="mx-auto col-lg-6">
                     <br><br><br><br>
                         <h3 class="text-center">Relevant articles</h3>
+                        <div class="text-center">
+                            Page <span id="article_page_number">0</span>
+                        </div>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2">
                 </div>
                 </div>
                 <div class="row">
                 <div class="col-lg-2 col-md-2 col-sm-2 my-auto">
-                        <a id="article_prev" href="javascript:articleGet('p')" class="bg-mute round arrow">Previous &laquo;</a>
+                        <a id="article_prev" href="javascript:articleGet('p')" class="btn btn-primary">Previous</a>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6" id="news_articles">
-                    <div>
-                        Page <span id="article_page_number">0</span>
-                    </div>
+
                     <br/>
 
                     <span id="news1">
-                        
+
                     </span>
-                    
+
                     <span id="news2" class="d-none">
-                        
+
                     </span>
-                    
+
                     <span id="news3" class="d-none">
-                        
+
                     </span>
 
                         <!-- Article reference format, not displayed -->
                         <a href="#" class="nounderline d-none article_url" id='article_template'>
-                        <div class="card mb-3" style="max-width: 100%;">
+                        <div class="card mb-3" style="max-width: 100%">
                           <div class="row no-gutters hoverable">
                             <div class="col-md-4 artcile_img">
-                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" height=50% width=50% class="hoverable card-img" alt="Image Unavailable">
+                              <img src="https://ei.marketwatch.com/Multimedia/2019/04/17/Photos/ZH/MW-HH786_model3_20190417122228_ZH.jpg?uuid=fe15c706-612c-11e9-b5b6-9c8e992d421e" height=auto width=50% class="hoverable card-img" alt="Image Unavailable">
                             </div>
                             <div class="col-md-8">
                               <div class="card-body">
@@ -125,7 +129,7 @@
                         </a>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block my-auto">
-                        <a id="article_next" href="javascript:articleGet('n')" class="bg-mute round float-right arrow"> Next &raquo;</a>
+                        <a id="article_next" href="javascript:articleGet('n')" class="btn btn-primary"> Next</a>
                 </div>
                 </div>
 
@@ -138,6 +142,7 @@
 </div>
 
 <script src='script.js'></script>
+<script src='ticker.js'></script> <!-- TODO: separate these js files better  -->
 <script type="text/javascript">
 $(document).ready(function() {
     dashboard();
