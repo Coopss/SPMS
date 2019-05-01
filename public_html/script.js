@@ -560,7 +560,7 @@ function dashboard() {
 			$(template).find('.mover_title').html(symbol);
 			$(template).find('.mover_change').html(parseFloat(change).toFixed(2));
 			percent = parseFloat(percent) * 100;
-			$(template).find('.mover_percent').html('' + percent.toFixed(2) * 100 + '%');
+			$(template).find('.mover_percent').html('' + percent.toFixed(2) + '%');
 
 			if (change > 0) {
 				$(template).find('.mover_color').css('color', 'green');
