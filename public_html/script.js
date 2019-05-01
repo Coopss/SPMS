@@ -496,7 +496,7 @@ function dashboard() {
 			new_table += "<tr>";
 			//new_table += "<td>" + key + "</td>";
 			new_table += "<td>" + "<a href='http://spms.westus.cloudapp.azure.com/ticker.php?s=" + watch_table[i] + "'>" + watch_table[i] + "</a>" + "</td>";
-			new_table += "<td>" + '<button class="btn btn-primary" type="button" name="remove" onclick="remove(' + "'" + watch_table[i] + "'" + ')">Remove</button>' + "</td>";
+			new_table += "<td>" + '<button class="btn btn-danger" type="button" name="remove" onclick="remove(' + "'" + watch_table[i] + "'" + ')">Remove</button>' + "</td>";
 
 			new_table += "</tr>";
 		}
@@ -713,7 +713,8 @@ function portfolio() {
 				if (i == 0) {
 					new_table += "<th>" + data[i][j] + "</th>";
 				} else {
-					new_table += "<td>" + data[i][j] + "</td>";
+						new_table += "<td>" + data[i][j] + "</td>";
+					}
 				}
 
 			}

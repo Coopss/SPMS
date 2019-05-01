@@ -18,18 +18,22 @@
 
 </head>
 <body>
-
-    <div class="body_content">
-
-            <div class="row">
-                    <div class="login-box offset-xl-10 col-lg-8">
-                            <div class="container align-middle">
-                                    <div class="row justify-content-xl-center">
-                                            <a class="logo-margins" href="index.php"><img src="global_assets/img/logo.png" alt="Logo" height=40px></a>
-                                            <img class="logo-margins" src="global_assets/img/footer_logo.png" alt="Logo" height=40px>
-                                    </div>
+        <body class="theme-open-up">
+        <div id="react_root">
+            <div>
+                <div class="base">
+                    <div class="theme-open-up outer">
+                        <div class="texture"></div>
+                        <div class="login-outer">
+                            <div class="login-box">
                                     <div class="row justify-content-xl-center">
                                             <form class="login_form login_background" action="javascript:register()" method="post">
+                                                    <header>
+                                                        <a class="logo-margins" href="index.php">
+                                                            <img src="global_assets/img/logo.png" alt="Logo" height=40px>
+                                                        </a>
+                                                        <img class="logo-margins" src="global_assets/img/footer_logo.png" alt="Logo" height=40px>
+                                                    </header>
                                                 <label for="user">Username</label>
                                                 <input type="text" name="username" id='username'></input><br/><br>
 
@@ -45,20 +49,14 @@
                                             </form>
                                     </div>
                             </div>
-
-
-
-
-                            <div id="feedback"></div>
+                        </div>
                     </div>
+                </div>
             </div>
-            <br><br>
+        </div>
 
+        <script src='script.js'></script>
 
-
-    </div>
-
-<script src='script.js'></script>
-
+        </body>
 </body>
 </html>
