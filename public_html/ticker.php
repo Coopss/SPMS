@@ -47,7 +47,7 @@
                                                 </span>
                                         </h5>
 
-                                                <div class="chart-area" style="max-height:450px">
+                                                <div id='chart-area' class="chart-area" style="max-height:450px">
                                                     <span id="chart_placeholder">Generating graph, please wait...</span>
                                                     <canvas id="myChart" height="400"></canvas>
                                                 </div>

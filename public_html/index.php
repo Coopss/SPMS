@@ -34,7 +34,7 @@
                         <div class="offset-lg-2 col-lg-5 bar-right">
                                 <h4 id='total_value'>Loading value...</h4>
                                 <h3>Summary</h3>
-                                <div class="chart-area" style="max-height:450px">
+                                <div id='chart-area' class="chart-area" style="max-height:450px">
                                     <span id="chart_placeholder">Generating graph, please wait...</span>
                                     <canvas id="myChart" height="400"></canvas>
                                 </div>
