@@ -55,12 +55,12 @@
                 <div class="row">
                 <div class="offset-lg-2 offset-md-2 col-lg-8 col-md-8 col-sm-12 col-xs-12">
                         <h3 class="text-center">Recent Top Movers</h3>
-                        <div class="card-group" id='topMovers'>
+                        <div class="card-deck" id='topMovers'>
 
                         </div>
 
                         <!--  NOTE: this normally goes inside the above card-group, but moving it here to make the display work -->
-                        <div class="card card_mover bg-light border-dark d-none" id='topMoverTemplate'>
+                        <div class="card card_mover bg-card border-dark d-none" id='topMoverTemplate'>
                           <a href="#" class="nounderline">
                                   <div class="card-body">
                                     <h5 class="card-title mover_title">Stock 1</h5>
@@ -81,6 +81,9 @@
                 <div class="mx-auto col-lg-6">
                     <br><br><br><br>
                         <h3 class="text-center">Relevant articles</h3>
+                        <div class="text-center">
+                            Page <span id="article_page_number">0</span>
+                        </div>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2">
                 </div>
@@ -90,9 +93,7 @@
                         <a id="article_prev" href="javascript:articleGet('p')" class="btn btn-primary">Previous</a>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6" id="news_articles">
-                    <div>
-                        Page <span id="article_page_number">0</span>
-                    </div>
+
                     <br/>
 
                     <span id="news1">
