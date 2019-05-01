@@ -544,6 +544,7 @@ function dashboard() {
 		var symbol;
 		var change;
 		var percent;
+		var price;
 
 		var template;
 
@@ -553,12 +554,20 @@ function dashboard() {
 			$(template).removeAttr("id");
 
 			symbol = data[i].symbol;
+			price = data[i].currentPrice;
 			change = data[i].change;
 			percent = data[i].changePercent;
 
 			$(template).find('a').attr('href', 'http://spms.westus.cloudapp.azure.com/ticker.php?s=' + symbol);
 			$(template).find('.mover_title').html(symbol);
-			$(template).find('.mover_change').html(parseFloat(change).toFixed(2));
+			$(template).find('.mover_price').html('$' + parseFloat(price).toFixed(2) + ' | ');
+			
+			if (change > 0) {
+				$(template).find('.mover_change').html('+' + parseFloat(change).toFixed(2));
+			} else { //number should auto-append a minus sign
+				$(template).find('.mover_change').html(parseFloat(change).toFixed(2));
+			}
+			
 			percent = parseFloat(percent) * 100;
 			$(template).find('.mover_percent').html('' + percent.toFixed(2) + '%');
 
