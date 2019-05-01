@@ -713,7 +713,8 @@ function portfolio() {
 				if (i == 0) {
 					new_table += "<th>" + data[i][j] + "</th>";
 				} else {
-					new_table += "<td>" + data[i][j] + "</td>";
+						new_table += "<td>" + data[i][j] + "</td>";
+					}
 				}
 
 			}
