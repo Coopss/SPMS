@@ -89,7 +89,7 @@ function ticker() {
 		*/
 
         $('#chart_placeholder').remove();
-		graph(graphData); //defaults to 1d
+		graph(graphData, '1d', false); //defaults to 1d
 
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
@@ -392,7 +392,7 @@ function getGraphGranular(history) {
 		var history = data.granularity;
 
         $('#chart_placeholder').remove();
-		graph(graphData, history);
+		graph(graphData, history, false);
 
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
@@ -418,6 +418,7 @@ function getGraphGranular(history) {
 
 
 //date must be in yyyy-MM-dd format
+//don't actually use this
 function getGraphDate(date) {
 	var symbol = getUrlParameter('s');
 	var feedback = "";
@@ -451,7 +452,7 @@ function getGraphDate(date) {
 		var graphData = data.data;
 
         $('#chart_placeholder').remove();
-		graph(graphData);
+		graph(graphData, '1d', false);
 
 	})
 	.fail(function (xhr, textStatus, errorThrown) {
