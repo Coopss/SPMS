@@ -1,6 +1,9 @@
-
 .header_align {
         height: 144px;
+}
+
+.header-logo {
+        margin-right: 2rem;
 }
 
 .bg-mute {
