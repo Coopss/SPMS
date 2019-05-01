@@ -75,12 +75,12 @@ public class PortfolioService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/add")
-	@Operation(summary = "Add (or remove using negative shares) to add to portfolio", tags = {"Portfolio"}, description = "Date in format dd/MM/yyyy, shares must be an integer", responses = {@ApiResponse(description = "Success", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
+	@Operation(summary = "Add (or remove using negative shares) to add to portfolio", tags = {"Portfolio"}, description = "Date in format MM/dd/yyyy, shares must be an integer", responses = {@ApiResponse(description = "Success", responseCode = "200"), @ApiResponse(description = "User is not authorized", responseCode = "401")})
 	public Response subscribe(PurchaseModel pm) {
 		try {
 			javax.servlet.http.Cookie[] cookies = servletRequest.getCookies();
 			String user = AuthUtil.getUsername(cookies, adao);
-			Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(pm.getDate());  
+			Date date1 = new SimpleDateFormat("MM/dd/yyyy").parse(pm.getDate());  
 			TickerHistoryData thd = thdao.getTickerAtDate(pm.getSymbol(), date1);
 			Transaction t = new Transaction(user, pm.getSymbol().toUpperCase(), date1, pm.getShares(), thd.Close);
 			Portfolio p = pdao.getUserPortfolio(user);
