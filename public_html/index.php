@@ -30,7 +30,10 @@
                         <div class="offset-lg-2 col-lg-5 bar-right">
                                 <h4 id='total_value'>Loading value...</h4>
                                 <h3>Summary</h3>
-                                <img src="global_assets/img/graph.png" class="img-fluid">
+                                <div class="chart-area" style="max-height:450px">
+                                    <span id="chart_placeholder">Generating graph, please wait...</span>
+                                    <canvas id="myChart" height="400"></canvas>
+                                </div>
                         </div>
                         <div class="col-lg-3">
                                 <!-- List of Stocks -->
@@ -139,6 +142,7 @@
 </div>
 
 <script src='script.js'></script>
+<script src='ticker.js'></script> <!-- TODO: separate these js files better  -->
 <script type="text/javascript">
 $(document).ready(function() {
     dashboard();

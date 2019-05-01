@@ -505,6 +505,8 @@ function dashboard() {
 		$("#db_watch_table").replaceWith(new_table);
 
 		setupNews(articles);
+		
+		graph(graphData, '1d', true);
 
 		/*
 		var feedback = "Stock shares successfully added to your portfolio";
