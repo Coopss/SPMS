@@ -54,7 +54,7 @@
                 </div>
                 <div class="row">
                 <div class="offset-lg-2 offset-md-2 col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                        <h3 class="text-center">Top Movers</h3>
+                        <h3 class="text-center">Recent Top Movers</h3>
                         <div class="card-group" id='topMovers'>
 
                         </div>

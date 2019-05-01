@@ -27,7 +27,7 @@
 <div class="">
         <div class="row">
                 <div id="portfolio_table_div" class="offset-lg-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                        <h3>Portfolio</h3>
+                        <h3>Portfolio Transactions</h3>
                         <br>
                         
                         <!-- Table goes here -->
