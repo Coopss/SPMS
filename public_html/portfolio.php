@@ -26,9 +26,19 @@
 <!-- Body of portfolio -->
 <div class="">
         <div class="row">
-                <div class="offset-lg-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                <div id="portfolio_table_div" class="offset-lg-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                        <h3>Portfolio</h3>
+                        <br>
+                        
                         <!-- Table goes here -->
-                        <table class = "table stock_tables">
+                        <table id="portfolio_table" class = "table stock_tables">
+                           <tr>
+                               <td>Loading data...</td>
+                           </tr>
+                           
+                           
+                           
+                           <!--
                            <thead>
                                   <th> Sym </th>
                                   <th> Shares</th>
@@ -72,6 +82,7 @@
 
                               </tr>
                            </tbody>
+                            -->
 
                         </table>
                 </div>
@@ -86,7 +97,7 @@
 
 <script src='script.js'></script>
 <script type="text/javascript">
-    //portfolio();
+    portfolio();
 </script>
 
 </body>

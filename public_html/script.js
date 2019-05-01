@@ -636,6 +636,56 @@ function watch() {
 }
 
 
+function portfolio() {
+	
+	
+	$.ajax({
+		method: "GET",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio/transactions",
+	})
+	.done(function(data, textStatus, xhr) {
+		var new_table = '';
+		
+		for (var i = 0; i < data.length; i++) {
+			new_table += "<tr>";
+			
+			for (var j = 0; j < data[i].length; j++) {
+				if (i == 0) {
+					new_table += "<th>" + data[i][j] + "</th>";
+				} else {
+					new_table += "<td>" + data[i][j] + "</td>";
+				}
+				
+			}
+			new_table += "</tr>";
+		}
+		
+		$("#portfolio_table").html(new_table);
+
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var feedback = "";
+
+		switch (statusNum) {
+			case 200: //not sure why this is considered a fail...
+				feedback = "Status code 200 returned as a failure";
+				break;
+			case 401:
+				feedback = "search: 401 (token not found, or invalid)";
+				//TODO: redirect to sign on page?
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
+		console.log(feedback);
+	});
+}
+
+
 
 
 
