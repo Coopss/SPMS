@@ -26,28 +26,54 @@
                         <div class="texture"></div>
                         <div class="login-outer">
                             <div class="login-box">
-                                    <div class="row justify-content-xl-center">
-                                            <form class="login_form login_background" action="javascript:register()" method="post">
-                                                    <header>
-                                                        <a class="logo-margins" href="index.php">
-                                                            <img src="global_assets/img/logo.png" alt="Logo" height=40px>
-                                                        </a>
-                                                        <img class="logo-margins" src="global_assets/img/footer_logo.png" alt="Logo" height=40px>
-                                                    </header>
-                                                <label for="user">Username</label>
-                                                <input type="text" name="username" id='username'></input><br/><br>
-
-                                                <label for="password">Password</label>
-                                                <input type="password" name="password" id='password'></input>
-
-                                                <label for="password_confirm">Confirm Password</label>
-                                                <input type="password" name="password_confirm" id='password_confirm'></input><br><br>
-
-                                                <button class="btn btn-primary" type="submit" name="submit">Create Account</button>
-                                                <br>
+                                <div class="login-area">
+                                    <form class="form-lg"action="javascript:register()" method="post">
+                                        <header>
+                                            <a class="logo-margins" href="index.php">
+                                                <img src="global_assets/img/logo.png" alt="Logo" height=40px>
+                                            </a>
+                                            <img class="logo-margins" c alt="Logo" height=40px>
+                                        </header>
+                                        <div class="form-vertical">
+                                            <div>
+                                                <div>
+                                                    <label for="user">
+                                                            <div>Username</div>
+                                                            <div>
+                                                                    <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required="" name="username" id='username' type="text" value="">
+                                                            </div>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label for="password">
+                                                            <div>Password</div>
+                                                            <div>
+                                                                    <input required="" name="password" id='password' type="password" value="">
+                                                            </div>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label for="password_confirm">
+                                                            <div>Confirm Password</div>
+                                                            <div>
+                                                                    <input required="" name="password_confirm" id='password_confirm' type="password" value="">
+                                                            </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <p>
                                                 <a class="create_link" href="login.php">Back to login</a>
-                                            </form>
-                                    </div>
+                                            </p>
+                                        </div>
+                                        <footer class="login-btn-area">
+                                            <div>
+                                                <button type="submit" name="submit" class="btn btn-primary login-btn">
+                                                    <span class="login-btn-text">Register</span>
+                                                </button>
+                                            </div>
+                                        </footer>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
