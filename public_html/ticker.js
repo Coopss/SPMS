@@ -2,117 +2,119 @@
 
 //function for populating data in ticker.php
 function ticker() {
-	var symbol = getUrlParameter('s');
-	var feedback = "";
+        var symbol = getUrlParameter('s');
+        var feedback = "";
 
-	if (!symbol) {
-		feedback = "No search query supplied, please use the search bar to find a stock symbol";
-		console.log(feedback);
-		$('#stats_go_here').html(feedback);
-        $('#chart_placeholder').html(feedback);
-        $('#company_name').html("No stock specified");
-        $('#ticker_about').html("No stock specified");
-		return;
-	}
+        if (!symbol) {
+                feedback = "No search query supplied, please use the search bar to find a stock symbol";
+                console.log(feedback);
+                $('#stats_go_here').html(feedback);
+                $('#chart_placeholder').html(feedback);
+                $('#company_name').html("No stock specified");
+                $('#ticker_about').html("No stock specified");
+                return;
+        }
 
-	$.ajax({
-		method: "GET",
-		crossDomain: true,
-		xhrFields: { withCredentials: true },
-		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol,
-	})
-	.done(function(data, textStatus, xhr) {
-		console.log('Ticker data retrieved: ' + data);
+        $.ajax({
+                        method: "GET",
+                        crossDomain: true,
+                        xhrFields: {
+                                withCredentials: true
+                        },
+                        url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol,
+                })
+                .done(function(data, textStatus, xhr) {
+                        console.log('Ticker data retrieved: ' + data);
 
-		var name = data.company;
-		var symbol = data.symbol;
-		var graphData = data.todayData;
-		var yesterday = data.yesterdayClose;
-		var stats = data.statistics;
-		var about = data.about;
-		var articles = data.articles;
+                        var name = data.company;
+                        var symbol = data.symbol;
+                        var graphData = data.todayData;
+                        var yesterday = data.yesterdayClose;
+                        var stats = data.statistics;
+                        var about = data.about;
+                        var articles = data.articles;
 
-		var current = data.currentPrice;
-		var priceChange = data.priceChange;
-		var percentChange = data.percentChange;
+                        var current = data.currentPrice;
+                        var priceChange = data.priceChange;
+                        var percentChange = data.percentChange;
 
-		//fill in company Name and About
-		$("#company_name").html(name + ' (<span id="stockSymbol">' + symbol + '</span>)');
-		$("#ticker_about").html(about);
+                        //fill in company Name and About
+                        $("#company_name").html(name + ' (<span id="stockSymbol">' + symbol + '</span>)');
+                        $("#ticker_about").html(about);
 
-		$('#currentPrice').html("$" + current);
-		$('#priceChange').html(priceChange);
-		$('#percentChange').html( "" + (percentChange * 100) + '%');
+                        $('#currentPrice').html("$" + current);
+                        $('#priceChange').html(priceChange);
+                        $('#percentChange').html("" + (percentChange * 100) + '%');
 
-		if (percentChange > 0) { //color
-			$('#priceColor').css('color', 'green');
-			//$('#percentChange').attr('style', 'color:green');
+                        if (percentChange > 0) { //color
+                                $('#priceColor').css('color', 'green');
+                                //$('#percentChange').attr('style', 'color:green');
 
-		} else if (percentChange < 0) {
-			$('#priceColor').css('color', 'red');
-			//$('#percentChange').attr('style', 'color:red');
-		}
+                        } else if (percentChange < 0) {
+                                $('#priceColor').css('color', 'red');
+                                //$('#percentChange').attr('style', 'color:red');
+                        }
 
-		var i, j;
-		var new_table = "<table class='table stock_tables'>";
-		new_table += "<tr><th>Statistics</th></tr>";
+                        var i, j;
+                        var new_table = "<table class='table stock_tables'>";
+                        new_table += "<tr><th>Statistics</th></tr>";
 
-		//dynamically generate tables based on server data
-		for (key in stats) {
-			new_table += "<tr>";
-			new_table += "<td>" + key + "</td>";
-			new_table += "<td>" + stats[key] + "</td>";
+                        //dynamically generate tables based on server data
+                        for (key in stats) {
+                                new_table += "<tr>";
+                                new_table += "<td>" + key + "</td>";
+                                new_table += "<td>" + stats[key] + "</td>";
 
-			new_table += "</tr>";
-		}
-		new_table += "</table>";
+                                new_table += "</tr>";
+                        }
+                        new_table += "</table>";
 
-		//insert the table into the page
-		$("#stats_go_here").html(new_table);
+                        //insert the table into the page
+                        $("#stats_go_here").html(new_table);
 
-		setupNews(articles);
+                        setupNews(articles);
 
-		/*
-		var new_article;
-		for (i = 0; i < articles.length; i++) {
-			new_article = $("#article_template").clone();
-			$(new_article).removeClass("d-none");
-			$(new_article).removeAttr("id");
+                        /*
+                        var new_article;
+                        for (i = 0; i < articles.length; i++) {
+                        	new_article = $("#article_template").clone();
+                        	$(new_article).removeClass("d-none");
+                        	$(new_article).removeAttr("id");
 
-			$(new_article).find(".artcile_img").html("<img height=50% width=50% src=" + articles[i].image + ">");
-			$(new_article).find(".article_headline").html(articles[i].headline);
-			$(new_article).find(".article_summary").html(articles[i].summary);
-			$(new_article).attr("href", articles[i].url);
-			$("#news_articles").append(new_article);
-		}
+                        	$(new_article).find(".artcile_img").html("<img height=50% width=50% src=" + articles[i].image + ">");
+                        	$(new_article).find(".article_headline").html(articles[i].headline);
+                        	$(new_article).find(".article_summary").html(articles[i].summary);
+                        	$(new_article).attr("href", articles[i].url);
+                        	$("#news_articles").append(new_article);
+                        }
 
-		$("#article_page_number").html("1");
-		*/
+                        $("#article_page_number").html("1");
+                        */
 
-        $('#chart_placeholder').remove();
-		graph(graphData, '1d', false, yesterday); //defaults to 1d
+                        $('#chart_placeholder').remove();
+                        graph(graphData, '1d', false, yesterday); //defaults to 1d
 
-	})
-	.fail(function (xhr, textStatus, errorThrown) {
-		var statusNum = xhr.status;
-		var feedback = "";
+                })
+                .fail(function(xhr, textStatus, errorThrown) {
+                        var statusNum = xhr.status;
+                        var feedback = "";
 
-		switch (statusNum) {
-			case 200: //not sure why this is considered a fail...
-				feedback = "No results found for this ticker";
-				break;
-			case 401:
-				feedback = "search: 401 (token not found, or invalid)";
-				//TODO: redirect to sign on page?
-				break;
-			default:
-				feedback = "The server returned an undefined response: Status code " + statusNum;
-				break;
-		}
-		console.log(feedback);
-		$('#stats_go_here').html(feedback);
-        $('#chart_placeholder').html(feedback);
-	});
+                        switch (statusNum) {
+                                case 200: //not sure why this is considered a fail...
+                                        feedback = "No results found for this ticker";
+                                        break;
+                                case 401:
+                                        feedback = "search: 401 (token not found, or invalid)";
+                                        //TODO: redirect to sign on page?
+                                        break;
+                                default:
+                                        feedback = "The server returned an undefined response: Status code " + statusNum;
+                                        break;
+                        }
+                        console.log(feedback);
+                        $('#stats_go_here').html(feedback);
+                        $('#chart_placeholder').html(feedback);
+                });
 }
 
 
@@ -206,9 +208,16 @@ function graph(graphData, hist = '1d', dash, yesterdayClose) { //pass in data.to
                 key[1] = 'Close';
         }
         var currDate = moment();
-	if (hist == '1d') {
-		currDate = moment(tbl[0][key[0]]);
-	}
+        if (hist == '1d') {
+                currDate = moment(tbl[0][key[0]]);
+                yesterdayClose['date'] = currDate.clone().set({
+                        'hours': 9,
+                        'minutes': 0,
+                        'seconds': 0,
+                        'milliseconds': 0
+                });
+                tbl.push(yesterdayClose);
+        }
         var graphColor = (tbl.length == 0) ? 'rgba(0,0,0,0.1)' : chooseColor(tbl, key, currDate);
         var labels = generateLabels(tbl, key);
         var xTimeUnit = (hist == '1d') ? 'minute' : 'day';
@@ -306,180 +315,186 @@ function graph(graphData, hist = '1d', dash, yesterdayClose) { //pass in data.to
 
 //valid history params: 1w, 1m, 3m, 1y, 5y, max
 function getGraphGranular(history) {
-	var symbol = getUrlParameter('s');
-	var feedback = "";
+        var symbol = getUrlParameter('s');
+        var feedback = "";
 
-	if (!symbol) {
-		feedback = "No search query supplied, please use the search bar to find a stock symbol";
-		console.log(feedback);
-		//$('#stats_go_here').html(feedback);
-        $('#chart_placeholder').html(feedback);
-        //$('#company_name').html("No stock specified");
-        //$('#ticker_about').html("No stock specified");
-		return;
-	}
+        if (!symbol) {
+                feedback = "No search query supplied, please use the search bar to find a stock symbol";
+                console.log(feedback);
+                //$('#stats_go_here').html(feedback);
+                $('#chart_placeholder').html(feedback);
+                //$('#company_name').html("No stock specified");
+                //$('#ticker_about').html("No stock specified");
+                return;
+        }
 
-	var is_day = false;
-	switch (history) { //check validity
-		case '1d':
-			is_day = true;
-			break
-		case '1w':
-		case '1m':
-		case '3m':
-		case '1y':
-		case '5y':
-		case 'max':
-			//valid
-			break;
-		default:
-			//TODO: Specifiy error
-			return;
-	}
+        var is_day = false;
+        switch (history) { //check validity
+                case '1d':
+                        is_day = true;
+                        break
+                case '1w':
+                case '1m':
+                case '3m':
+                case '1y':
+                case '5y':
+                case 'max':
+                        //valid
+                        break;
+                default:
+                        //TODO: Specifiy error
+                        return;
+        }
 
-	if (is_day) { //unique call for 1d data
-		$.ajax({
-			method: "GET",
-			crossDomain: true,
-			xhrFields: { withCredentials: true },
-			url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol,
-		})
-		.done(function(data, textStatus, xhr) {
-			console.log('Ticker data retrieved: ' + data);
+        if (is_day) { //unique call for 1d data
+                $.ajax({
+                                method: "GET",
+                                crossDomain: true,
+                                xhrFields: {
+                                        withCredentials: true
+                                },
+                                url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol,
+                        })
+                        .done(function(data, textStatus, xhr) {
+                                console.log('Ticker data retrieved: ' + data);
 
-			var name = data.company;
-			var symbol = data.symbol;
-			var graphData = data.todayData;
-			var yesterday = data.yesterdayClose;
+                                var name = data.company;
+                                var symbol = data.symbol;
+                                var graphData = data.todayData;
+                                var yesterday = data.yesterdayClose;
 
-	        //$('#chart_placeholder').remove();
-			graph(graphData, '1d', false, yesterday); //defaults to 1d
+                                //$('#chart_placeholder').remove();
+                                graph(graphData, '1d', false, yesterday); //defaults to 1d
 
-		})
-		.fail(function (xhr, textStatus, errorThrown) {
-			var statusNum = xhr.status;
-			var feedback = "";
+                        })
+                        .fail(function(xhr, textStatus, errorThrown) {
+                                var statusNum = xhr.status;
+                                var feedback = "";
 
-			switch (statusNum) {
-				case 200: //not sure why this is considered a fail...
-					feedback = "No results found for this ticker";
-					break;
-				case 401:
-					feedback = "search: 401 (token not found, or invalid)";
-					//TODO: redirect to sign on page?
-					break;
-				default:
-					feedback = "The server returned an undefined response: Status code " + statusNum;
-					break;
-			}
-			console.log(feedback);
-			$('#stats_go_here').html(feedback);
-	        $('#chart_placeholder').html(feedback);
-		});
+                                switch (statusNum) {
+                                        case 200: //not sure why this is considered a fail...
+                                                feedback = "No results found for this ticker";
+                                                break;
+                                        case 401:
+                                                feedback = "search: 401 (token not found, or invalid)";
+                                                //TODO: redirect to sign on page?
+                                                break;
+                                        default:
+                                                feedback = "The server returned an undefined response: Status code " + statusNum;
+                                                break;
+                                }
+                                console.log(feedback);
+                                $('#stats_go_here').html(feedback);
+                                $('#chart_placeholder').html(feedback);
+                        });
 
-		return;
-	}
+                return;
+        }
 
-	$.ajax({
-		method: "GET",
-		crossDomain: true,
-		xhrFields: { withCredentials: true },
-		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol + '/history/' + history,
-	})
-	.done(function(data, textStatus, xhr) {
-		console.log('graph data retrieved: ' + data);
+        $.ajax({
+                        method: "GET",
+                        crossDomain: true,
+                        xhrFields: {
+                                withCredentials: true
+                        },
+                        url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol + '/history/' + history,
+                })
+                .done(function(data, textStatus, xhr) {
+                        console.log('graph data retrieved: ' + data);
 
-		/*
-		var name = data.company;
-		var symbol = data.symbol;
-		var stats = data.statistics;
-		var about = data.about;
-		var articles = data.articles;
-		*/
-		var graphData = data.data;
-		var history = data.granularity;
+                        /*
+                        var name = data.company;
+                        var symbol = data.symbol;
+                        var stats = data.statistics;
+                        var about = data.about;
+                        var articles = data.articles;
+                        */
+                        var graphData = data.data;
+                        var history = data.granularity;
 
-        $('#chart_placeholder').remove();
-		graph(graphData, history, false);
+                        $('#chart_placeholder').remove();
+                        graph(graphData, history, false);
 
-	})
-	.fail(function (xhr, textStatus, errorThrown) {
-		var statusNum = xhr.status;
-		var feedback = "";
+                })
+                .fail(function(xhr, textStatus, errorThrown) {
+                        var statusNum = xhr.status;
+                        var feedback = "";
 
-		switch (statusNum) {
-			case 200: //not sure why this is considered a fail...
-				feedback = "No results found for this ticker";
-				break;
-			case 401:
-				feedback = "search: 401 (token not found, or invalid)";
-				//TODO: redirect to sign on page?
-				break;
-			default:
-				feedback = "The server returned an undefined response: Status code " + statusNum;
-				break;
-		}
-		console.log(feedback);
-        $('#chart_placeholder').html(feedback);
-	});
+                        switch (statusNum) {
+                                case 200: //not sure why this is considered a fail...
+                                        feedback = "No results found for this ticker";
+                                        break;
+                                case 401:
+                                        feedback = "search: 401 (token not found, or invalid)";
+                                        //TODO: redirect to sign on page?
+                                        break;
+                                default:
+                                        feedback = "The server returned an undefined response: Status code " + statusNum;
+                                        break;
+                        }
+                        console.log(feedback);
+                        $('#chart_placeholder').html(feedback);
+                });
 }
 
 
 //date must be in yyyy-MM-dd format
 //don't actually use this
 function getGraphDate(date) {
-	var symbol = getUrlParameter('s');
-	var feedback = "";
+        var symbol = getUrlParameter('s');
+        var feedback = "";
 
-	if (!symbol) {
-		feedback = "No search query supplied, please use the search bar to find a stock symbol";
-		console.log(feedback);
-		//$('#stats_go_here').html(feedback);
-        $('#chart_placeholder').html(feedback);
-        //$('#company_name').html("No stock specified");
-        //$('#ticker_about').html("No stock specified");
-		return;
-	}
+        if (!symbol) {
+                feedback = "No search query supplied, please use the search bar to find a stock symbol";
+                console.log(feedback);
+                //$('#stats_go_here').html(feedback);
+                $('#chart_placeholder').html(feedback);
+                //$('#company_name').html("No stock specified");
+                //$('#ticker_about').html("No stock specified");
+                return;
+        }
 
-	$.ajax({
-		method: "GET",
-		crossDomain: true,
-		xhrFields: { withCredentials: true },
-		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol + '/' + date,
-	})
-	.done(function(data, textStatus, xhr) {
-		console.log('graph data retrieved: ' + data);
+        $.ajax({
+                        method: "GET",
+                        crossDomain: true,
+                        xhrFields: {
+                                withCredentials: true
+                        },
+                        url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/symbol/" + symbol + '/' + date,
+                })
+                .done(function(data, textStatus, xhr) {
+                        console.log('graph data retrieved: ' + data);
 
-		/*
-		var name = data.company;
-		var symbol = data.symbol;
-		var stats = data.statistics;
-		var about = data.about;
-		var articles = data.articles;
-		*/
-		var graphData = data.data;
+                        /*
+                        var name = data.company;
+                        var symbol = data.symbol;
+                        var stats = data.statistics;
+                        var about = data.about;
+                        var articles = data.articles;
+                        */
+                        var graphData = data.data;
 
-        $('#chart_placeholder').remove();
-		graph(graphData, '1d', false);
+                        $('#chart_placeholder').remove();
+                        graph(graphData, '1d', false);
 
-	})
-	.fail(function (xhr, textStatus, errorThrown) {
-		var statusNum = xhr.status;
-		var feedback = "";
+                })
+                .fail(function(xhr, textStatus, errorThrown) {
+                        var statusNum = xhr.status;
+                        var feedback = "";
 
-		switch (statusNum) {
-			case 200: //not sure why this is considered a fail...
-				feedback = "No results found for this ticker";
-				break;
-			case 401:
-				feedback = "search: 401 (token not found, or invalid)";
-				//TODO: redirect to sign on page?
-				break;
-			default:
-				feedback = "The server returned an undefined response: Status code " + statusNum;
-				break;
-		}
-		console.log(feedback);
-        $('#chart_placeholder').html(feedback);
-	});
+                        switch (statusNum) {
+                                case 200: //not sure why this is considered a fail...
+                                        feedback = "No results found for this ticker";
+                                        break;
+                                case 401:
+                                        feedback = "search: 401 (token not found, or invalid)";
+                                        //TODO: redirect to sign on page?
+                                        break;
+                                default:
+                                        feedback = "The server returned an undefined response: Status code " + statusNum;
+                                        break;
+                        }
+                        console.log(feedback);
+                        $('#chart_placeholder').html(feedback);
+                });
 }
