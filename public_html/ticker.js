@@ -272,7 +272,7 @@ function chooseColor(tbl, hist = '1d') {
 }
 
 function graph(graphData, hist = '1d') { //pass in data.todayData from AJAX request
-    var ctx = document.getElementById('myChart').getContext('2d');
+    var ctx = document.getElementById('myChart');
 
     var tbl = graphData;
     var graphColor = (tbl.length == 0) ? 'rgba(0,0,0,0.1)' : chooseColor(tbl, hist);
