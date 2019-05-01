@@ -199,13 +199,14 @@ function graph(graphData, hist = '1d', dash, yesterdayClose) { //pass in data.to
 
         var tbl = graphData;
         var key = [];
-        key[0] = (hist == '1d') ? 'date' : 'Date';
+        key[0] = 'date';
         if (dash) {
                 key[1] = 'value'
         } else if (hist == '1d') {
                 key[1] = 'marketAverage';
         } else {
                 key[1] = 'Close';
+		key[0] = 'Date';
         }
         var currDate = moment();
         if (hist == '1d') {
@@ -220,11 +221,12 @@ function graph(graphData, hist = '1d', dash, yesterdayClose) { //pass in data.to
         }
         var graphColor = (tbl.length == 0) ? 'rgba(0,0,0,0.1)' : chooseColor(tbl, key, currDate);
         var labels = generateLabels(tbl, key);
-        var xTimeUnit = (hist == '1d') ? 'minute' : 'day';
+        var xTimeUnit = 'day';
         var xMin = currDate.clone();
         var xMax = currDate.clone().subtract(1, 'days');
         switch (hist) {
                 case '1d':
+			xTimeUnit = 'minute';
                         xMin = currDate.clone().set({
                                 'hours': 9,
                                 'minutes': 0,
@@ -239,21 +241,26 @@ function graph(graphData, hist = '1d', dash, yesterdayClose) { //pass in data.to
                         });
                         break;
                 case '1w':
-                        xMin = currDate.clone().subtract(7, 'days');
+                        xMin.subtract(7, 'days');
                         break;
                 case '1m':
-                        xMin = currDate.clone().subtract(1, 'months');
+                        xMin.subtract(1, 'months');
                         break;
                 case '3m':
-                        xMin = currDate.clone().subtract(3, 'months');
+                        xMin.subtract(3, 'months');
                         break;
                 case '1y':
-                        xMin = currDate.clone().subtract(1, 'years');
+                        xMin.subtract(1, 'years');
                         break;
                 case '5y':
                 case 'max':
                         xMin = currDate.clone().subtract(5, 'years');
                         break;
+		case 'dash':
+			xTimeUnit = 'hour';
+			xMin = moment(tbl[tbl.length - 1][key[0]]);
+			xMax = mement(tbl[0][key[0]]);
+			break;
                 default:
                         break;
         }
