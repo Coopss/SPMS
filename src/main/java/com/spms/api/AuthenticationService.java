@@ -20,6 +20,7 @@ import com.spms.Util;
 import com.spms.api.annotations.Secured;
 import com.spms.auth.AuthDAO;
 import com.spms.auth.Credentials;
+import com.spms.portfolio.PortfolioDAO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -37,10 +38,12 @@ import javax.ws.rs.core.Cookie;
 public class AuthenticationService extends Application {
 	private static final Logger log = LogManager.getLogger(AuthenticationService.class);
 	private static AuthDAO dao;
+	private static PortfolioDAO pdao;
 	static {
       	// Get authdao object
         try {
              dao = new AuthDAO();
+             pdao = new PortfolioDAO();
         } catch (Exception e) {
         	e.printStackTrace();
         }        
@@ -101,7 +104,7 @@ public class AuthenticationService extends Application {
                 return Response.ok()
                 		// THIS FOR DEPLOYMENT
                 		.header("Set-Cookie", "token=" + token + ";lang=en-US; Path=/; Domain="+Util.removeProtocol(servletRequest.getHeader("origin")))
-                		// THIS FOR LOCALHOST
+//                		 THIS FOR LOCALHOST
 //                		.header("Set-Cookie", "token=" + token + ";lang=en-US; Path=/; Domain=localhost")
                         .build();
         	} else {
@@ -130,7 +133,8 @@ public class AuthenticationService extends Application {
     	Boolean status;
 		try {
 			status = dao.createUser(credentials);
-		} catch (SQLException e) {
+			pdao.reloadPortfolio(credentials.getUsername());
+		} catch (Exception e) {
 			log.error(Util.stackTraceToString(e));
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
