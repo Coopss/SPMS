@@ -277,7 +277,23 @@ function graph(graphData, hist = '1d') { //pass in data.todayData from AJAX requ
     var tbl = graphData;
     var graphColor = (tbl.length == 0) ? 'rgba(0,0,0,0.1)' : chooseColor(tbl, hist);
     var labels = generateLabels(hist);
-    var xTimeUnit = (hist == '1d') ? 'minute' : 'day';
+    var xTimeUnit;
+    switch (history) {
+    	case '1d':
+    		xTimeUnit = 'minute';
+    		break;
+	case '1w':
+	case '1m':
+	case '3m':
+		xTimeUnit = 'day';
+		break;
+	case '1y':
+	case '5y':
+	case 'max':
+		xTimeUnit = 'month';
+    	default:
+    		xTimeUnit = 'minute';
+    }
 
     var data = {
             labels: labels,

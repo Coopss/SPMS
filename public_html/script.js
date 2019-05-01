@@ -496,7 +496,8 @@ function dashboard() {
 			new_table += "<tr>";
 			//new_table += "<td>" + key + "</td>";
 			new_table += "<td>" + "<a href='http://spms.westus.cloudapp.azure.com/ticker.php?s=" + watch_table[i] + "'>" + watch_table[i] + "</a>" + "</td>";
-
+			new_table += "<td>" + '<button type="button" name="remove" onclick="remove(' + watch_table[i] + ')">Remove</button>' + "</td>";
+			
 			new_table += "</tr>";
 		}
 		new_table += "</table>";
@@ -506,7 +507,7 @@ function dashboard() {
 		setupNews(articles);
 
 		/*
-		var feeback = "Stock shares successfully added to your portfolio";
+		var feedback = "Stock shares successfully added to your portfolio";
 
 		console.log(feedback);
 		$('#buyFeedback').html(feedback);
@@ -613,12 +614,56 @@ function watch() {
 		crossDomain: true,
 		xhrFields: { withCredentials: true },
 		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio/watchlist",
+		contentType: 'application/json',
 		data: JSON.stringify({
 			"symbol": symbol
 		}),
 	})
 	.done(function(data, textStatus, xhr) {
-		var feeback = "Stock successfully added to (or removed from) your watchlist";
+		var feedback = "Stock successfully added to your watchlist";
+
+		console.log(feedback);
+		$('#buyFeedback').html(feedback);
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var feedback = "";
+
+		switch (statusNum) {
+			case 200: //not sure why this is considered a fail...
+				feedback = "Status code 200 returned as a failure";
+				break;
+			case 401:
+				feedback = "search: 401 (token not found, or invalid)";
+				//TODO: redirect to sign on page?
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
+		$('#buyFeedback').html(feedback)
+		console.log(feedback);
+	});
+}
+
+
+
+function remove(symbol) {
+
+	//var symbol = $('#stockSymbol').html(); //only works after ticker data has loaded
+
+	$.ajax({
+		method: "DELETE",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio/watchlist?symbol=" + symbol,
+		/*contentType: 'application/json',
+		data: JSON.stringify({
+			"symbol": symbol
+		}),*/
+	})
+	.done(function(data, textStatus, xhr) {
+		var feedback = "Stock successfully removed from your watchlist";
 
 		console.log(feedback);
 		$('#buyFeedback').html(feedback);

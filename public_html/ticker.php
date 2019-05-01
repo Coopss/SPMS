@@ -113,26 +113,8 @@
                                                         <span id='buyFeedback'></span>
 
                                                       </div>
-                                                      <table class = "table stock_tables">
-                                                              <!-- Portfolio stock details -->
-                                                         <tbody>
-                                                            <th colspan="2">
-                                                               <b>Porfolio</b>
-                                                            </th>
-                                                            <tr>
-                                                               <td>Shares</th>
-                                                               <td> SHARE COUNT</th>
-                                                            </tr>
-                                                            <tr>
-                                                               <td> Date Purchased </td>
-                                                               <td> Date </td>
-                                                            </tr>
-                                                            <tr>
-                                                               <td> Time Purchased </td>
-                                                               <td> TIME </td>
-                                                            </tr>
-                                                         </tbody>
-                                                 </table>
+                                                      <br><br>
+                                                      
                                         <h3 class="text-center">About</h3>
                                         <p id="ticker_about">Loading stock info...</p>
                                 </div>
