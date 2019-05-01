@@ -496,13 +496,8 @@ function dashboard() {
 			new_table += "<tr>";
 			//new_table += "<td>" + key + "</td>";
 			new_table += "<td>" + "<a href='http://spms.westus.cloudapp.azure.com/ticker.php?s=" + watch_table[i] + "'>" + watch_table[i] + "</a>" + "</td>";
-<<<<<<< HEAD
 			new_table += "<td>" + '<button type="button" name="remove" onclick="remove(' + "'" + watch_table[i] + "'" + ')">Remove</button>' + "</td>";
 			
-=======
-			new_table += "<td>" + '<button class="btn btn-primary" type="button" name="remove" onclick="remove(' + watch_table[i] + ')">Remove</button>' + "</td>";
-
->>>>>>> abd84ded045acd2a129b5654e97c424855e41378
 			new_table += "</tr>";
 		}
 		new_table += "</table>";
