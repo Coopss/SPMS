@@ -544,6 +544,7 @@ function dashboard() {
 		var symbol;
 		var change;
 		var percent;
+		var price;
 
 		var template;
 
@@ -553,12 +554,20 @@ function dashboard() {
 			$(template).removeAttr("id");
 
 			symbol = data[i].symbol;
+			price = data[i].currentPrice;
 			change = data[i].change;
 			percent = data[i].changePercent;
 
 			$(template).find('a').attr('href', 'http://spms.westus.cloudapp.azure.com/ticker.php?s=' + symbol);
 			$(template).find('.mover_title').html(symbol);
-			$(template).find('.mover_change').html(parseFloat(change).toFixed(2));
+			$(template).find('.mover_price').html('$' + parseFloat(price).toFixed(2) + ' | ');
+			
+			if (change > 0) {
+				$(template).find('.mover_change').html('+' + parseFloat(change).toFixed(2));
+			} else { //number should auto-append a minus sign
+				$(template).find('.mover_change').html(parseFloat(change).toFixed(2));
+			}
+			
 			percent = parseFloat(percent) * 100;
 			$(template).find('.mover_percent').html('' + percent.toFixed(2) + '%');
 
@@ -631,6 +640,56 @@ function watch() {
 				break;
 		}
 		$('#buyFeedback').html(feedback)
+		console.log(feedback);
+	});
+}
+
+
+function portfolio() {
+	
+	
+	$.ajax({
+		method: "GET",
+		crossDomain: true,
+		xhrFields: { withCredentials: true },
+		url: "http://spms.westus.cloudapp.azure.com:8080/SPMS/api/portfolio/transactions",
+	})
+	.done(function(data, textStatus, xhr) {
+		var new_table = '';
+		
+		for (var i = 0; i < data.length; i++) {
+			new_table += "<tr>";
+			
+			for (var j = 0; j < data[i].length; j++) {
+				if (i == 0) {
+					new_table += "<th>" + data[i][j] + "</th>";
+				} else {
+					new_table += "<td>" + data[i][j] + "</td>";
+				}
+				
+			}
+			new_table += "</tr>";
+		}
+		
+		$("#portfolio_table").html(new_table);
+
+	})
+	.fail(function (xhr, textStatus, errorThrown) {
+		var statusNum = xhr.status;
+		var feedback = "";
+
+		switch (statusNum) {
+			case 200: //not sure why this is considered a fail...
+				feedback = "Status code 200 returned as a failure";
+				break;
+			case 401:
+				feedback = "search: 401 (token not found, or invalid)";
+				//TODO: redirect to sign on page?
+				break;
+			default:
+				feedback = "The server returned an undefined response: Status code " + statusNum;
+				break;
+		}
 		console.log(feedback);
 	});
 }

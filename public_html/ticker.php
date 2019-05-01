@@ -77,37 +77,18 @@
                                                           <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
                                                             <h5 class="card-title">Buy</h5>
                                                             <input id="buyDatePicker" onkeydown="return false" placeholder="Date of Purchase" />
-                                                                    <script>
-                                                                    //Why does none of this do anything?
-                                                                    /*
-                                                                    $('#buyDatePicker').datepicker({
-                                                                        daysOfWeekDisabled: [0,6]
-                                                                    });
-                                                                    $("#buyDatePicker").datepicker("option", "dateFormat", "yy-mm-dd");
-                                                                    */
-                                                                    </script>
+
                                                             <form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Amount" id="buycount" style="width:100%"> </input>
                                                             </form>
-                                                            <!-- form class="form-inline">
-                                                                    <input class="form-control" type="text" placeholder="Cost of all shares" id="buyprice" style="width:100%"> </input>
-                                                            </form -->
-                                                            <!-- p class="card-text">Here is where you buy a stock.</p -->
+
                                                             <button type="button" name="buybutton" onclick="buyStock()">Buy</button>
 
                                                           </div>
                                                           <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
                                                             <h5 class="card-title">Sell</h5>
                                                             <input id="sellDatePicker" onkeydown="return false" placeholder="Date Sold" />
-                                                                    <script>
-                                                                    //Why does none of this do anything?
-                                                                    /*
-                                                                    $('#sellDatePicker').datepicker({
-                                                                        daysOfWeekDisabled: [0,6]
-                                                                        });
-                                                                    $("#sellDatePicker").datepicker("option", "dateFormat", "yy-mm-dd");
-                                                                    */
-                                                                    </script>
+
                                                             <form class="form-inline">
                                                                     <input class="form-control" type="text" placeholder="Amount" id="sellcount" style="width:100%"> </input>
                                                             </form>
