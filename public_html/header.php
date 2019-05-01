@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark nav-background bg-mute navbar-fixed-top">
         <!-- Logo -->
-        <a class="navbar-brand header-logo mr-5" href="index.php">
+        <a class="navbar-brand header-logo ml-5 mr-5" href="index.php">
                 <img src="global_assets/img/logo.png" alt="Logo" height="40px"></img>
         </a>
         <button class="navbar-toggler collapsed align-right" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
