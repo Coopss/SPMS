@@ -192,7 +192,7 @@ function chooseColor(tbl, key, currDate) {
         }
 }
 
-function graph(graphData, hist = '1d', dash) { //pass in data.todayData from AJAX request
+function graph(graphData, hist = '1d', dash, yesterdayClose) { //pass in data.todayData from AJAX request
         var ctx = document.getElementById('myChart').getContext('2d');
 
         var tbl = graphData;
@@ -206,6 +206,9 @@ function graph(graphData, hist = '1d', dash) { //pass in data.todayData from AJA
                 key[1] = 'Close';
         }
         var currDate = moment();
+	if (hist == '1d') {
+		currDate = moment(tbl[0][key[0]]);
+	}
         var graphColor = (tbl.length == 0) ? 'rgba(0,0,0,0.1)' : chooseColor(tbl, key, currDate);
         var labels = generateLabels(tbl, key);
         var xTimeUnit = (hist == '1d') ? 'minute' : 'day';
@@ -333,7 +336,7 @@ function getGraphGranular(history) {
 			//TODO: Specifiy error
 			return;
 	}
-	
+
 	if (is_day) { //unique call for 1d data
 		$.ajax({
 			method: "GET",
@@ -348,7 +351,7 @@ function getGraphGranular(history) {
 			var symbol = data.symbol;
 			var graphData = data.todayData;
 			var yesterday = data.yesterdayClose;
-			
+
 	        //$('#chart_placeholder').remove();
 			graph(graphData, '1d', false, yesterday); //defaults to 1d
 
@@ -373,7 +376,7 @@ function getGraphGranular(history) {
 			$('#stats_go_here').html(feedback);
 	        $('#chart_placeholder').html(feedback);
 		});
-		
+
 		return;
 	}
 
